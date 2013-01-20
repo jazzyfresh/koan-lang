@@ -1,5 +1,4 @@
-koan-lang ( |< ø@π )
-=========
+# koan-lang ( |< ø@π )
 
 
 "Relying on words to lead you to the truth is like relying on an incomplete formal system to lead you to the truth."
@@ -24,46 +23,38 @@ The general idea is that our language has no words. Let's start with some sample
         x *= x;
     }
 
-the above if-statement begins with ??: and ends with another ??  
-each elseif-block begins with a colon and ends when another colon is found  
-you can nest if-statements as if they were any other kind of statement  
-you can also have multiple statements within an if-else statement by separating them with semicolons
+* The above if-statement begins with `??:` and ends with another `??`.  
+* Each elseif-block begins with a colon and ends when another colon is found.  
+* You can nest if-statements as if they were any other kind of statement.
+* You can also have multiple statements within an if-else statement by separating them with semicolons.
 
-|<ø@π has no traditional for-loops  
-Instead, blocks of code operate over Range objects (0...10) and loops are denoted by an ∞ sign
+|<ø@π has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `∞` sign
 
     // Java                                ©: |<ø@π
     for (int i = 0; i < 10; i++) {         ∞: 0...10 {|i| a[i] = i}
         a[i] = i; 
     }
 
-while-loops work in the same way, but without ranges  
-while-loops have no conditional: you must use break statements, which are written as two bangs, "!!"
+Traditional while-loops are represented the same way, but without ranges.  They have no condition either: you must use break statements, which are written as two bangs, `!!`.
 
     // Java                                ©: |<ø@π
     while (s != null) {                    ∞: {s = f.readLine();
         s = f.readLine();                      ??: s==ø ?!!??}
     }                                      ©: null is written as null set
 
-you can print to standard out via ¶:
+You can print to standard out via ¶:
 
     // Java                                ©: |<ø@π
     System.out.println("Hey world");       ¶: "Hey world\n"
 
-hash-maps are denoted by #:  
-its keys are mapped to values by the -> signs
+Hash-maps are denoted by `#:`.  Keys are mapped to values with `->`.
 
     ©: |<ø@π
     my-map = #:{a->3, b->4}
 
-functions are denoted by the ƒ: symbol (yes, that is the mathematical ƒ which can be accessed by hitting alt-f on your mac computer)
+Functions are denoted by the `ƒ`: symbol (yes, that is the mathematical `ƒ` which can be accessed by hitting alt-f on your mac computer).
 
-functions are first-order
-
-we wanted their declarations to resemble the mathematical descriptions of functions
-i.e. f: X ⟶ Y, which maps from set X to set Y
-
-the evaluation of the last statement is what is returned from the function
+Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y.  The evaluation of the last statement is what is returned from the function.
 
     // Java
     public static int gcd(int x, int y) {
@@ -81,12 +72,12 @@ koan-lang also allows anonymous functions
                               ©: __ resembles "fill in the blank", don't ya think?
 
 Some general things:
-* this language is dynamically and strongly typed
-* variable declaration and initialization is the first assignment, like in ruby or python 
-* no types are written (that requires words anyways...)
-* line breaks implicitly indicate separate statements; semicolons do that explicitly
-* in general, colons are your friends.
-* regexes are just like Ruby's, but instead of .match, you only use ~=
-* arrays are pretty much the same as other languages
+* The language is dynamically and strongly typed.
+* Variable declaration and initialization is the first assignment, like in Ruby or Python.
+* No types are written (that requires words anyways).
+* Line breaks implicitly indicate separate statements; semicolons do that explicitly.
+* In general, colons are your friends.
+* Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
+* Arrays are pretty much the same as other languages.
 
 Oh yeah, in case you haven't noticed, comments are indicated by the symbols ©:
