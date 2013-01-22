@@ -1,5 +1,5 @@
-# koan-lang ( |< ø@π )
-
+koan-lang |< ø@π
+=================
 
 "Relying on words to lead you to the truth is like relying on an incomplete formal system to lead you to the truth."
 
@@ -64,7 +64,7 @@ Functions are first-order.  Their declarations resemble the mathematical descrip
     
     ©: |<ø@π
     gcd = ƒ: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
-    z = gcd(37,73) �: z == 1
+    z = gcd(37,73) �: z == 1
 
 koan-lang also allows anonymous functions
 
