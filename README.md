@@ -39,7 +39,7 @@ Traditional while-loops are represented the same way, but without ranges.  They 
 
     // Java                                ©: |<ø@π
     while (s != null) {                    ∞: {s = f.readLine();
-        s = f.readLine();                      ??: s==ø ?!!??}
+        s = f.readLine();                      ??: s == ø ?!!??}
     }                                      ©: null is written as null set
 
 You can print to standard out via ¶:
@@ -60,15 +60,17 @@ Functions are first-order.  Their declarations resemble the mathematical descrip
     public static int gcd(int x, int y) {
         return x%y == 0 ? x : gcd(y, x%y); 
     }
+    int z = gcd(37,73) // x == 1
     
     ©: |<ø@π
     gcd = ƒ: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
+    z = gcd(37,73) �: z == 1
 
 koan-lang also allows anonymous functions
 
     ©: |<ø@π
     ƒ: {__ += 4}              ©: a single parameter is __ (double underscore) 
-    ƒ:{??:_1==2?_1**_2??}     ©:each ith parameter is _i (underscore, then int)
+    ƒ:{??:_1 == 2?_1**_2??}     ©:each ith parameter is _i (underscore, then int)
                               ©: __ resembles "fill in the blank", don't ya think?
 
 Some general things:
