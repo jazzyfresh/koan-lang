@@ -28,7 +28,7 @@ The general idea is that our language has no words, but still is a koan in itsel
 * You can nest if-statements as if they were any other kind of statement.
 * You can also have multiple statements within an if-else statement by separating them with semicolons.
 
-|<ø@π has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `∞` sign
+|<ø@π has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `∞` sign (lemniscate)
 
     // Java                                ©: |<ø@π
     for (int i = 0; i < 10; i++) {         ∞: 0...10 {|i| a[i] = i}
@@ -70,7 +70,7 @@ koan-lang also allows anonymous functions
 
     ©: |<ø@π
     ƒ: {__ += 4}              ©: a single parameter is __ (double underscore) 
-    ƒ:{??:_1 == 2?_1**_2??}     ©:each ith parameter is _i (underscore, then int)
+    ƒ:{??:_1 == 2?_1**_2??}     ©: each ith parameter is _i (underscore, then int)
                               ©: __ resembles "fill in the blank", don't ya think?
 
 Some general things:
