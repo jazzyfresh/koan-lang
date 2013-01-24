@@ -1,4 +1,4 @@
-koan-lang |< ø@π
+koan-lang |< 0@#
 =================
 
 "Relying on words to lead you to the truth is like relying on an incomplete formal system to lead you to the truth."
@@ -17,8 +17,8 @@ The general idea is that our language has no words, but still is a koan in itsel
     } else if (x%6 == 0) {                     ??: x == 0 ? y = 4 ??
         x -= 3;                              : x *= x ??
         if (x == 0) {
-            y = 4;                         ©: |<ø@π is shorter, faster,
-        }                                  ©: and sexier
+            y = 4;                         c: koan is shorter, faster,
+        }                                  c: and sexier
     } else {
         x *= x;
     }
@@ -28,31 +28,31 @@ The general idea is that our language has no words, but still is a koan in itsel
 * You can nest if-statements as if they were any other kind of statement.
 * You can also have multiple statements within an if-else statement by separating them with semicolons.
 
-|<ø@π has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `∞` sign (lemniscate)
+|<ø@π has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `8` sign
 
-    // Java                                ©: |<ø@π
-    for (int i = 0; i < 10; i++) {         ∞: 0...10 {|i| a[i] = i}
+    // Java                                c: koan
+    for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] = i}
         a[i] = i; 
     }
 
 Traditional while-loops are represented the same way, but without ranges.  They have no condition either: you must use break statements, which are written as two bangs, `!!`.
 
-    // Java                                ©: |<ø@π
-    while (s != null) {                    ∞: {s = f.readLine();
-        s = f.readLine();                      ??: s == ø ?!!??}
-    }                                      ©: null is written as null set
+    // Java                                c: koan
+    while (s != null) {                    8: {s = f.readLine();
+        s = f.readLine();                      ??: s == 0 ?!!??}
+    }                                      c: null is written as null set
 
-You can print to standard out via ¶:
+You can print to standard out via 'p':
 
-    // Java                                ©: |<ø@π
-    System.out.println("Hey world");       ¶: "Hey world\n"
+    // Java                                c: |<ø@π
+    System.out.println("Hey world");       p: "Hey world\n"
 
 Hash-maps are denoted by `#:`.  Keys are mapped to values with `->`.
 
-    ©: |<ø@π
+    c: |<ø@π
     my-map = #:{a->3, b->4}
 
-Functions are denoted by the `ƒ`: symbol (yes, that is the mathematical `ƒ` which can be accessed by hitting alt-f on your mac computer).
+Functions are denoted by the `f`: symbol.
 
 Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y.  The evaluation of the last statement is what is returned from the function.
 
@@ -62,16 +62,16 @@ Functions are first-order.  Their declarations resemble the mathematical descrip
     }
     int z = gcd(37,73) // x == 1
     
-    ©: |<ø@π
-    gcd = ƒ: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
-    z = gcd(37,73) ©: z == 1
+    c: |<ø@π
+    gcd = f: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
+    z = gcd(37,73) c: z == 1
 
 koan-lang also allows anonymous functions
 
-    ©: |<ø@π
-    ƒ: {__ += 4}              ©: a single parameter is __ (double underscore) 
-    ƒ:{??:_1 == 2?_1**_2??}     ©: each ith parameter is _i (underscore, then int)
-                              ©: __ resembles "fill in the blank", don't ya think?
+    c: |<ø@π
+    f: {__ += 4}              c: a single parameter is __ (double underscore) 
+    f:{??:_1 == 2?_1**_2??}     c: each ith parameter is _i (underscore, then int)
+                              c: __ resembles "fill in the blank", don't ya think?
 
 Some general things:
 * The language is dynamically and strongly typed.
@@ -82,4 +82,4 @@ Some general things:
 * Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 * Arrays are pretty much the same as other languages.
 
-Oh yeah, in case you haven't noticed, comments are indicated by the symbols ©:
+Oh yeah, in case you haven't noticed, comments are indicated by the symbol 'c:'
