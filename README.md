@@ -99,7 +99,7 @@ Hash-maps are denoted by `#:`.  Keys are mapped to values with `->`.
 Functions are denoted by the `f`: symbol.
 
 Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y. 
-The evaluation of the last statement is what is returned from the function, unless that last line is the break symbol `!!, 
+The evaluation of the last statement is what is returned from the function, unless that last line is the break symbol `!!`, which indicates a procedure.
     // Java
     public static int gcd(int x, int y) {
         return x%y == 0 ? x : gcd(y, x%y); 
@@ -109,6 +109,7 @@ The evaluation of the last statement is what is returned from the function, unle
     c: koan
     gcd = f: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
     z = gcd(37,73) c: z == 1
+    
 
 koan-lang also allows anonymous functions
 
