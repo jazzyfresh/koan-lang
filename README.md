@@ -29,30 +29,37 @@ The general idea is that our language has no words, but still is a koan in itsel
 * You can also have multiple statements within an if-else statement by separating them with semicolons.
 
 Variable Declaration, like Python and Ruby, occurs concurrently with intialization
+
     x :=5
     
 *Because of koan's syntax for anonymous function, variable names cannot begin with underscores `_`
+
     _x := 5
     c: error
 
 Parallel Declaration is allowed, seperating the components of both sides of the declaration by commas
+
     x, y := 5, 3
     
 Constants (compile time error if updated), are variable followed by the bang `!`
+
     x! := 5
     
 Assignment is intialization... Ask Dr. Toal    
     
 Swapping is utilizes a symmmetric assignment `:=:`
+
     x := 5
     y := 3
     x :=: y
     c: x is now 3, y is now 5
     
 Arithmetic Expression
+
     y / (4 - x) * 2.5
     
 Boolean Expression uses binary logic 
+
     //Java                                 c: koan
     true                                   T
     false                                  F
@@ -60,6 +67,7 @@ Boolean Expression uses binary logic
 * No "truthy" or "falsy", ie no other symbols have boolean value.
 
 Arrays delimited by the familiar square brackets 
+
     a := [1,2,3,4]
     a[0]       c: 1
     a[.]       c: 4  "." accesses the final element, as periods suggest finality
@@ -67,9 +75,19 @@ Arrays delimited by the familiar square brackets
     a[1...3]   c: [1,2]
     a[1...]    c: [1,2,3,4]
     a[1..1]    c: [1]
+    
 * Arrays are dynamic, like in Python or Ruby
 
-koan has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `8` sign
+List Comprehension
+
+* Will arrays return arrays?
+* Will ranges return arrays?
+* Will any iteration return arrays?
+
+Closures are functions called right after they are declared. 
+
+
+koan has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `8` sign.
 
     // Java                                c: koan
     for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] = i}
@@ -100,6 +118,7 @@ Functions are denoted by the `f`: symbol.
 
 Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y. 
 The evaluation of the last statement is what is returned from the function, unless that last line is the break symbol `!!`, which indicates a procedure.
+
     // Java
     public static int gcd(int x, int y) {
         return x%y == 0 ? x : gcd(y, x%y); 
@@ -107,8 +126,11 @@ The evaluation of the last statement is what is returned from the function, unle
     int z = gcd(37,73) // x == 1
     
     c: koan
-    gcd = f: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
+    gcd := f: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
     z = gcd(37,73) c: z == 1
+    
+    c: procedure example
+    fourchange := f: (x) -> {x = 4; !!}
     
 
 koan-lang also allows anonymous functions
@@ -126,5 +148,47 @@ Some general things:
 * In general, colons are your friends.
 * Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 * Arrays are pretty much the same as other languages.
+
+### SYNTAX  STILL IN PROGRESS
+
+Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps, and reserved word tokens are shown in lowercase.  Symbols are always quoted.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, and parentheses for grouping.
+
+The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below.
+
+    SCRIPT        →  (STMT BR)+
+    STMT          →  DEC 
+                  |  ASSIGNMENT
+                  |  PRINTSTMT
+                  |  RETURNSTMT
+                  |  CONDITIONAL
+                  |  TIMESLOOP
+                  |  FORLOOP
+                  |  WHILELOOP
+                  |  PROCCALL
+    DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
+    VARDEC        →  EXP (and EXP*) ',' ID (and ID)* (begin | begins)
+                  |  from EXP, ID begins
+    CONSTDEC      →  EXP, ID must be
+    PROCDEC       →  BLOCK given PARAMS ',' ID does
+    FUNDEC        →  BLOCK given PARAMS ',' ID gives
+    PARAMS        →  nothing
+                  |  ID (and ID)*
+    ASSIGNMENT    →  EXP (and EXP*) ',' ID (and ID)* (become | becomes)
+    PRINTSTMT     →  EXP you print
+    RETURNSTMT    →  EXP you return
+    CONDITIONAL   →  BLOCK if EXPR BR (else BLOCK if EXPR BR)* else BLOCK
+    LOOP          →  BLOCK as through RANGE ID runs
+    PROCCALL      →  ARGS you ID
+    BLOCK         →  '{' STMT '}'
+                  →  '{' (STMT BR)+ '}'
+    EXP           →  EXP1 ('|' EXP1)*
+    EXP1          →  EXP2 ('&' EXP2)*
+    EXP2          →  EXP3 (RELOP EXP3)?
+    EXP3          →  EXP4 (MULOP EXP4)*
+    EXP4          →  EXP5 (ADDOP EXP5)*
+    EXP5          →  UNARYOP? EXP6
+    EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
+    EXP7          →  EXP8 ('.' ID)?
+    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | FUNCALL
 
 Oh yeah, in case you haven't noticed, comments are indicated by the symbol 'c:'
