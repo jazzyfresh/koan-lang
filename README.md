@@ -173,7 +173,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     PARAMS        →  nothing
                   |  ID (, ID)*
     PRINTSTMT     →  p: EXP
-    CONDITIONAL   →  '??: ' EXP ' ? ' STMT BR (CONDITIONAL)* (': ' EXP ' ? ' STMT BR (CONDITIONAL)*)* ';' BR ':' STMT '??'
+    CONDITIONAL   →  '??: ' EXP ' ? ' STMT BR (CONDITIONAL)* (': ' EXP ' ? ' STMT BR (CONDITIONAL)*)* ';' BR (':' STMT )? '??'
     LOOP          →  '8:' RANGE BLOCK
     PROCCALL      →  ID '('ARGS')'
     BLOCK         →  '{' STMT '}'
