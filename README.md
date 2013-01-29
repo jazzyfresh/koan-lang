@@ -157,7 +157,7 @@ Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound t
 
 The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below the EBNF.
 
-    SCRIPT        →  (COMMENT? ((STMT COMMENT* BR) ))+
+    SCRIPT        →  (STMT BR)+
     STMT          →  DEC 
                   |  PRINTSTMT
                   |  RETURNSTMT
@@ -187,5 +187,11 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
     EXP7          →  EXP8 ('.' ID)?
     EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | FUNCALL
+    ADDOP         →  '+' | '-'
+    MULOP         →  '*' | '/' | '%' | '**'
+    RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
+    
+    
+    
     COMMENT       →  'c:' STMT*
 
