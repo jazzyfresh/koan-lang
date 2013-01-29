@@ -18,7 +18,7 @@ The general idea is that our language has no words, but still is a koan in itsel
         x -= 3;                              : x *= x ??
         if (x == 0) {
             y = 4;                         c: koan is shorter, faster,
-        }                                  c: and sexier
+        }                                  c: and sexier... but this is cruel to say because we compare to Java
     } else {
         x *= x;
     }
@@ -30,7 +30,7 @@ The general idea is that our language has no words, but still is a koan in itsel
 
 Variable Declaration, like Python and Ruby, occurs concurrently with intialization
 
-    x :=5
+    x := 5
     
 *Because of koan's syntax for anonymous function, variable names cannot begin with underscores `_`
 
@@ -130,7 +130,7 @@ The evaluation of the last statement is what is returned from the function, unle
     z = gcd(37,73) c: z == 1
     
     c: procedure example
-    fourchange := f: (x) -> {x = 4; !!}
+    fourchange := f: (x) -> {x := 4; !!}
     
 
 koan-lang also allows anonymous functions
@@ -148,37 +148,34 @@ Some general things:
 * In general, colons are your friends.
 * Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 * Arrays are pretty much the same as other languages.
+* Oh yeah, in case you haven't noticed, comments are indicated by the symbol 'c:'
+
 
 ### SYNTAX  STILL IN PROGRESS
 
 Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps, and reserved word tokens are shown in lowercase.  Symbols are always quoted.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, and parentheses for grouping.
 
-The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below.
+The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below the EBNF.
 
-    SCRIPT        →  (STMT BR)+
+    SCRIPT        →  (COMMENT? ((STMT COMMENT* BR) ))+
     STMT          →  DEC 
-                  |  ASSIGNMENT
                   |  PRINTSTMT
                   |  RETURNSTMT
                   |  CONDITIONAL
-                  |  TIMESLOOP
-                  |  FORLOOP
-                  |  WHILELOOP
+                  |  LOOP
                   |  PROCCALL
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
-    VARDEC        →  EXP (and EXP*) ',' ID (and ID)* (begin | begins)
-                  |  from EXP, ID begins
-    CONSTDEC      →  EXP, ID must be
-    PROCDEC       →  BLOCK given PARAMS ',' ID does
-    FUNDEC        →  BLOCK given PARAMS ',' ID gives
+    VARDEC        →  EXP (, EXP)* ':=' ID (, ID)* 
+                  |  OBJDEC
+    CONSTDEC      →  ID'!' ':=' EXP
+    PROCDEC       →  ID ':= f: (' PARAMS ') -> {' STMT '!!}'
+    FUNDEC        →  ID ':= f: (' PARAMS ') -> ' BLOCK
     PARAMS        →  nothing
-                  |  ID (and ID)*
-    ASSIGNMENT    →  EXP (and EXP*) ',' ID (and ID)* (become | becomes)
-    PRINTSTMT     →  EXP you print
-    RETURNSTMT    →  EXP you return
-    CONDITIONAL   →  BLOCK if EXPR BR (else BLOCK if EXPR BR)* else BLOCK
-    LOOP          →  BLOCK as through RANGE ID runs
-    PROCCALL      →  ARGS you ID
+                  |  ID (, ID)*
+    PRINTSTMT     →  p: EXP
+    CONDITIONAL   →  '??: ' EXP ' ? ' STMT BR (CONDITIONAL)* (': ' EXP ' ? ' STMT BR (CONDITIONAL)*)* ';' BR ':' STMT '??'
+    LOOP          →  '8:' RANGE BLOCK
+    PROCCALL      →  ID '('ARGS')'
     BLOCK         →  '{' STMT '}'
                   →  '{' (STMT BR)+ '}'
     EXP           →  EXP1 ('|' EXP1)*
@@ -190,5 +187,5 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
     EXP7          →  EXP8 ('.' ID)?
     EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | FUNCALL
+    COMMENT       →  'c:' STMT*
 
-Oh yeah, in case you haven't noticed, comments are indicated by the symbol 'c:'
