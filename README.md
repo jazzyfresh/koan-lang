@@ -168,17 +168,23 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     VARDEC        →  ID (, ID)* ':=' EXP (, EXP)*
                   |  OBJDEC
     CONSTDEC      →  ID'!' (, ID'!')* ':=' EXP (, EXP)*
-    PROCDEC       →  ID ':= f: (' PARAMS ') -> {' STMT '!!}'
+    PROCDEC       →  ID ':= f: (' PARAMS ') ->' BLOCK
     FUNDEC        →  ID ':= f: (' PARAMS ') ->' BLOCK
     PARAMS        →  () | ( )*
                   |  ID (, ID)*
+    ASSIGNMENT    →  DEC | ID ':=:' ID              
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' RANGE BLOCK
-    PROCCALL      →  ID '('ARGS')'
-    BOOL          →  'T' | 'F'                 
-    BLOCK         →  '{' STMT '}'
-                  |  '{' (STMT BR)+ '}'
+    PROCCALL      →  ID '('ARGS')' | ANONFUN
+    BOOL          →  'T' | 'F'   
+    ARRAY         →  '[' EXP* (',' EXP)* ']'
+    ARRREF        →  ID '[' '.' | [0-9]+ ']'
+    OBJECT        →
+    HASH          → '#:{' (ID '->' EXP) (','ID '->' EXP)* '}'
+    ANONFUN       → 'f:{' (EXP ('_'('_'|[0-9]+) EXP)*)* '}'
+    BLOCK         →  '{' STMT ('!!')? '}'
+                  |  '{' (STMT BR)+ ('!!')? '}'
     EXP           →  EXP1 ('|' EXP1)*
     EXP1          →  EXP2 ('&' EXP2)*
     EXP2          →  EXP3 (RELOP EXP3)?
@@ -187,10 +193,11 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
 
     EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
     EXP7          →  EXP8 ('.' ID)?
-    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH
+    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
+    REGEX         → ...leaving this for the jazzy one
     
 Our Microsyntax:
 
