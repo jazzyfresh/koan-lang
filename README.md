@@ -160,29 +160,28 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     SCRIPT        →  (STMT BR)+
     STMT          →  DEC 
                   |  PRINTSTMT
-                  |  RETURNSTMT
                   |  CONDITIONAL
                   |  LOOP
                   |  PROCCALL
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
-    VARDEC        →  ID (, ID)* ':=' EXP (, EXP)*
-                  |  OBJDEC
-    CONSTDEC      →  ID'!' (, ID'!')* ':=' EXP (, EXP)*
+    VARDEC        →  ID (',' ID)* ':=' EXP (',' EXP)*
+                  |  OBJECT
+    CONSTDEC      →  ID '!' (',' ID'!')* ':=' EXP (',' EXP)*
     PROCDEC       →  ID ':= f: (' PARAMS ') ->' BLOCK
     FUNDEC        →  ID ':= f: (' PARAMS ') ->' BLOCK
     PARAMS        →  () | ( )*
-                  |  ID (, ID)*
-    ASSIGNMENT    →  DEC | ID ':=:' ID              
+                  |  ID (',' ID)*
+    ASSIGNMENT    →  DEC | (ID ':=:' ID)              
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' RANGE BLOCK
-    PROCCALL      →  ID '('ARGS')' | ANONFUN
+    PROCCALL      →  (ID '('ARGS')') | ANONFUN
     BOOL          →  'T' | 'F'   
     ARRAY         →  '[' EXP* (',' EXP)* ']'
-    ARRREF        →  ID '[' '.' | [0-9]+ ']'
-    OBJECT        →
-    HASH          → '#:{' (ID '->' EXP) (','ID '->' EXP)* '}'
-    ANONFUN       → 'f:{' (EXP ('_'('_'|[0-9]+) EXP)*)* '}'
+    ARRREF        →  ID '[' '.' | [0-9]+ (('..' | '...') [0-9]+)? ']'
+    OBJECT        →  
+    HASH          → '#:{' (ID '->' EXP) (',' ID '->' EXP)* '}'
+    ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     BLOCK         →  '{' STMT ('!!')? '}'
                   |  '{' (STMT BR)+ ('!!')? '}'
     EXP           →  EXP1 ('|' EXP1)*
@@ -190,7 +189,6 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
     EXP4          →  EXP6 (ADDOP EXP6)*
-
     EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
     EXP7          →  EXP8 ('.' ID)?
     EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL
@@ -204,6 +202,16 @@ Our Microsyntax:
     BR            →  NEWLINE | ';'
     COMMENT       →  'c:'  ( )*   NEWLINE
     ID            →  [a-Z]+ ([-_a-Z0-9])*
-    NUMLIT        →  [0-9]+ ('.'[0-9]*)?
+    NUMLIT        →  [0-9]+ ('.' [0-9]*)?
     STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
     ARGS          →  EXP8 (',' EXP8)*
+    
+    
+Open Questions
+* How does spacing matter in EBNF?
+* Operator Precedence
+* And-Or Logic
+* Objects
+* Regexes
+* Generators
+* Array Returns
