@@ -11,7 +11,7 @@ koan-lang
 
 The general idea is that our language has no words, but still is a koan in itself. Let's start with some sample code.
 
-    // Java                                ©: koan
+    // Java                                c: koan
     if (x%5 == 0) {                        ??: x%5 == 0 ? x += 2
         x += 2;                              : x%6 == 0 ? x -= 3;
     } else if (x%6 == 0) {                     ??: x == 0 ? y = 4 ??
