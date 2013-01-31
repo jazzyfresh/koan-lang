@@ -58,7 +58,7 @@ Arithmetic Expression
 
     y / (4 - x) * 2.5
     
-Boolean Expression uses binary logic 
+Boolean Expressions use symbolic logic 
 
     //Java                                 c: koan
     true                                   T
@@ -153,7 +153,7 @@ Some general things:
 
 ### SYNTAX  STILL IN PROGRESS
 
-Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps, and reserved word tokens are shown in lowercase.  Symbols are always quoted.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, and parentheses for grouping.
+Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps (NB: boolean tokens `T` and `F` are exceptions). Reserved tokens and symbols are always quoted, since our reserved tokens are symbols.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, `'[a-z]` for one letter from the range of lowercase letters, and parentheses for grouping.
 
 The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below the EBNF.
 
@@ -165,33 +165,38 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
                   |  LOOP
                   |  PROCCALL
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
-    VARDEC        →  EXP (, EXP)* ':=' ID (, ID)* 
+    VARDEC        →  ID (, ID)* ':=' EXP (, EXP)*
                   |  OBJDEC
-    CONSTDEC      →  ID'!' ':=' EXP
+    CONSTDEC      →  ID'!' (, ID'!')* ':=' EXP (, EXP)*
     PROCDEC       →  ID ':= f: (' PARAMS ') -> {' STMT '!!}'
-    FUNDEC        →  ID ':= f: (' PARAMS ') -> ' BLOCK
-    PARAMS        →  nothing
+    FUNDEC        →  ID ':= f: (' PARAMS ') ->' BLOCK
+    PARAMS        →  () | ( )*
                   |  ID (, ID)*
-    PRINTSTMT     →  p: EXP
-    CONDITIONAL   →  '??: ' EXP ' ? ' STMT BR (CONDITIONAL)* (': ' EXP ' ? ' STMT BR (CONDITIONAL)*)* ';' BR (':' STMT )? '??'
+    PRINTSTMT     →  'p:' EXP
+    CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' RANGE BLOCK
     PROCCALL      →  ID '('ARGS')'
+    BOOL          →  'T' | 'F'                 
     BLOCK         →  '{' STMT '}'
-                  →  '{' (STMT BR)+ '}'
+                  |  '{' (STMT BR)+ '}'
     EXP           →  EXP1 ('|' EXP1)*
     EXP1          →  EXP2 ('&' EXP2)*
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
-    EXP4          →  EXP5 (ADDOP EXP5)*
-    EXP5          →  UNARYOP? EXP6
+    EXP4          →  EXP6 (ADDOP EXP6)*
+
     EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
     EXP7          →  EXP8 ('.' ID)?
-    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | FUNCALL
-    ADDOP         →  '+' | '-'
+    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH
     MULOP         →  '*' | '/' | '%' | '**'
+    ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
     
-    
-    
-    COMMENT       →  'c:' STMT*
+Our Microsyntax:
 
+    BR            →  NEWLINE | ';'
+    COMMENT       →  'c:'  ( )*   NEWLINE
+    ID            →  [a-Z]+ ([-_a-Z0-9])*
+    NUMLIT        →  [0-9]+ ('.'[0-9]*)?
+    STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
+    ARGS          →  EXP8 (',' EXP8)*
