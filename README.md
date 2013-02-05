@@ -28,37 +28,37 @@ The general idea is that our language has no words, but still is a koan in itsel
 * You can nest if-statements as if they were any other kind of statement.
 * You can also have multiple statements within an if-else statement by separating them with semicolons.
 
-Variable Declaration, like Python and Ruby, occurs concurrently with intialization
+**Variable Declaration**, like Python and Ruby, occurs concurrently with intialization
 
     x := 5
     
-*Because of koan's syntax for anonymous function, variable names cannot begin with underscores `_`
+* Because of koan's syntax for anonymous function, variable names cannot begin with underscores `_`
 
     _x := 5
     c: error
 
-Parallel Declaration is allowed, seperating the components of both sides of the declaration by commas
+**Parallel Declaration** is allowed, seperating the components of both sides of the declaration by commas
 
     x, y := 5, 3
     
-Constants (compile time error if updated), are variable followed by the bang `!`
+**Constants** (compile time error if updated), are variable followed by the bang `!`
 
     x! := 5
     
-Assignment is intialization... Ask Dr. Toal    
+**Assignment** is intialization... Ask Dr. Toal    
     
-Swapping is utilizes a symmmetric assignment `:=:`
+**Swapping** is utilizes a symmmetric assignment `:=:`
 
     x := 5
     y := 3
     x :=: y
     c: x is now 3, y is now 5
     
-Arithmetic Expression
+**Arithmetic Expression**
 
     y / (4 - x) * 2.5
     
-Boolean Expressions use symbolic logic, and the familiar symbols for logical operations 
+**Boolean Expressions** use symbolic logic, and the familiar symbols for logical operations 
 
     //Java                                 c: koan
     true                                   T
@@ -71,7 +71,7 @@ Boolean Expressions use symbolic logic, and the familiar symbols for logical ope
     
 * No "truthy" or "falsy", ie no other symbols have boolean value.
 
-Arrays delimited by the familiar square brackets 
+**Arrays** delimited by the familiar square brackets 
 
     a := [1,2,3,4]
     a[0]       c: 1
@@ -83,14 +83,16 @@ Arrays delimited by the familiar square brackets
     
 * Arrays are dynamic, like in Python or Ruby
 
-List Comprehension
+**List Comprehension**
 
 * Will arrays return arrays?
 * Will ranges return arrays?
 * Will any iteration return arrays?
 
-Closures are functions called right after they are declared. 
+**Closures** are functions called right after they are declared. 
 
+
+**Iteration**
 
 koan has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `8` sign.
 
@@ -106,20 +108,18 @@ Traditional while-loops are represented the same way, but without ranges.  They 
         s = f.readLine();                      ??: s == 0 ?!!??}
     }                                      c: null is written as null set
 
-You can print to standard out via 'p':
+You can **print** to standard out via 'p':
 
     // Java                                c: koan
     System.out.println("Hey world");       p: "Hey world\n"
     
-
-
-Hash-maps are denoted by `#:`.  Keys are mapped to values with `->`.
+**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `->`.
 
     c: koan
     my-map = #:{a->3, b->4}
     p: my-map[b]     c: prints 4
 
-Functions are denoted by the `f`: symbol.
+**Functions** are denoted by the `f`: symbol.
 
 Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y. 
 The evaluation of the last statement is what is returned from the function, unless that last line is the break symbol `!!`, which indicates a procedure.
@@ -138,7 +138,7 @@ The evaluation of the last statement is what is returned from the function, unle
     fourchange := f: (x) -> {x := 4; !!}
     
 
-koan-lang also allows anonymous functions
+koan-lang also allows **anonymous functions**
 
     c: koan
     f: {__ += 4}              c: a single parameter is __ (double underscore) 
