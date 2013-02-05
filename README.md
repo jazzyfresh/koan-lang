@@ -216,7 +216,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
 
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
-    ARREF         →  ID '[' '.' | [0-9]+ | RANGE ']'
+    ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
     OBJECT        → ID ':=' '{' (ID ':' EXP ',')+ '}'
     HASH          → '#:{' (ID '->' EXP) (',' ID '->' EXP)* '}'
     ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
@@ -229,22 +229,22 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
     EXP4          →  EXP5 (ADDOP EXP5)*
-    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL | ARREF
+    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF
 
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
 
-    REGEX         → ID ':=' '/' . '/'
+    REGEX         → ID ':=' '/' .* '/'
     
 Our Microsyntax:
-
+    LIT           →  BOOL | NUMLIT | STRLIT
     BR            →  NEWLINE | ';'
     COMMENT       →  'c:'  ( )*   NEWLINE
     ID            →  [a-Z]+ ([-_a-Z0-9])*
     NUMLIT        →  [0-9]+ ('.' [0-9]*)?
     STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
-    ARGS          →  EXP8 (',' EXP4)*
+    ARGS          →  EXP5 (',' EXP5)*
     
     
 Open Questions
