@@ -22,4 +22,4 @@ match(danny-regex, danny2)   c: returns true
 match(jaz-regex, jazzy1)     c: returns true
 match(jaz-regex, jazzy2)     c: returns false
 match(kaitlyn-regex, kait1)  c: returns true
-match(kaitlyn-regex, kait2)  c: returns false
+match(kaitlyn-regex, kait2)  c: returns false ಠ_ಠ okay
