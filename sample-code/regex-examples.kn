@@ -1,8 +1,6 @@
 c: regex-examples.kn
 
 
-match := f: (regex,string) -> { regex ~= string }
-
 lisa-regex := /lisa/
 danny-regex := /danny/
 jaz-regex := /[abc]/
@@ -16,10 +14,10 @@ jazzy2 := "jsmn"
 kait1 := "kaitlyn"
 kait2 := "kaitlyn is cool"
 
-match(lisa, lisa-regex)      c: returns true
-match(danny-regex, danny1)   c: returns true
-match(danny-regex, danny2)   c: returns true
-match(jaz-regex, jazzy1)     c: returns true
-match(jaz-regex, jazzy2)     c: returns false
-match(kaitlyn-regex, kait1)  c: returns true
-match(kaitlyn-regex, kait2)  c: returns false ಠ_ಠ okay
+~=(lisa, lisa-regex)      c: returns true
+~=(danny-regex, danny1)   c: returns true
+~=(danny-regex, danny2)   c: returns true
+~=(jaz-regex, jazzy1)     c: returns true
+~=(jaz-regex, jazzy2)     c: returns false
+~=(kaitlyn-regex, kait1)  c: returns true
+~=(kaitlyn-regex, kait2)  c: returns false ಠ_ಠ okay
