@@ -9,7 +9,7 @@ koan-lang
 
 --------------------------------
 
-The general idea is that our language has no words, but still is a koan in itself. Let's start with some sample code.
+The general idea is that our language has **no words**, but still is a koan in itself. Let's start with some sample code.
 
     // Java                                c: koan
     if (x%5 == 0) {                        ??: x%5 == 0 ? x += 2
@@ -28,93 +28,108 @@ The general idea is that our language has no words, but still is a koan in itsel
 * You can nest if-statements as if they were any other kind of statement.
 * You can also have multiple statements within an if-else statement by separating them with semicolons.
 
-Variable Declaration, like Python and Ruby, occurs concurrently with intialization
+###Variable Declaration
+Variable declaration, like Python and Ruby, occurs concurrently with intialization
 
     x := 5
     
-*Because of koan's syntax for anonymous function, variable names cannot begin with underscores `_`
+Because of koan's syntax for anonymous functions (you'll see later), variable names cannot begin with underscores (i.e.
+this kind of thing wouldn't work: `_x := 5     c: error`).
 
-    _x := 5
-    c: error
-
-Parallel Declaration is allowed, seperating the components of both sides of the declaration by commas
+**Parallel Declaration** is allowed, seperating the components of both sides of the declaration by commas
 
     x, y := 5, 3
     
-Constants (compile time error if updated), are variable followed by the bang `!`
+**Constants** (compile time error if you try to update a constant) are variables followed by the bang `!`
 
     x! := 5
     
-Assignment is intialization... Ask Dr. Toal    
+**Assignment** is intialization... Ask Dr. Toal    
     
-Swapping is utilizes a symmmetric assignment `:=:`
+**Swapping** is utilizes a symmmetric assignment `:=:`
 
     x := 5
     y := 3
     x :=: y
     c: x is now 3, y is now 5
     
-Arithmetic Expression
+###Arithmetic and Boolean Expressions
+**Arithmetic Expression**
 
     y / (4 - x) * 2.5
     
-Boolean Expressions use symbolic logic 
+**Boolean Expressions** use symbolic logic and the familiar symbols for logical operations 
 
     //Java                                 c: koan
     true                                   T
     false                                  F
     
+    //or                                   c: or
+    true || false == true                  T || F == T
+    //and                                  c: and
+    true && false == false                 T && F == F
+    
 * No "truthy" or "falsy", ie no other symbols have boolean value.
 
-Arrays delimited by the familiar square brackets 
+###Arrays
+Are delimited by the familiar square brackets and use 
 
     a := [1,2,3,4]
     a[0]       c: 1
     a[.]       c: 4  "." accesses the final element, as periods suggest finality
-    a[1..3]    c: [1,2,3]
-    a[1...3]   c: [1,2]
-    a[1...]    c: [1,2,3,4]
+    a[1..3]    c: [1,2,3], last element of range inclusive
+    a[1...3]   c: [1,2], last element of range exclusive
+    a[1...]    c: [1,2,3,4], from index 1 until the end
     a[1..1]    c: [1]
+    a[1...1]   c: syntax error
     
-* Arrays are dynamic, like in Python or Ruby
+Arrays are dynamic, like in Python or Ruby
 
-List Comprehension
+    a := []
+    a << "hello"
+    p: a[0]           c: prints "hello"
 
-* Will arrays return arrays?
-* Will ranges return arrays?
-* Will any iteration return arrays?
+###Iteration
 
-Closures are functions called right after they are declared. 
-
-
-koan has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `8` sign.
+Koan has no traditional for-loops.  
+Instead, blocks of code iterate over range objects (`0...10`) and loops are denoted by an `8` sign.
 
     // Java                                c: koan
     for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] = i}
         a[i] = i; 
     }
 
-Traditional while-loops are represented the same way, but without ranges.  They have no condition either: you must use break statements, which are written as two bangs, `!!`.
+**List Comprension** essentially operates as a for-loop, but has a list where the range would go
+    // Java                                c: koan
+    int result = 0;                        result := 0
+    int [] a = {1,2,3,4,5};                a := [1,2,3,4,5]
+    for (int x : a) {                      8: a {|x| result += x}
+        result += x;
+    }
+
+The list (when recognizing that it is in a for-loop) will implicitly return an iterator that the block can iterate over.
+
+
+**While-loops** are represented the same way, but without ranges or lists.  They have no condition either: you must use break statements, which are written as two bangs, `!!`.
 
     // Java                                c: koan
     while (s != null) {                    8: {s = f.readLine();
-        s = f.readLine();                      ??: s == 0 ?!!??}
+        s = f.readLine();                      ??: s == {} ?!!??}
     }                                      c: null is written as null set
 
-You can print to standard out via 'p':
+
+You can **print** to standard out via 'p':
 
     // Java                                c: koan
     System.out.println("Hey world");       p: "Hey world\n"
     
-
-
-Hash-maps are denoted by `#:`.  Keys are mapped to values with `->`.
+**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `->`.
 
     c: koan
     my-map = #:{a->3, b->4}
     p: my-map[b]     c: prints 4
 
-Functions are denoted by the `f`: symbol.
+**Functions** are denoted by the `f`: symbol.
 
 Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y. 
 The evaluation of the last statement is what is returned from the function, unless that last line is the break symbol `!!`, which indicates a procedure.
@@ -133,7 +148,7 @@ The evaluation of the last statement is what is returned from the function, unle
     fourchange := f: (x) -> {x := 4; !!}
     
 
-koan-lang also allows anonymous functions
+koan-lang also allows **anonymous functions**
 
     c: koan
     f: {__ += 4}              c: a single parameter is __ (double underscore) 
@@ -174,7 +189,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ASSIGNMENT    →  DEC | (ID ':=:' ID)              
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
-    LOOP          →  '8:' RANGE BLOCK
+    LOOP          →  '8:' (RANGE)? BLOCK
     PROCCALL      →  (ID '('ARGS')') | ANONFUN
     BOOL          →  'T' | 'F'   
     ARRAY         →  '[' EXP* (',' EXP)* ']'
@@ -184,17 +199,15 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     BLOCK         →  '{' STMT ('!!')? '}'
                   |  '{' (STMT BR)+ ('!!')? '}'
-    EXP           →  EXP1 ('|' EXP1)*
-    EXP1          →  EXP2 ('&' EXP2)*
+    EXP           →  EXP1 (MULOP EXP1)*
+    EXP1          →  EXP2 (ADDOP EXP2)*
     EXP2          →  EXP3 (RELOP EXP3)?
-    EXP3          →  EXP4 (MULOP EXP4)*
-    EXP4          →  EXP6 (ADDOP EXP6)*
-    EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
-    EXP7          →  EXP8 ('.' ID)?
-    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL
+    EXP3          →  EXP4 (LOGOP EXP4)*
+    EXP4          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL | ARREF
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
+    LOGOP         →  '||' | '&&' 
     REGEX         → ...leaving this for the jazzy one
     
 Our Microsyntax:
@@ -204,13 +217,11 @@ Our Microsyntax:
     ID            →  [a-Z]+ ([-_a-Z0-9])*
     NUMLIT        →  [0-9]+ ('.' [0-9]*)?
     STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
-    ARGS          →  EXP8 (',' EXP8)*
+    ARGS          →  EXP8 (',' EXP4)*
     
     
 Open Questions
 * How does spacing matter in EBNF?
-* Operator Precedence
-* And-Or Logic
 * Objects
 * Regexes
 * Generators
