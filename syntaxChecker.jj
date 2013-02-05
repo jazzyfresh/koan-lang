@@ -15,10 +15,10 @@ public class SyntaxChecker {
 PARSER_END(SyntaxChecker)
 
 SKIP: { " " | "\t" | "\r" }
-BR: { "\n" }
+BR: { "\n" | ";" }
 TOKEN: {
     "(" | ")" | "+" | "*" | ":="
-    | <NUM: (["0"-"9"])+> | <ID: (["a"-"z"])+>
+    | <NUM: (["0"-"9"])+> | <ID: (["a"-"z"] | ["A"-"Z"])+>
 }
 
 void SCRIPT(): {} { (STMT() BR())+ }
@@ -27,48 +27,50 @@ void STMT(): {} { DEC() | ASSIGNMENT() | PRINTSTMT() | CONDITIONAL()
 
 void DEC(): {} { VARDEC() | CONSTDEC() | PROCDEC() | FUNDEC() }
 
-void VARDEC(): {} { ID() (',' ID())* ':=' EXP() (',' EXP())*
+void VARDEC(): {} { ID() ("," ID())* ":=" EXP() ("," EXP())*
               |  OBJECT()}
-void CONSTDEC(): {} { ID() '!' (',' ID()'!')* ':=' EXP() (',' EXP())* }
-void PROCDEC(): {} { ID() ':= f: (' PARAMS() ') ->' BLOCK() }
-void FUNDEC(): {} { ID() ':= f: (' PARAMS() ') ->' BLOCK() }
-void PARAMS(): {} { () | ( )* |  ID() (',' ID())* }
-void ASSIGNMENT(): {} { DEC() | (ID() ':=:' ID()) }
-void PRINTSTMT(): {} { 'p:' EXP() }
-void CONDITIONAL(): {} { '??:' EXP() '?' STMT() BR() (CONDITIONAL())* (':' EXP() '?' STMT() BR() (CONDITIONAL())*)*  BR() (':' STMT() )? '??' }
-void LOOP(): {} { '8:' (RANGE())? BLOCK() }
-void PROCCALL(): {} { (ID() '('ARGS()')') | ANONFUN() }
-void BLOCK(): {} { '{' STMT() ('!!')? '}' | '{' (STMT() BR())+ ('!!')? '}' }
-void EXP(): {} { EXP1() ('|' EXP1())* }
-void EXP1(): {} { EXP2() ('&' EXP2())* }
+void CONSTDEC(): {} { ID() "!" ("," ID()"!")* ":=" EXP() ("," EXP())* }
+void PROCDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
+void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
+void PARAMS(): {} { () | ( )* |  ID() ("," ID())* }
+void ASSIGNMENT(): {} { DEC() | (ID() ":=:" ID()) }
+void PRINTSTMT(): {} { "p:" EXP() }
+void CONDITIONAL(): {} { "??:" EXP() "?" STMT() BR() (CONDITIONAL())* (":" EXP() "?" STMT() BR() (CONDITIONAL())*)*  BR() (":" STMT() )? "??" }
+void LOOP(): {} { "8:" (RANGE())? BLOCK() }
+void PROCCALL(): {} { ( ID() "(" ARGS() ")" ) | ANONFUN() }
+void BLOCK(): {} { "{" STMT() ("!!")? "}" | "{" (STMT() BR())+ ("!!")? "}" }
+
+void EXP(): {} { EXP1() ("||" EXP1())* }
+void EXP1(): {} { EXP2() ("&&" EXP2())* }
 void EXP2(): {} { EXP3() (RELOP() EXP3())? }
 void EXP3(): {} { EXP4() (MULOP() EXP4())* }
 void EXP4(): {} { EXP5() (ADDOP() EXP5())* }
-void EXP5(): {} { EXP6() ('[' EXP() (':' EXP())? ']')? }
-void EXP6(): {} { EXP7() ('.' ID())? }
-void EXP7(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | BOOL() }
-void LIT(): {} { T | F | NUMLIT() | STRLIT() }
-void ARRAY(): {} { '[' EXP()* (',' EXP())* ']' }
-void ARRAYREF(): {} { ID() '[' '.' | [0-9]+ (('..' | '...') [0-9]+)? ']' }
-void OBJECT(): {} { }
-void ANONFUN(): {} { 'f:{' (EXP() ('_'('_' | [0-9]+) EXP())*)* '}' }
-void RELOP(): {} { '<' | '<=' | '==' | '!=' | '>=' | '>' }
-void MULOP(): {} { '*' | '/' | '%' | '**' }
-void ADDOP(): {} { '+' | '-' }
-void REGEX(): {} {  }
+void EXP5(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() }
 
-void ARGS(): {} { EXP7() (',' EXP8())* }
-void RANGE(): {} {  }
+void RELOP(): {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
+void MULOP(): {} { "*" | "/" | "%" | "**" }
+void ADDOP(): {} { "+" | "-" }
 
-void ID(): {} { [a-Z]+([-_a-Z0-9])* }
+void LIT(): {} { BOOL() | NUMLIT() | STRLIT() }
+void ARRAY(): {} { "[" EXP()* ("," EXP())* "]" }
+void ARRAYREF(): {} { ID() "[" "." | [0-9]+ ((".." | "...") [0-9]+)? "]" }
+void OBJECT(): {} { ID ":=" "{" ( ID ":" EXP "," )+ "}" }
+void ANONFUN(): {} { 'f:{" (EXP() ("_"("_" | [0-9]+ ) EXP() )* )* "}" }
 
-void BOOL(): {} { 'T' | 'F' }
-void NUMLIT(): {} { [0-9]+ ('.' [0-9]*)? }
-void STRLIT(): {} { '"'  ( NUMLIT() | [a-Z])+  '"' }
+void REGEX(): {} { ID ":=" "/" .* "/" }
 
-void COMMENT(): {} { 'c:'  ( )*   NEWLINE() }
-void BR(): {} { NEWLINE() | ';' }
-void HASH(): {} { '#:{' (ID() '->' EXP()) (',' ID() '->' EXP())* '}' }
+void ARGS(): {} { EXP5() ("," EXP5())* }
+void RANGE(): {} { [0-9]+ ( "..." | ".." ) [0-9]+ }
+
+void ID(): {} { [a-Z]+ ([-_a-Z0-9])* }
+
+void BOOL(): {} { "T" | "F" }
+void NUMLIT(): {} { [0-9]+ ("." [0-9]*)? }
+void STRLIT(): {} { "\""  ( NUMLIT() | [a-Z])+  "\"" }
+
+void COMMENT(): {} { "c:"  ( )*   "\n" }
+void BR(): {} { "\n" | ";" }
+void HASH(): {} { "#:{" (ID() "->" EXP()) ("," ID() "->" EXP())* "}" }
 
 
 
