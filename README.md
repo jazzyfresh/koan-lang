@@ -28,7 +28,7 @@ The general idea is that our language has **no words**, but still is a koan in i
 * You can nest if-statements as if they were any other kind of statement.
 * You can also have multiple statements within an if-else statement by separating them with semicolons.
 
-###Variable Declaration
+###Variables  
 Variable declaration, like Python and Ruby, occurs concurrently with intialization
 
     x := 5
@@ -53,7 +53,8 @@ this kind of thing wouldn't work: `_x := 5     c: error`).
     x :=: y
     c: x is now 3, y is now 5
     
-###Arithmetic and Boolean Expressions
+###Arithmetic and Boolean Expressions  
+
 **Arithmetic Expression**
 
     y / (4 - x) * 2.5
@@ -72,7 +73,7 @@ this kind of thing wouldn't work: `_x := 5     c: error`).
 * No "truthy" or "falsy", ie no other symbols have boolean value.
 
 ###Arrays
-Are delimited by the familiar square brackets and use 
+Are delimited by the familiar square brackets and use integers or Ranges as indices
 
     a := [1,2,3,4]
     a[0]       c: 1
@@ -83,7 +84,7 @@ Are delimited by the familiar square brackets and use
     a[1..1]    c: [1]
     a[1...1]   c: syntax error
     
-Arrays are dynamic, like in Python or Ruby
+Arrays are dynamic, like in Python or Ruby, and you can append to an array using `<<`
 
     a := []
     a << "hello"
@@ -100,6 +101,7 @@ Instead, blocks of code iterate over range objects (`0...10`) and loops are deno
     }
 
 **List Comprension** essentially operates as a for-loop, but has a list where the range would go
+
     // Java                                c: koan
     int result = 0;                        result := 0
     int [] a = {1,2,3,4,5};                a := [1,2,3,4,5]
@@ -155,6 +157,15 @@ koan-lang also allows **anonymous functions**
     f: {??:_1 == 2?_1**_2??}     c: each ith parameter is _i (underscore, then int)
                               c: __ resembles "fill in the blank", don't ya think?
 
+###Objects
+
+Objects are prototype-based, like JavaScript
+
+    Point := { x : 0,
+               y : 0,
+               plot : f: (x,y) -> { Graph.draw(x,y) } }
+             
+
 Some general things:
 * The language is dynamically and strongly typed.
 * Variable declaration and initialization is the first assignment, like in Ruby or Python.
@@ -162,7 +173,6 @@ Some general things:
 * Line breaks implicitly indicate separate statements; semicolons do that explicitly.
 * In general, colons are your friends.
 * Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
-* Arrays are pretty much the same as other languages.
 * Oh yeah, in case you haven't noticed, comments are indicated by the symbol 'c:'
 
 
