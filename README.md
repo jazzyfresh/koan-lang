@@ -53,6 +53,15 @@ this kind of thing wouldn't work: `_x := 5     c: error`).
     x :=: y
     c: x is now 3, y is now 5
     
+###Strings 
+
+Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
+
+    danny-regex := /danny/
+    danny2 : "dannyboy"
+    ~=(danny-regex, danny2)   c: returns true
+
+    
 ###Arithmetic and Boolean Expressions  
 
 **Arithmetic Expression**
@@ -172,13 +181,12 @@ Some general things:
 * No types are written (that requires words anyways).
 * Line breaks implicitly indicate separate statements; semicolons do that explicitly.
 * In general, colons are your friends.
-* Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 * Oh yeah, in case you haven't noticed, comments are indicated by the symbol 'c:'
 
 
-### SYNTAX  STILL IN PROGRESS
+### SYNTAX
 
-Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps (NB: boolean tokens `T` and `F` are exceptions). Reserved tokens and symbols are always quoted, since our reserved tokens are symbols.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, `'[a-z]` for one letter from the range of lowercase letters, and parentheses for grouping.
+Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps (NB: boolean tokens `T` and `F` are exceptions). Reserved tokens and symbols are always quoted, since our reserved tokens are symbols.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, `'[a-z]` for one letter from the range of lowercase letters, and parentheses for grouping. And unquoted period `.` is metasyntax for any character at all.
 
 The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below the EBNF.
 
@@ -208,8 +216,8 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
 
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
-    ARREF        →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        → 
+    ARREF         →  ID '[' '.' | [0-9]+ | RANGE ']'
+    OBJECT        → ID ':=' '{' (ID ':' EXP ',')+ '}'
     HASH          → '#:{' (ID '->' EXP) (',' ID '->' EXP)* '}'
     ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
@@ -227,7 +235,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
 
-    REGEX         → ...leaving this for the jazzy one
+    REGEX         → ID ':=' '/' . '/'
     
 Our Microsyntax:
 
@@ -241,7 +249,5 @@ Our Microsyntax:
     
 Open Questions
 * How does spacing matter in EBNF?
-* Objects
-* Regexes
 * Generators
-* Array Returns
+
