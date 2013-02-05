@@ -34,7 +34,7 @@ Variable declaration, like Python and Ruby, occurs concurrently with intializati
     x := 5
     
 Because of koan's syntax for anonymous functions (you'll see later), variable names cannot begin with underscores (i.e.
-this kind of thing wouldn't work: `_x := 5     c: error`).
+this kind of thing wouldn't work: `_x := 5`).
 
 **Parallel Declaration** is allowed, seperating the components of both sides of the declaration by commas
 
@@ -58,8 +58,8 @@ this kind of thing wouldn't work: `_x := 5     c: error`).
 Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 
     danny-regex := /danny/
-    danny2 : "dannyboy"
-    ~=(danny-regex, danny2)   c: returns true
+    danny-name : "dannyboy"
+    danny-regex ~= danny-name      c: returns true
 
     
 ###Arithmetic and Boolean Expressions  
@@ -102,7 +102,8 @@ Arrays are dynamic, like in Python or Ruby, and you can append to an array using
 ###Iteration
 
 Koan has no traditional for-loops.  
-Instead, blocks of code iterate over range objects (`0...10`) and loops are denoted by an `8` sign.
+Instead, blocks of code iterate over range objects, `0...10`, and loops are denoted by an `8` sign 
+(bc 8 is a sideways infinity).
 
     // Java                                c: koan
     for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] = i}
@@ -118,10 +119,12 @@ Instead, blocks of code iterate over range objects (`0...10`) and loops are deno
         result += x;
     }
 
-The list (when recognizing that it is in a for-loop) will implicitly return an iterator that the block can iterate over.
+The list (when recognizing that it is in a for-loop) will implicitly return an iterator that the block 
+can iterate over.
 
 
-**While-loops** are represented the same way, but without ranges or lists.  They have no condition either: you must use break statements, which are written as two bangs, `!!`.
+**While-loops** are represented the same way, but without ranges or lists.  They have no condition either: 
+you must use break statements, which are written as two bangs, `!!`.
 
     // Java                                c: koan
     while (s != null) {                    8: {s = f.readLine();
@@ -134,16 +137,18 @@ You can **print** to standard out via 'p':
     // Java                                c: koan
     System.out.println("Hey world");       p: "Hey world\n"
     
-**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `->`.
+**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `->`. You can access its elements like arrays.
 
     c: koan
-    my-map = #:{a->3, b->4}
+    my-map := #:{a->3, b->4}
     p: my-map[b]     c: prints 4
 
 **Functions** are denoted by the `f`: symbol.
 
-Functions are first-order.  Their declarations resemble the mathematical description of functions, i.e. _f: X ⟶ Y_, which maps from set X to set Y. 
-The evaluation of the last statement is what is returned from the function, unless that last line is the break symbol `!!`, which indicates a procedure.
+Functions are first-order.  Their declarations resemble the mathematical description of functions, 
+i.e. _f: X ⟶ Y_, which maps from set X to set Y. The evaluation of the last statement is what is 
+returned from the function, unless that last line is the break symbol `!!`, which indicates that the
+function is a procedure.
 
     // Java
     public static int gcd(int x, int y) {
@@ -159,12 +164,12 @@ The evaluation of the last statement is what is returned from the function, unle
     fourchange := f: (x) -> {x := 4; !!}
     
 
-koan-lang also allows **anonymous functions**
+Koan also allows **anonymous functions**
 
     c: koan
-    f: {__ += 4}              c: a single parameter is __ (double underscore) 
+    f: {__ += 4}                 c: a single parameter is __ (double underscore) 
     f: {??:_1 == 2?_1**_2??}     c: each ith parameter is _i (underscore, then int)
-                              c: __ resembles "fill in the blank", don't ya think?
+                                 c: __ resembles "fill in the blank", don't ya think?
 
 ###Objects
 
@@ -186,7 +191,12 @@ Some general things:
 
 ### SYNTAX
 
-Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all caps (NB: boolean tokens `T` and `F` are exceptions). Reserved tokens and symbols are always quoted, since our reserved tokens are symbols.  The meta symbols are the usual ones: `|` for alternatives, `*` for zero or more, `+` for one or more, `?` for zero or one, `'[a-z]` for one letter from the range of lowercase letters, and parentheses for grouping. And unquoted period `.` is metasyntax for any character at all.
+Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound tokens are shown in all 
+caps (NB: boolean tokens `T` and `F` are exceptions). Reserved tokens and symbols are always quoted, 
+since our reserved tokens are symbols.  The meta symbols are the usual ones: `|` for alternatives, `*` 
+for zero or more, `+` for one or more, `?` for zero or one, `'[a-z]` for one letter from the range of 
+lowercase letters, and parentheses for grouping. And unquoted period `.` is metasyntax for any character 
+at all.
 
 The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax below the EBNF.
 
