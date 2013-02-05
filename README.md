@@ -202,8 +202,8 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP           →  EXP1 (MULOP EXP1)*
     EXP1          →  EXP2 (ADDOP EXP2)*
     EXP2          →  EXP3 (RELOP EXP3)?
-    EXP3          →  EXP8 (LOGOP EXP8)*
-    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL | ARREF
+    EXP3          →  EXP4 (LOGOP EXP4)*
+    EXP4          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL | ARREF
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
@@ -217,7 +217,7 @@ Our Microsyntax:
     ID            →  [a-Z]+ ([-_a-Z0-9])*
     NUMLIT        →  [0-9]+ ('.' [0-9]*)?
     STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
-    ARGS          →  EXP8 (',' EXP8)*
+    ARGS          →  EXP8 (',' EXP4)*
     
     
 Open Questions
