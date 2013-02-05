@@ -83,15 +83,6 @@ The general idea is that our language has no words, but still is a koan in itsel
     
 * Arrays are dynamic, like in Python or Ruby
 
-**List Comprehension**
-
-* Will arrays return arrays?
-* Will ranges return arrays?
-* Will any iteration return arrays?
-
-**Closures** are functions called right after they are declared. 
-
-
 **Iteration**
 
 koan has no traditional for-loops. Instead, blocks of code operate over range objects (`0...10`) and loops are denoted by an `8` sign.
@@ -107,6 +98,13 @@ Traditional while-loops are represented the same way, but without ranges.  They 
     while (s != null) {                    8: {s = f.readLine();
         s = f.readLine();                      ??: s == 0 ?!!??}
     }                                      c: null is written as null set
+    
+**List Comprehension**
+
+* Will arrays return arrays?
+* Will ranges return arrays?
+* Will any iteration return arrays?
+
 
 You can **print** to standard out via 'p':
 
@@ -192,9 +190,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP           →  EXP1 (MULOP EXP1)*
     EXP1          →  EXP2 (ADDOP EXP2)*
     EXP2          →  EXP3 (RELOP EXP3)?
-    EXP3          →  EXP6 (LOGOP EXP6)*
-    EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
-    EXP7          →  EXP8 ('.' ID)?
+    EXP3          →  EXP8 (LOGOP EXP8)*
     EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL | ARREF
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
