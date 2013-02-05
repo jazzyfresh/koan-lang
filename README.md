@@ -58,11 +58,16 @@ Arithmetic Expression
 
     y / (4 - x) * 2.5
     
-Boolean Expressions use symbolic logic 
+Boolean Expressions use symbolic logic, and the familiar symbols for logical operations 
 
     //Java                                 c: koan
     true                                   T
     false                                  F
+    
+    //or                                   c: or
+    true || false == true                  T || F == T
+    //and                                  c: and
+    true && false == false                 T && F == F
     
 * No "truthy" or "falsy", ie no other symbols have boolean value.
 
@@ -174,7 +179,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ASSIGNMENT    →  DEC | (ID ':=:' ID)              
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
-    LOOP          →  '8:' RANGE BLOCK
+    LOOP          →  '8:' (RANGE)? BLOCK
     PROCCALL      →  (ID '('ARGS')') | ANONFUN
     BOOL          →  'T' | 'F'   
     ARRAY         →  '[' EXP* (',' EXP)* ']'
@@ -184,17 +189,17 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     BLOCK         →  '{' STMT ('!!')? '}'
                   |  '{' (STMT BR)+ ('!!')? '}'
-    EXP           →  EXP1 ('|' EXP1)*
-    EXP1          →  EXP2 ('&' EXP2)*
+    EXP           →  EXP1 (MULOP EXP1)*
+    EXP1          →  EXP2 (ADDOP EXP2)*
     EXP2          →  EXP3 (RELOP EXP3)?
-    EXP3          →  EXP4 (MULOP EXP4)*
-    EXP4          →  EXP6 (ADDOP EXP6)*
+    EXP3          →  EXP6 (LOGOP EXP6)*
     EXP6          →  EXP7 ('[' EXP (':' EXP)? ']')?
     EXP7          →  EXP8 ('.' ID)?
-    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL
+    EXP8          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | BOOL | ARREF
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
+    LOGOP         →  '||' | '&&' 
     REGEX         → ...leaving this for the jazzy one
     
 Our Microsyntax:
@@ -209,8 +214,6 @@ Our Microsyntax:
     
 Open Questions
 * How does spacing matter in EBNF?
-* Operator Precedence
-* And-Or Logic
 * Objects
 * Regexes
 * Generators
