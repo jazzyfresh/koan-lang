@@ -3,7 +3,10 @@ koan-lang
 
 "Relying on words to lead you to the truth is like relying on an incomplete formal system to lead you to the truth."
 
-"Zen *koans* are a central part of Zen study, verbal though they are. Koans are supposed to be "triggers" which, though they do not contain enough information in themselves to impart enlightenment, may possibly be sufficient to unlock the mechanisms inside one's mind that lead to enlightenment. But in general, the Zen attitude is that words and truth are incompatible, or at least that no words can capture truth." 
+"Zen *koans* are a central part of Zen study, verbal though they are. Koans are supposed to be "triggers" which, though 
+they do not contain enough information in themselves to impart enlightenment, may possibly be sufficient to unlock the 
+mechanisms inside one's mind that lead to enlightenment. But in general, the Zen attitude is that words and truth are 
+incompatible, or at least that no words can capture truth." 
 
 – Douglas Hofstadter
 
@@ -13,8 +16,8 @@ The general idea is that our language has **no words**, but still is a koan in i
 
     // Java                                c: koan
     if (x%5 == 0) {                        ??: x%5 == 0 ? x += 2
-        x += 2;                              : x%6 == 0 ? x -= 3;
-    } else if (x%6 == 0) {                     ??: x == 0 ? y = 4 ??
+        x += 2;                              : x%6 == 0 ? { x -= 3;
+    } else if (x%6 == 0) {                     ??: x == 0 ? y := 4 ??}
         x -= 3;                              : x *= x ??
         if (x == 0) {
             y = 4;                         c: koan is shorter, faster,
@@ -44,7 +47,7 @@ this kind of thing wouldn't work: `_x := 5`).
 
     x! := 5
     
-**Assignment** is intialization... Ask Dr. Toal    
+**Assignment** occurs concurrently with initialization
     
 **Swapping** is utilizes a symmmetric assignment `:=:`
 
@@ -58,7 +61,7 @@ this kind of thing wouldn't work: `_x := 5`).
 Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 
     danny-regex := /danny/
-    danny-name : "dannyboy"
+    danny-name := "dannyboy"
     danny-regex ~= danny-name      c: returns true
 
     
@@ -70,14 +73,17 @@ Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
     
 **Boolean Expressions** use symbolic logic and the familiar symbols for logical operations 
 
-    //Java                                 c: koan
-    true                                   T
-    false                                  F
+    //Java                                        c: koan
+    true                                          T
+    false                                         F
     
-    //or                                   c: or
-    true || false == true                  T || F == T
-    //and                                  c: and
-    true && false == false                 T && F == F
+    // or                                         c: or
+    // the following evaluates as true            c: the following evaluates as true
+    (true || false)                               (T || F)
+
+    // and                                        c: and
+    // the following evaluates as false           c: the following evaluates as false
+    (true && false)                               (T && F)
     
 * No "truthy" or "falsy", ie no other symbols have boolean value.
 
@@ -91,12 +97,12 @@ Are delimited by the familiar square brackets and use integers or Ranges as indi
     a[1...3]   c: [1,2], last element of range exclusive
     a[1...]    c: [1,2,3,4], from index 1 until the end
     a[1..1]    c: [1]
-    a[1...1]   c: syntax error
+    a[1...1]   c: Range syntax error
     
-Arrays are dynamic, like in Python or Ruby, and you can append to an array using `<<`
+Arrays are dynamic, like in Python or Ruby, and you can append to an array using `:<`
 
     a := []
-    a << "hello"
+    a :< "hello"
     p: a[0]           c: prints "hello"
 
 ###Iteration
@@ -106,7 +112,7 @@ Instead, blocks of code iterate over range objects, `0...10`, and loops are deno
 (bc 8 is a sideways infinity).
 
     // Java                                c: koan
-    for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] = i}
+    for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] := i}
         a[i] = i; 
     }
 
@@ -127,7 +133,7 @@ can iterate over.
 you must use break statements, which are written as two bangs, `!!`.
 
     // Java                                c: koan
-    while (s != null) {                    8: {s = f.readLine();
+    while (s != null) {                    8: {s := f.readLine();
         s = f.readLine();                      ??: s == {} ?!!??}
     }                                      c: null is written as null set
 
@@ -177,7 +183,7 @@ Objects are prototype-based, like JavaScript
 
     Point := { x : 0,
                y : 0,
-               plot : f: (x,y) -> { Graph.draw(x,y) } }
+               plot : f: (x,y) -> Graph.draw(x,y) } }
              
 
 Some general things:
