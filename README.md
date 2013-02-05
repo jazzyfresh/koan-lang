@@ -199,7 +199,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARREF        →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        →  
+    OBJECT        → 
     HASH          → '#:{' (ID '->' EXP) (',' ID '->' EXP)* '}'
     ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
