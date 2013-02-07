@@ -107,7 +107,7 @@ Arrays are dynamic, like in Python or Ruby, and you can append to an array using
 
 ###Iteration
 
-Koan has no traditional for-loops.  
+Koan has no traditional for-loops.
 Instead, blocks of code iterate over range objects, `0...10`, and loops are denoted by an `8` sign 
 (bc 8 is a sideways infinity).
 
@@ -212,24 +212,19 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
                   |  CONDITIONAL
                   |  LOOP
                   |  PROCCALL
-
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
     VARDEC        →  ID (',' ID)* ':=' EXP (',' EXP)*
                   |  OBJECT
     CONSTDEC      →  ID '!' (',' ID'!')* ':=' EXP (',' EXP)*
     PROCDEC       →  ID ':= f: (' PARAMS ') ->' BLOCK
     FUNDEC        →  ID ':= f: (' PARAMS ') ->' BLOCK
-
     PARAMS        →  () | ( )*
                   |  ID (',' ID)*
-
     ASSIGNMENT    →  DEC | (ID ':=:' ID)
-
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' (RANGE)? BLOCK
     PROCCALL      →  (ID '('ARGS')') | ANONFUN
-
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
@@ -239,21 +234,19 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
     BLOCK         →  '{' STMT ('!!')? '}'
                   |  '{' (STMT BR)+ ('!!')? '}'
-
     EXP           →  EXP1 ('||' EXP1)*
     EXP1          →  EXP2 ('&&' EXP2)* 
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
     EXP4          →  EXP5 (ADDOP EXP5)*
     EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF
-
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
-
     REGEX         → ID ':=' '/' .* '/'
     
 Our Microsyntax:
+
     LIT           →  BOOL | NUMLIT | STRLIT
     BR            →  NEWLINE | ';'
     COMMENT       →  'c:'  ( )*   NEWLINE
