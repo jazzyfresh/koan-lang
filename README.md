@@ -33,26 +33,27 @@ The general idea is that our language has **no words**, but still is a koan in i
 
 ###Variables  
 Variable declaration, like Python and Ruby, occurs concurrently with intialization
+koan is statically typed. We have three types. `#` is for any number, `$` for any string, `^` for booleans.
 
-    x := 5
+     # x := 5
     
 Because of koan's syntax for anonymous functions (you'll see later), variable names cannot begin with underscores (i.e.
 this kind of thing wouldn't work: `_x := 5`).
 
 **Parallel Declaration** is allowed, seperating the components of both sides of the declaration by commas
 
-    x, y := 5, 3
+    # x, # y := 5, 3
     
 **Constants** (compile time error if you try to update a constant) are variables followed by the bang `!`
 
-    x! := 5
+    # x! := 5
     
 **Assignment** occurs concurrently with initialization
     
 **Swapping** is utilizes a symmmetric assignment `:=:`
 
-    x := 5
-    y := 3
+    # x := 5
+    # y := 3
     x :=: y
     c: x is now 3, y is now 5
     
@@ -61,7 +62,7 @@ this kind of thing wouldn't work: `_x := 5`).
 Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 
     danny-regex := /danny/
-    danny-name := "dannyboy"
+    $ danny-name := "dannyboy"
     danny-regex ~= danny-name      c: returns true
 
     
@@ -128,7 +129,7 @@ Instead, blocks of code iterate over range objects, `0...10`, and loops are deno
 **For-Each** essentially operates as a for-loop, but has a list where the range would go
 
     // Java                                c: koan
-    int result = 0;                        result := 0
+    int result = 0;                        # result := 0
     int [] a = {1,2,3,4,5};                a := [1,2,3,4,5]
     for (int x : a) {                      8: a |x| result += x
         result += x;
@@ -172,7 +173,7 @@ function is a procedure.
     
     c: koan
     gcd := f: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
-    z = gcd(37,73) c: z == 1
+    # z = gcd(37,73) c: z == 1
     
     c: procedure example
     fourchange := f: (x) -> {x := 4; !!}
@@ -189,8 +190,8 @@ Koan also allows **anonymous functions**
 
 Objects are prototype-based, like JavaScript
 
-    Point := { x : 0,
-               y : 0,
+    Point := { # x : 0,
+               # y : 0,
                plot : f: (x,y) -> Graph.draw(x,y)  }
              
 
@@ -221,7 +222,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
                   |  LOOP
                   |  PROCCALL
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
-    VARDEC        →  ID (',' ID)* ':=' EXP (',' EXP)*
+    VARDEC        →  TYPE ID (',' ID)* ':=' EXP (',' EXP)*
                   |  OBJECT
     CONSTDEC      →  ID '!' (',' ID'!')* ':=' EXP (',' EXP)*
     PROCDEC       →  ID ':= f: (' PARAMS ') ->' BLOCK
@@ -236,9 +237,9 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        → ID ':=' '{' (ID ':' EXP ',')+ '}'
-    HASH          → '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
-    ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
+    OBJECT        →  ID ':=' '{' (ID ':' EXP ',')+ '}'
+    HASH          →  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
+    ANONFUN       →  'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
     BLOCK         →  '{' STMT ('!!')? '}'
                   |  '{' (STMT BR)+ ('!!')? '}'
@@ -253,7 +254,8 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
     REGEX         →  ID ':=' '/' .* '/'
     ARGS          →  EXP5 (',' EXP5)*
-    TYPE          →  whatever types and type notation we choose
+    TYPE          →  '^' | '$' | '#' 
+    
     
 Our Microsyntax:
 
