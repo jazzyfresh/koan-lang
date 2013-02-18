@@ -107,6 +107,7 @@ Arrays are dynamic, like in Python or Ruby, and you can append to an array using
     
     
 To return the length of an array `x`, use the absolute value notation `|x|`.
+
     c: simple ceasar cipher for date, see Iteration below
     x := [6,6,1,9,4,4]
     8: 0..|x| i  x[i] += 4
