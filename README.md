@@ -125,17 +125,16 @@ Instead, blocks of code iterate over range objects, `0...10`, and loops are deno
         a[i] = i; 
     }
 
-**List Comprension** essentially operates as a for-loop, but has a list where the range would go
+**For-Each** essentially operates as a for-loop, but has a list where the range would go
 
     // Java                                c: koan
     int result = 0;                        result := 0
     int [] a = {1,2,3,4,5};                a := [1,2,3,4,5]
-    for (int x : a) {                      8: a {|x| result += x}
+    for (int x : a) {                      8: a |x| result += x
         result += x;
     }
 
-The list (when recognizing that it is in a for-loop) will implicitly return an iterator that the block 
-can iterate over.
+The list will implicitly return an iterator that the block can iterate over.
 
 
 **While-loops** are represented the same way, but without ranges or lists.  They have no condition either: 
@@ -192,7 +191,7 @@ Objects are prototype-based, like JavaScript
 
     Point := { x : 0,
                y : 0,
-               plot : f: (x,y) -> Graph.draw(x,y) } }
+               plot : f: (x,y) -> Graph.draw(x,y)  }
              
 
 Some general things:
@@ -248,11 +247,13 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
     EXP4          →  EXP5 (ADDOP EXP5)*
-    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF
+    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF | 'p:'
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
-    REGEX         → ID ':=' '/' .* '/'
+    REGEX         →  ID ':=' '/' .* '/'
+    ARGS          →  EXP5 (',' EXP5)*
+    TYPE          →  whatever types and type notation we choose
     
 Our Microsyntax:
 
@@ -262,7 +263,7 @@ Our Microsyntax:
     ID            →  [a-Z]+ ([-_a-Z0-9])*
     NUMLIT        →  [0-9]+ ('.' [0-9]*)?
     STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
-    ARGS          →  EXP5 (',' EXP5)*
+    
     
     
 
