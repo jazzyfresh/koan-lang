@@ -143,10 +143,10 @@ You can **print** to standard out via 'p':
     // Java                                c: koan
     System.out.println("Hey world");       p: "Hey world\n"
     
-**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `->`. You can access its elements like arrays.
+**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `=>`. You can access its elements like arrays.
 
     c: koan
-    my-map := #:{a->3, b->4}
+    my-map := #:{a=>3, b=>4}
     p: my-map[b]     c: prints 4
 
 **Functions** are denoted by the `f`: symbol.
@@ -229,7 +229,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
     OBJECT        → ID ':=' '{' (ID ':' EXP ',')+ '}'
-    HASH          → '#:{' (ID '->' EXP) (',' ID '->' EXP)* '}'
+    HASH          → '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
     ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
     BLOCK         →  '{' STMT ('!!')? '}'
