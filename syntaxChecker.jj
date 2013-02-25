@@ -36,7 +36,7 @@ void PARAMS(): {} { () | ( )* |  ID() ("," ID())* }
 void ASSIGNMENT(): {} { DEC() | (ID() ":=:" ID()) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void CONDITIONAL(): {} { "??:" EXP() "?" STMT() BR() (CONDITIONAL())* (":" EXP() "?" STMT() BR() (CONDITIONAL())*)*  BR() (":" STMT() )? "??" }
-void LOOP(): {} { "8:" (RANGE())? BLOCK() }
+void LOOP(): {} { "8:" (RANGE())? STMT() }
 void PROCCALL(): {} { ( ID() "(" ARGS() ")" ) | ANONFUN() }
 void BLOCK(): {} { "{" STMT() ("!!")? "}" | "{" (STMT() BR())+ ("!!")? "}" }
 
@@ -45,7 +45,7 @@ void EXP1(): {} { EXP2() ("&&" EXP2())* }
 void EXP2(): {} { EXP3() (RELOP() EXP3())? }
 void EXP3(): {} { EXP4() (MULOP() EXP4())* }
 void EXP4(): {} { EXP5() (ADDOP() EXP5())* }
-void EXP5(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() }
+void EXP5(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() | "p:" }
 
 void RELOP(): {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void MULOP(): {} { "*" | "/" | "%" | "**" }
@@ -70,7 +70,7 @@ void STRLIT(): {} { "\""  ( NUMLIT() | [a-Z])+  "\"" }
 
 void COMMENT(): {} { "c:"  ( )*   "\n" }
 void BR(): {} { "\n" | ";" }
-void HASH(): {} { "#:{" (ID() "->" EXP()) ("," ID() "->" EXP())* "}" }
+void HASH(): {} { "#:{" (ID() "=>" EXP()) ("," ID() "=>" EXP())* "}" }
 
 
 

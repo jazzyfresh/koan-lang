@@ -33,26 +33,27 @@ The general idea is that our language has **no words**, but still is a koan in i
 
 ###Variables  
 Variable declaration, like Python and Ruby, occurs concurrently with intialization
+koan is statically typed. We have three types. `#` is for any number, `$` for any string, `^` for booleans.
 
-    x := 5
+     # x := 5
     
 Because of koan's syntax for anonymous functions (you'll see later), variable names cannot begin with underscores (i.e.
 this kind of thing wouldn't work: `_x := 5`).
 
 **Parallel Declaration** is allowed, seperating the components of both sides of the declaration by commas
 
-    x, y := 5, 3
+    # x, # y := 5, 3
     
 **Constants** (compile time error if you try to update a constant) are variables followed by the bang `!`
 
-    x! := 5
+    # x! := 5
     
 **Assignment** occurs concurrently with initialization
     
 **Swapping** is utilizes a symmmetric assignment `:=:`
 
-    x := 5
-    y := 3
+    # x := 5
+    # y := 3
     x :=: y
     c: x is now 3, y is now 5
     
@@ -61,7 +62,7 @@ this kind of thing wouldn't work: `_x := 5`).
 Regexes are just like Ruby's, but instead of `.match`, you only use `~=`.
 
     danny-regex := /danny/
-    danny-name := "dannyboy"
+    $ danny-name := "dannyboy"
     danny-regex ~= danny-name      c: returns true
 
     
@@ -104,6 +105,15 @@ Arrays are dynamic, like in Python or Ruby, and you can append to an array using
     a := []
     a :< "hello"
     p: a[0]           c: prints "hello"
+    
+    
+To return the length of an array `x`, use the absolute value notation `|x|`.
+
+    c: simple ceasar cipher for date, see Iteration below
+    x := [6,6,1,9,4,4]
+    8: 0..|x| i  x[i] += 4
+       
+        
 
 ###Iteration
 
@@ -112,30 +122,29 @@ Instead, blocks of code iterate over range objects, `0...10`, and loops are deno
 (bc 8 is a sideways infinity).
 
     // Java                                c: koan
-    for (int i = 0; i < 10; i++) {         8: 0...10 {|i| a[i] := i}
+    for (int i = 0; i < 10; i++) {         8: 0...10 |i| a[i] := i
         a[i] = i; 
     }
 
-**List Comprension** essentially operates as a for-loop, but has a list where the range would go
+**For-Each** essentially operates as a for-loop, but has a list where the range would go
 
     // Java                                c: koan
-    int result = 0;                        result := 0
+    int result = 0;                        # result := 0
     int [] a = {1,2,3,4,5};                a := [1,2,3,4,5]
-    for (int x : a) {                      8: a {|x| result += x}
+    for (int x : a) {                      8: a |x| result += x
         result += x;
     }
 
-The list (when recognizing that it is in a for-loop) will implicitly return an iterator that the block 
-can iterate over.
+The list will implicitly return an iterator that the block can iterate over.
 
 
 **While-loops** are represented the same way, but without ranges or lists.  They have no condition either: 
 you must use break statements, which are written as two bangs, `!!`.
 
     // Java                                c: koan
-    while (s != null) {                    8: {s := f.readLine();
-        s = f.readLine();                      ??: s == {} ?!!??}
-    }                                      c: null is written as null set
+    while (s != null) {                    8: s := f.readLine();
+        s = f.readLine();                      ??: s == {} ?!!??
+    }                                      c: null is written with empty brackets, the empty set
 
 
 You can **print** to standard out via 'p':
@@ -143,10 +152,10 @@ You can **print** to standard out via 'p':
     // Java                                c: koan
     System.out.println("Hey world");       p: "Hey world\n"
     
-**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `->`. You can access its elements like arrays.
+**Hash-maps** are denoted by `#:`.  Keys are mapped to values with `=>`. You can access its elements like arrays.
 
     c: koan
-    my-map := #:{a->3, b->4}
+    my-map := #:{a=>3, b=>4}
     p: my-map[b]     c: prints 4
 
 **Functions** are denoted by the `f`: symbol.
@@ -164,7 +173,7 @@ function is a procedure.
     
     c: koan
     gcd := f: (x,y) -> {??: x%y == 0 ? x : gcd(y, x%y)??}
-    z = gcd(37,73) c: z == 1
+    # z = gcd(37,73) c: z == 1
     
     c: procedure example
     fourchange := f: (x) -> {x := 4; !!}
@@ -181,9 +190,9 @@ Koan also allows **anonymous functions**
 
 Objects are prototype-based, like JavaScript
 
-    Point := { x : 0,
-               y : 0,
-               plot : f: (x,y) -> Graph.draw(x,y) } }
+    Point := { # x : 0,
+               # y : 0,
+               plot : f: (x,y) -> Graph.draw(x,y)  }
              
 
 Some general things:
@@ -213,7 +222,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
                   |  LOOP
                   |  PROCCALL
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
-    VARDEC        →  ID (',' ID)* ':=' EXP (',' EXP)*
+    VARDEC        →  TYPE ID (',' ID)* ':=' EXP (',' EXP)*
                   |  OBJECT
     CONSTDEC      →  ID '!' (',' ID'!')* ':=' EXP (',' EXP)*
     PROCDEC       →  ID ':= f: (' PARAMS ') ->' BLOCK
@@ -223,14 +232,14 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ASSIGNMENT    →  DEC | (ID ':=:' ID)
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
-    LOOP          →  '8:' (RANGE)? BLOCK
+    LOOP          →  '8:' (RANGE)? STMT
     PROCCALL      →  (ID '('ARGS')') | ANONFUN
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        → ID ':=' '{' (ID ':' EXP ',')+ '}'
-    HASH          → '#:{' (ID '->' EXP) (',' ID '->' EXP)* '}'
-    ANONFUN       → 'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
+    OBJECT        →  ID ':=' '{' (ID ':' EXP ',')+ '}'
+    HASH          →  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
+    ANONFUN       →  'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
     BLOCK         →  '{' STMT ('!!')? '}'
                   |  '{' (STMT BR)+ ('!!')? '}'
@@ -239,11 +248,14 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
     EXP4          →  EXP5 (ADDOP EXP5)*
-    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF
+    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF | 'p:'
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
-    REGEX         → ID ':=' '/' .* '/'
+    REGEX         →  ID ':=' '/' .* '/'
+    ARGS          →  EXP5 (',' EXP5)*
+    TYPE          →  '^' | '$' | '#' 
+    
     
 Our Microsyntax:
 
@@ -253,10 +265,7 @@ Our Microsyntax:
     ID            →  [a-Z]+ ([-_a-Z0-9])*
     NUMLIT        →  [0-9]+ ('.' [0-9]*)?
     STRLIT        →  '"'  ( NUMLIT | [a-Z])+  '"'
-    ARGS          →  EXP5 (',' EXP5)*
     
     
-Open Questions
-* How does spacing matter in EBNF?
-* Generators
+    
 
