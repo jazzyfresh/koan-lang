@@ -222,14 +222,12 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
                   |  LOOP
                   |  PROCCALL
     DEC           →  VARDEC | CONSTDEC | PROCDEC | FUNDEC
-    VARDEC        →  TYPE ID (',' ID)* ':=' EXP (',' EXP)*
-                  |  OBJECT
-    CONSTDEC      →  ID '!' (',' ID'!')* ':=' EXP (',' EXP)*
+    VARDEC        →  TYPE ID ':=' EXP 
+    CONSTDEC      →  TYPE ID '!' ':=' EXP
     PROCDEC       →  ID ':= f: (' PARAMS ') ->' BLOCK
-    FUNDEC        →  ID ':= f: (' PARAMS ') ->' BLOCK
-    PARAMS        →  () | ( )*
-                  |  ID (',' ID)*
-    ASSIGNMENT    →  DEC | (ID ':=:' ID)
+    FUNDEC        →   ID ':= f: (' PARAMS ') ->' BLOCK
+    PARAMS        →  ID (',' ID)*
+    ASSIGNMENT    →  ID ':=" EXP | (ID ':=:' ID)
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' (RANGE)? STMT
@@ -237,7 +235,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        →  ID ':=' '{' (ID ':' EXP ',')+ '}'
+    OBJECT        →  '{' (ID ':' EXP ',')+ '}'
     HASH          →  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
     ANONFUN       →  'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
@@ -253,13 +251,14 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
     REGEX         →  ID ':=' '/' .* '/'
-    ARGS          →  EXP5 (',' EXP5)*
+    ARGS          →  EXP (',' EXP)*
     TYPE          →  '^' | '$' | '#' 
+    LIT           →  BOOL | NUMLIT | STRLIT
+
     
     
 Our Microsyntax:
 
-    LIT           →  BOOL | NUMLIT | STRLIT
     BR            →  NEWLINE | ';'
     COMMENT       →  'c:'  ( )*   NEWLINE
     ID            →  [a-Z]+ ([-_a-Z0-9])*
