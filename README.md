@@ -223,22 +223,21 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' (RANGE)? STMT
-    PROCCALL      →  (ID '('ARGS')') | ANONFUN
+    PROCCALL      →  (ID '('ARGS')') | ANONFUN | ALTANON
+    ALTANON       →  '{' STMT+ '}' 
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        →  '{' (ID ':' EXP ',')+ '}'
+    OBJECT        →  '{' ID ':' EXP (','ID ':' EXP)* '}'
     HASH          →  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
     ANONFUN       →  'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
-    BLOCK         →  '{' STMT ('!!')? '}'
-                  |  '{' (STMT BR)+ ('!!')? '}'
     EXP           →  EXP1 ('||' EXP1)*
     EXP1          →  EXP2 ('&&' EXP2)* 
     EXP2          →  EXP3 (RELOP EXP3)?
     EXP3          →  EXP4 (MULOP EXP4)*
     EXP4          →  EXP5 (ADDOP EXP5)*
-    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF | 'p:'
+    EXP5          →  LIT | ID | ARRAY | OBJECT | ANONFUN | PROCCALL | HASH | ARRAYREF | 'p:' EXP
     MULOP         →  '*' | '/' | '%' | '**'
     ADDOP         →  '+' | '-'
     RELOP         →  '<' | '<=' | '==' | '!=' | '>=' | '>' 
