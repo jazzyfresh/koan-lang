@@ -243,7 +243,7 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     REGEX         →  ID ':=' '/' .* '/'
     ARGS          →  EXP (',' EXP)*
     TYPE          →  '^' | '$' | '#' 
-    LIT           →  BOOL | CHARLIT | STRING | INTLIT | NUMLIT
+    LIT           →  BOOL | CHARLIT | STRING | 
 
     
     
