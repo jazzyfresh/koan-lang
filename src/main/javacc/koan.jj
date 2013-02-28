@@ -15,7 +15,6 @@ public class SyntaxChecker {
 PARSER_END(SyntaxChecker)
 
 SKIP: { " " | "\t" | "\r" }
-BR: { "\n" | ";" }
 TOKEN: {
     "(" | ")" | "+" | "*" | ":="
     | <NUM: (["0"-"9"])+> | <ID: (["a"-"z"] | ["A"-"Z"])+>
@@ -32,7 +31,7 @@ void VARDEC(): {} { ID() ("," ID())* ":=" EXP() ("," EXP())*
 void CONSTDEC(): {} { ID() "!" ("," ID()"!")* ":=" EXP() ("," EXP())* }
 void PROCDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
 void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
-void PARAMS(): {} { () | ( )* |  ID() ("," ID())* }
+void PARAMS(): {} { [] | ( )* |  ID() ("," ID())* }
 void ASSIGNMENT(): {} { DEC() | (ID() ":=" EXP()) | (ID() ":=:" ID()) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void CONDITIONAL(): {} { "??:" EXP() "?" STMT() BR() (CONDITIONAL())* (":" EXP() "?" STMT() BR() (CONDITIONAL())*)*  BR() (":" STMT() )? "??" }
