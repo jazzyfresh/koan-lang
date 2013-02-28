@@ -33,7 +33,7 @@ void CONSTDEC(): {} { ID() "!" ("," ID()"!")* ":=" EXP() ("," EXP())* }
 void PROCDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
 void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
 void PARAMS(): {} { () | ( )* |  ID() ("," ID())* }
-void ASSIGNMENT(): {} { DEC() | (ID() ":=:" ID()) }
+void ASSIGNMENT(): {} { DEC() | (ID() ":=" EXP()) | (ID() ":=:" ID()) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void CONDITIONAL(): {} { "??:" EXP() "?" STMT() BR() (CONDITIONAL())* (":" EXP() "?" STMT() BR() (CONDITIONAL())*)*  BR() (":" STMT() )? "??" }
 void LOOP(): {} { "8:" (RANGE())? STMT() }
@@ -63,7 +63,6 @@ void ARGS(): {} { EXP5() ("," EXP5())* }
 void RANGE(): {} { [0-9]+ ( "..." | ".." ) [0-9]+ }
 
 void ID(): {} { [a-Z]+ ([-_a-Z0-9])* }
-
 void BOOL(): {} { "T" | "F" }
 void NUMLIT(): {} { [0-9]+ ("." [0-9]*)? }
 void STRLIT(): {} { "\""  ( NUMLIT() | [a-Z])+  "\"" }
