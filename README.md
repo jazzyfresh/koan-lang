@@ -39,10 +39,6 @@ koan is statically typed. We have three types. `#` is for any number, `$` for an
     
 Because of koan's syntax for anonymous functions (you'll see later), variable names cannot begin with underscores (i.e.
 this kind of thing wouldn't work: `_x := 5`).
-
-**Parallel Declaration** is allowed, seperating the components of both sides of the declaration by commas
-
-    # x, # y := 5, 3
     
 **Constants** (compile time error if you try to update a constant) are variables followed by the bang `!`
 
@@ -223,15 +219,16 @@ The tokens `NUMLIT`, `STRLIT`, `ID`, and `BR` are defined in the microsyntax bel
     PRINTSTMT     →  'p:' EXP
     CONDITIONAL   →  '??:' EXP '?' STMT BR (CONDITIONAL)* (':' EXP '?' STMT BR (CONDITIONAL)*)*  BR (':' STMT )? '??'
     LOOP          →  '8:' (RANGE)? STMT
-    PROCCALL      →  (ID '('ARGS')') | ANONFUN | ALTANON
-    ALTANON       →  '{' STMT+ '}' 
+    PROCCALL      →  (ID '('ARGS')') | ANONFUN
     BOOL          →  'T' | 'F'
     ARRAY         →  '[' EXP* (',' EXP)* ']'
     ARRAYREF      →  ID '[' '.' | [0-9]+ | RANGE ']'
-    OBJECT        →  '{' ID ':' EXP (','ID ':' EXP)* '}'
+    OBJECT        →  '{' (ID ':' EXP ',')+ '}'
     HASH          →  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
     ANONFUN       →  'f:{' (EXP ('_'('_' | [0-9]+) EXP)*)* '}'
     RANGE         →  [0-9]+ ('..' | '...') [0-9]+
+    BLOCK         →  '{' STMT ('!!')? '}'
+                  |  '{' (STMT BR)+ ('!!')? '}'
     EXP           →  EXP1 ('||' EXP1)*
     EXP1          →  EXP2 ('&&' EXP2)* 
     EXP2          →  EXP3 (RELOP EXP3)?
