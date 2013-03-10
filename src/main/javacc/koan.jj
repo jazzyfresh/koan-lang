@@ -90,8 +90,6 @@ void RANGE(): {} {
 
 void ID(): {} { (<CHARLIT>)+ ( "-" | "_" | <CHARLIT> | <INTLIT> )* }
 
-
-void COMMENT(): {} { "c:"  (<STRING>)*   "\n" }
 void HASH(): {} { "#:{" ( ID() "=>" EXP() ) ( "," ID() "=>" EXP() )* "}" }
 
 
