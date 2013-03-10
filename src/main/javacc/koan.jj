@@ -14,7 +14,11 @@ public class SyntaxChecker {
 
 PARSER_END(SyntaxChecker)
 
-SKIP: { " " | "\t" | "\r" }
+SKIP: { 
+    <(" " | "\t" | "\r")+> 
+    | <"c:" (~["\n","\r"])*>
+}
+
 TOKEN: {
     "(" | ")" | "+" | "*" | ":="
     | <INTLIT: (["0"-"9"])+> 
@@ -34,7 +38,7 @@ void VARDEC(): {} { ID() ("," ID())* ":=" EXP() ("," EXP())*
 void CONSTDEC(): {} { ID() "!" ("," ID()"!")* ":=" EXP() ("," EXP())* }
 void PROCDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
 void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
-void PARAMS(): {} { "" | (" ")* |  ID() ("," ID())* }
+void PARAMS(): {} { "" |  ID() ("," ID())* }
 void ASSIGNMENT(): {} { DEC() | (ID() ":=" EXP()) | (ID() ":=:" ID()) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void CONDITIONAL(): {} { "??:" EXP() "?" (STMT() | ANONFUN())
@@ -49,9 +53,9 @@ void EXP(): {} { EXP1() ("||" EXP1())* }
 void EXP1(): {} { EXP2() ("&&" EXP2())* }
 void EXP2(): {} { EXP3() (RELOP() EXP3())? }
 void EXP3(): {} { EXP4() (EXPNOP() EXP4())?}
-void EXP3(): {} { EXP4() (MULOP() EXP4())* }
-void EXP4(): {} { EXP5() (ADDOP() EXP5())* }
-void EXP5(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() | "p:" }
+void EXP4(): {} { EXP5() (MULOP() EXP4())* }
+void EXP5(): {} { EXP6() (ADDOP() EXP5())* }
+void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() | "p:" }
 
 void RELOP(): {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void EXPNOP(): {} {"**"}
@@ -69,7 +73,7 @@ void REGEX(): {} { ID() ":=" "/" (<STRING>)* "/" }
 void ARGS(): {} { EXP5() ("," EXP5())* }
 void RANGE(): {} { (<INTLIT>)+ ( "..." | ".." ) (<INTLIT>)+ }
 
-void ID(): {} { (<CHARLIT>)+ (["-" "_" <CHARLIT> <INTLIT>])* }
+void ID(): {} { (<CHARLIT>)+ ("-" | "_" | <CHARLIT> | <INTLIT>)* }
 
 
 void COMMENT(): {} { "c:"  (<STRING>)*   "\n" }
