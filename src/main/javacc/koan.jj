@@ -64,7 +64,7 @@ void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
 void EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
 void EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
 void EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
-void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() | PRINTSTMT() }
+void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | HASH() | ARRAYREF() | PRINTSTMT() }
 
 void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void EXPNOP(): {} { "**" }
@@ -76,8 +76,7 @@ void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { ID() "[" ( <INTLIT> | RANGE() ) "]" }
 void OBJECT(): {} { "{" ( ID() ":" EXP() "," )+ "}" }
 void ANONFUN(): {} {
-      "f:{" ( EXP() ( "_" ( "_" | <INTLIT> ) EXP() )* )* "}"
-    | "{" STMT() <BR> "}"
+      ( "f:" | PARAMS() )? "{" ( STMT() <BR> )+ "}"
 }
 
 void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
