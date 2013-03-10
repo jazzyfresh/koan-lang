@@ -68,7 +68,7 @@ void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | HASH() | ARRA
 
 void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void EXPNOP(): {} { "**" }
-void MULOP():  {} { "*" | "/" | "%" | "**" }
+void MULOP():  {} { "*" | "/" | "%"}
 void ADDOP():  {} { "+" | "-" }
 
 void LIT(): {} { BOOL() | <INTLIT> | <STRING> }
