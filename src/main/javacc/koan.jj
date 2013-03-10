@@ -20,69 +20,85 @@ SKIP: {
 }
 
 TOKEN: {
-    "(" | ")" | "+" | "*" | ":="
+      "(" | ")" | "+" | "*" | ":="
     | <INTLIT: (["0"-"9"])+> 
     | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
     | <CHARLIT: (["A"-"Z", "a"-"z"])>
     | <BR: ("\n" | ";")>
 }
 
-void SCRIPT(): {} { (STMT() <BR>)+ }
-void STMT(): {} { DEC() | ASSIGNMENT() | PRINTSTMT() | CONDITIONAL()
-                   | LOOP() | PROCCALL() | EXP() }
+void SCRIPT(): {} { ( STMT() <BR> )+ }
+void STMT(): {} {
+      DEC()
+    | ASSIGNMENT()
+    | PRINTSTMT()
+    | IFSTMT()
+    | LOOP()
+    | PROCCALL()
+    | EXP()
+}
 
 void DEC(): {} { VARDEC() | CONSTDEC() | PROCDEC() | FUNDEC() }
 
-void VARDEC(): {} { ID() ("," ID())* ":=" EXP() ("," EXP())*
-              |  OBJECT()}
-void CONSTDEC(): {} { ID() "!" ("," ID()"!")* ":=" EXP() ("," EXP())* }
+void VARDEC(): {} {
+    ID() ":=" EXP()
+}
+void CONSTDEC(): {} { ID() "!" ( "," ID() "!" )* ":=" EXP() ( "," EXP() )* }
 void PROCDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
 void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" BLOCK() }
-void PARAMS(): {} { "" |  ID() ("," ID())* }
-void ASSIGNMENT(): {} { DEC() | (ID() ":=" EXP()) | (ID() ":=:" ID()) }
+void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
+void ASSIGNMENT(): {} { DEC() | ( ID() ":=" EXP() ) | ( ID() ":=:" ID() ) }
 void PRINTSTMT(): {} { "p:" EXP() }
-void CONDITIONAL(): {} { "??:" EXP() "?" (STMT() | ANONFUN())
-                               (":" EXP() "?" (STMT() | ANONFUN()))*
-                               (":" (STMT() | ANONFUN()))? "??" }
-void LOOP(): {} { "8:" (RANGE())? STMT() }
-void PROCCALL(): {} { ( ID() "(" ARGS() ")" ) | ANONFUN() }
+void IFSTMT(): {} {
+    "??:" EXP() "?" ( STMT() | ANONFUN() )
+    ( ":" EXP() "?" ( STMT() | ANONFUN() ) )*
+    ( ":" ( STMT() | ANONFUN() ) )? "??"
+}
+void LOOP(): {} { "8:" ( RANGE() )? STMT() }
+void PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
 void BOOL(): {} { "T" | "F" }
-void BLOCK(): {} { "{" STMT() ("!!")? "}" | "{" (STMT() <BR>)+ ("!!")? "}" }
+void BLOCK(): {} { "{" STMT() ( "!!" )? "}" | "{" ( STMT() <BR> )+ ( "!!" )? "}" }
 
-void EXP(): {} { EXP1() ("||" EXP1())* }
-void EXP1(): {} { EXP2() ("&&" EXP2())* }
-void EXP2(): {} { EXP3() (RELOP() EXP3())? }
-void EXP3(): {} { EXP4() (EXPNOP() EXP4())?}
-void EXP4(): {} { EXP5() (MULOP() EXP4())* }
-void EXP5(): {} { EXP6() (ADDOP() EXP5())* }
-void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() | "p:" }
+void EXP():  {} { EXP1() ( "||" EXP1() )* }
+void EXP1(): {} { EXP2() ( "&&" EXP2() )* }
+void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
+void EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
+void EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
+void EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
+void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | ANONFUN() | PROCCALL() | HASH() | ARRAYREF() | PRINTSTMT() }
 
-void RELOP(): {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
-void EXPNOP(): {} {"**"}
-void MULOP(): {} { "*" | "/" | "%" | "**" }
-void ADDOP(): {} { "+" | "-" }
+void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
+void EXPNOP(): {} { "**" }
+void MULOP():  {} { "*" | "/" | "%" | "**" }
+void ADDOP():  {} { "+" | "-" }
 
 void LIT(): {} { BOOL() | <INTLIT> | <STRING> }
-void ARRAY(): {} { "[" (EXP())* ("," EXP())* "]" }
-void ARRAYREF(): {} { ID() "[" "." | (<INTLIT>)+ ((".." | "...") (<INTLIT>)+)? "]" }
-void OBJECT(): {} { ID() ":=" "{" ( ID() ":" EXP() "," )+ "}" }
-void ANONFUN(): {} { "f:{" (EXP() ("_"("_" | (<INTLIT>)+ ) EXP() )* )* "}" }
+void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
+void ARRAYREF(): {} { ID() "[" ( <INTLIT> | RANGE() ) "]" }
+void OBJECT(): {} { "{" ( ID() ":" EXP() "," )+ "}" }
+void ANONFUN(): {} {
+    "f:{" ( EXP() ( "_" ( "_" | <INTLIT> ) EXP() )* )* "}" 
+}
 
-void REGEX(): {} { ID() ":=" "/" (<STRING>)* "/" }
+void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
 
-void ARGS(): {} { EXP5() ("," EXP5())* }
-void RANGE(): {} { (<INTLIT>)+ ( "..." | ".." ) (<INTLIT>)+ }
+void ARGS(): {} { EXP5() ( "," EXP5() )* }
+void RANGE(): {} {
+      ( "..." | ".." ) <INTLIT>
+    | <INTLIT> ( "..." | ".." )
+    | <INTLIT> ( "..." | ".." ) <INTLIT>
+}
 
-void ID(): {} { (<CHARLIT>)+ ("-" | "_" | <CHARLIT> | <INTLIT>)* }
+void ID(): {} { (<CHARLIT>)+ ( "-" | "_" | <CHARLIT> | <INTLIT> )* }
 
 
 void COMMENT(): {} { "c:"  (<STRING>)*   "\n" }
-void HASH(): {} { "#:{" (ID() "=>" EXP()) ("," ID() "=>" EXP())* "}" }
+void HASH(): {} { "#:{" ( ID() "=>" EXP() ) ( "," ID() "=>" EXP() )* "}" }
 
 
 
 
 void S(): {} { E() <EOF>                                   }
-void E(): {} { LOOKAHEAD(2) ID() ":=" E() | T() ("+" T())* }
-void T(): {} { F() ("*" F())*                              }
+void E(): {} { LOOKAHEAD(2) ID() ":=" E() | T() ( "+" T() )* }
+void T(): {} { F() ( "*" F() )*                              }
 void F(): {} { <INTLIT> | <STRING> | <CHARLIT> | <BR> | "(" E() ")"                  }
