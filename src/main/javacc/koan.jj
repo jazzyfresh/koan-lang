@@ -35,7 +35,7 @@ void STMT(): {} {
     | IFSTMT()
     | LOOP()
     | PROCCALL()
-    | EXP()
+    | EXPSTMT()
 }
 
 void DEC(): {} { VARDEC() | CONSTDEC() | PROCDEC() | FUNDEC() }
@@ -49,6 +49,7 @@ void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" ANONFUN() }
 void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 void ASSIGNMENT(): {} { DEC() | ( ID() ":=" EXP() ) | ( ID() ":=:" ID() ) }
 void PRINTSTMT(): {} { "p:" EXP() }
+void EXPSTMT(): {} { EXP() }
 void IFSTMT(): {} {
     "??:" EXP() "?" ( STMT() | ANONFUN() )
     ( ":" EXP() "?" ( STMT() | ANONFUN() ) )*
