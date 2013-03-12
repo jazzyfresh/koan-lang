@@ -51,9 +51,9 @@ void ASSIGNMENT(): {} { DEC() | ( ID() ":=" EXP() ) | ( ID() ":=:" ID() ) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void EXPSTMT(): {} { EXP() }
 void IFSTMT(): {} {
-    "??:" EXP() "?" ( STMT() | ANONFUN() )
-    ( ":" EXP() "?" ( STMT() | ANONFUN() ) )*
-    ( ":" ( STMT() | ANONFUN() ) )? "??"
+    "??:" EXP() "?" STMT()
+    ( ":" EXP() "?" STMT() )*
+    ( ":" STMT() )? "??"
 }
 void LOOP(): {} { "8:" ( RANGE() )? STMT() }
 void PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
