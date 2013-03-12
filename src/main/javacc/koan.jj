@@ -74,7 +74,7 @@ void ADDOP():  {} { "+" | "-" }
 
 void LIT(): {} { BOOL() | <INTLIT> | <STRING> }
 void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
-void ARRAYREF(): {} { ID() "[" ( <INTLIT> | RANGE() ) "]" }
+void ARRAYREF(): {} { ID() "[" ( EXP() | RANGE() ) "]" }
 void OBJECT(): {} { "{" ( ID() ":" EXP() "," )+ "}" }
 void ANONFUN(): {} {
       ( "f:" | PARAMS() )? "{" ( STMT() <BR> )+ "}"
@@ -84,9 +84,9 @@ void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
 
 void ARGS(): {} { EXP5() ( "," EXP5() )* }
 void RANGE(): {} {
-      ( "..." | ".." ) <INTLIT>
-    | <INTLIT> ( "..." | ".." )
-    | <INTLIT> ( "..." | ".." ) <INTLIT>
+      ( "..." | ".." ) EXP()
+    | EXP() ( "..." | ".." )
+    | EXP() ( "..." | ".." ) EXP()
 }
 
 void ID(): {} { (<CHARLIT>)+ ( "-" | "_" | <CHARLIT> | <INTLIT> )* }

@@ -31,11 +31,13 @@ Macrosyntax
     PROCCALL      -->  (ID '('ARGS')') | ANONFUN
     BOOL          -->  'T' | 'F'
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
-    ARRAYREF      -->  ID '[' [0-9]+ | RANGE ']'
+    ARRAYREF      -->  ID '[' EXP | RANGE ']'
     OBJECT        -->  '{' (ID ':' EXP ',')+ '}'
     HASH          -->  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
     ANONFUN       -->  ('f:' | PARAMS)? '{' (STMT BR)+  '}'
-    RANGE         -->   ('..' | '...') [0-9]+ | [0-9]+ ('..' | '...') | [0-9]+ ('..' | '...') [0-9]+
+    RANGE         -->  ('..' | '...') EXP 
+                       | EXP ('..' | '...')
+                       | EXP ('..' | '...') EXP
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
     EXP2          -->  EXP3 (RELOP EXP3)?
