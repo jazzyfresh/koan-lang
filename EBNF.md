@@ -16,7 +16,7 @@ Macrosyntax
                     |  IFSTMT
                     |  LOOP
                     |  PROCCALL
-                    |  EXP
+                    |  EXPSTMT
     DEC           -->  VARDEC | CONSTDEC | PROCDEC | FUNDEC
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' (',' ID() '!')* ':=' EXP (',' EXP)*
@@ -25,6 +25,7 @@ Macrosyntax
     PARAMS        -->  (ID (',' ID)*)*
     ASSIGNMENT    -->  DEC | ID ':=" EXP | (ID ':=:' ID)
     PRINTSTMT     -->  'p:' EXP
+    EXPSTMT       -->  EXP
     IFSTMT        -->  '??:' EXP '?' (STMT | ANONFUN ) (':' EXP '?' (STMT | ANONFUN))* (':' (STMT | ANONFUN))? '??'
     LOOP          -->  '8:' (RANGE)? STMT
     PROCCALL      -->  (ID '('ARGS')') | ANONFUN
