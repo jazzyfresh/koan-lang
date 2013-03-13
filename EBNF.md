@@ -12,6 +12,7 @@ Macrosyntax
 
     SCRIPT        -->  (STMT BR)+
     STMT          -->  DEC 
+                    |  ASSIGNMENT
                     |  PRINTSTMT
                     |  IFSTMT
                     |  LOOP
@@ -19,8 +20,8 @@ Macrosyntax
                     |  EXPSTMT
     DEC           -->  VARDEC | CONSTDEC | FUNDEC
     VARDEC        -->  TYPE ID ':=' EXP 
-    CONSTDEC      -->  TYPE ID '!' (',' ID() '!')* ':=' EXP (',' EXP)*
-    FUNDEC        -->  ID ':= f: (' PARAMS ') ->' ANONFUN
+    CONSTDEC      -->  TYPE ID '!' ':=' EXP 
+    FUNDEC        -->  ID ':=' ANONFUN
     PARAMS        -->  (ID (',' ID)*)*
     ASSIGNMENT    -->  DEC | ID ':=" EXP | (ID ':=:' ID)
     PRINTSTMT     -->  'p:' EXP

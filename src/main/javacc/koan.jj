@@ -39,13 +39,11 @@ void STMT(): {} {
 }
 
 void DEC(): {} { VARDEC() | CONSTDEC() | FUNDEC() }
-
-void VARDEC(): {} {
-    ID() ":=" EXP()
-}
-void CONSTDEC(): {} { ID() "!" ( "," ID() "!" )* ":=" EXP() ( "," EXP() )* }
-void FUNDEC(): {} { ID() ":= f: (" PARAMS() ") ->" ANONFUN() }
+void VARDEC(): {} { ID() ":=" EXP() }
+void CONSTDEC(): {} { ID() "!" ":=" EXP() }
+void FUNDEC(): {} { ID() ":=" ANONFUN() }
 void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
+
 void ASSIGNMENT(): {} { DEC() | ( ID() ":=" EXP() ) | ( ID() ":=:" ID() ) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void EXPSTMT(): {} { EXP() }
