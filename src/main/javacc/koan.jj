@@ -54,7 +54,10 @@ void IFSTMT(): {} {
     ( ":" EXP() "?" STMT() )*
     ( ":" STMT() )? "??"
 }
-void LOOP(): {} { "8:" ( RANGE() )? STMT() }
+
+void LOOP(): {} { FORLOOP() | INFINITELOOP() }
+void FORLOOP(): {} { "8:" RANGE() ( ANONFUN() | ( ID() BLOCK() ) ) }
+void INFINITELOOP(): {} { "8:" BLOCK() }
 void PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
 void BOOL(): {} { "T" | "F" }
 

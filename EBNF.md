@@ -28,7 +28,9 @@ Macrosyntax
     PRINTSTMT     -->  'p:' EXP
     EXPSTMT       -->  EXP
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??'
-    LOOP          -->  '8:' (RANGE)? STMT
+    LOOP          -->  FORLOOP | INFINITELOOP
+    FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
+    INFINITELOOP  -->  '8:' BLOCK
     PROCCALL      -->  (ID '('ARGS')') | ANONFUN
     BOOL          -->  'T' | 'F'
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
