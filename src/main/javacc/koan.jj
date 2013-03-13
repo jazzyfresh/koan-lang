@@ -42,19 +42,17 @@ void STMT(): {} {
     | PRINTSTMT()
     | IFSTMT()
     | LOOP()
-    | PROCCALL()
     | EXPSTMT()
 }
 
-void DEC(): {} { VARDEC() | CONSTDEC() | FUNDEC() }
+void DEC(): {} { VARDEC() | CONSTDEC() }
 void VARDEC(): {} { TYPE() ID() ":=" EXP() }
 void CONSTDEC(): {} { TYPE() ID() "!" ":=" EXP() }
-void FUNDEC(): {} { TYPE() ID() ":=" ANONFUN() }
 void TYPE(): {} { <NUMTYPE> | <STRTYPE> | <BOOLTYPE> | <FUNTYPE> | <NULLTYPE> }
 void RETURNTYPE(): {} { TYPE() }
 void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 
-void ASSIGNMENT(): {} { DEC() | ( ID() ":=" EXP() ) | SWAP() }
+void ASSIGNMENT(): {} { ( ID() ":=" EXP() ) | SWAP() }
 void SWAP(): {} { ( ID() ":=:" ID() ) }
 void PRINTSTMT(): {} { "p:" EXP() }
 void EXPSTMT(): {} { EXP() }
@@ -77,7 +75,7 @@ void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
 void EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
 void EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
 void EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
-void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | HASH() | ARRAYREF() | PRINTSTMT() }
+void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | HASH() | ARRAYREF() }
 
 void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void EXPNOP(): {} { "**" }
