@@ -21,7 +21,9 @@ Macrosyntax
     DEC           -->  VARDEC | CONSTDEC | FUNDEC
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' ':=' EXP 
-    FUNDEC        -->  ID ':=' ANONFUN
+    FUNDEC        -->  TYPE ID ':=' ANONFUN
+    TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
+    RETURNTYPE    -->  TYPE
     PARAMS        -->  (ID (',' ID)*)*
     ASSIGNMENT    -->  DEC | ID ':=" EXP | SWAP
     SWAP          -->  ID ':=:' ID
@@ -69,4 +71,10 @@ Microsyntax
     INTLIT        -->  [0-9]+
     STRING        -->  (CHARLIT | INTLIT) +
     CHARLIT       -->  [a-Z]
+    
+    NUMTYPE       --> '#'
+    STRTYPE       --> '$'
+    BOOLTYPE      --> '^'
+    FUNTYPE       --> 'f'
+    NULLTYPE      --> '~'
 

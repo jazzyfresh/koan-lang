@@ -22,6 +22,13 @@ SKIP: {
 TOKEN: {
     "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":="
     | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..."     
+    
+    | <NUMTYPE: "#">
+    | <STRTYPE: "$">
+    | <BOOLTYPE: "^">
+    | <FUNTYPE: "f">
+    | <NULLTYPE: "~">
+    
     | <INTLIT: (["0"-"9"])+> 
     | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
     | <CHARLIT: (["A"-"Z", "a"-"z"])>
@@ -41,8 +48,10 @@ void STMT(): {} {
 
 void DEC(): {} { VARDEC() | CONSTDEC() | FUNDEC() }
 void VARDEC(): {} { TYPE() ID() ":=" EXP() }
-void CONSTDEC(): {} { ID() "!" ":=" EXP() }
-void FUNDEC(): {} { ID() ":=" ANONFUN() }
+void CONSTDEC(): {} { TYPE() ID() "!" ":=" EXP() }
+void FUNDEC(): {} { TYPE() ID() ":=" ANONFUN() }
+void TYPE(): {} { <NUMTYPE> | <STRTYPE> | <BOOLTYPE> | <FUNTYPE> | <NULLTYPE> }
+void RETURNTYPE(): {} { TYPE() }
 void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 
 void ASSIGNMENT(): {} { DEC() | ( ID() ":=" EXP() ) | SWAP() }
