@@ -28,7 +28,7 @@ TOKEN: {
     | <STRTYPE: "$">
     | <BOOLTYPE: "^">
     | <FUNTYPE: "f">
-    | <REGEXTYPE: "%">
+    | <REGEXTYPE: "@">
     | <NULLTYPE: "~">
     
     | <INTLIT: (["0"-"9"])+> 
