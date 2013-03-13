@@ -17,10 +17,9 @@ Macrosyntax
                     |  LOOP
                     |  PROCCALL
                     |  EXPSTMT
-    DEC           -->  VARDEC | CONSTDEC | PROCDEC | FUNDEC
+    DEC           -->  VARDEC | CONSTDEC | FUNDEC
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' (',' ID() '!')* ':=' EXP (',' EXP)*
-    PROCDEC       -->  ID ':= f: (' PARAMS ') ->' ANONFUN
     FUNDEC        -->  ID ':= f: (' PARAMS ') ->' ANONFUN
     PARAMS        -->  (ID (',' ID)*)*
     ASSIGNMENT    -->  DEC | ID ':=" EXP | (ID ':=:' ID)
