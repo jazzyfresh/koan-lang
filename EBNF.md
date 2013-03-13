@@ -32,6 +32,7 @@ Macrosyntax
     FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
     INFINITELOOP  -->  '8:' BLOCK
     PROCCALL      -->  (ID '('ARGS')') | ANONFUN
+    BLOCK         -->  '{' (STMT BR)* '}'
     BOOL          -->  'T' | 'F'
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     ARRAYREF      -->  ID '[' EXP | RANGE ']'

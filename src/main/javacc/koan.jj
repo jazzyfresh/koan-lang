@@ -59,8 +59,9 @@ void LOOP(): {} { FORLOOP() | INFINITELOOP() }
 void FORLOOP(): {} { "8:" RANGE() ( ANONFUN() | ( ID() BLOCK() ) ) }
 void INFINITELOOP(): {} { "8:" BLOCK() }
 void PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
-void BOOL(): {} { "T" | "F" }
+void BLOCK(): {} { "{" (STMT() <BR>)* "}" }
 
+void BOOL(): {} { "T" | "F" }
 void EXP():  {} { EXP1() ( "||" EXP1() )* }
 void EXP1(): {} { EXP2() ( "&&" EXP2() )* }
 void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
