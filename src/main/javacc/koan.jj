@@ -21,12 +21,14 @@ SKIP: {
 
 TOKEN: {
     "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":="
-    | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..."     
+    | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:"
+    | "8:" | "->"    
     
     | <NUMTYPE: "#">
     | <STRTYPE: "$">
     | <BOOLTYPE: "^">
     | <FUNTYPE: "f">
+    | <REGEXTYPE: "%">
     | <NULLTYPE: "~">
     
     | <INTLIT: (["0"-"9"])+> 
@@ -48,7 +50,14 @@ void STMT(): {} {
 void DEC(): {} { VARDEC() | CONSTDEC() }
 void VARDEC(): {} { TYPE() ID() ":=" EXP() }
 void CONSTDEC(): {} { TYPE() ID() "!" ":=" EXP() }
-void TYPE(): {} { <NUMTYPE> | <STRTYPE> | <BOOLTYPE> | <FUNTYPE> | <NULLTYPE> }
+void TYPE(): {} { 
+    <NUMTYPE> 
+    | <STRTYPE> 
+    | <BOOLTYPE> 
+    | <FUNTYPE> 
+    | <REGEXTYPE>
+    | <NULLTYPE> 
+}
 void RETURNTYPE(): {} { TYPE() }
 void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 
