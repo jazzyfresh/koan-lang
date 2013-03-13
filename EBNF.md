@@ -23,7 +23,8 @@ Macrosyntax
     CONSTDEC      -->  TYPE ID '!' ':=' EXP 
     FUNDEC        -->  ID ':=' ANONFUN
     PARAMS        -->  (ID (',' ID)*)*
-    ASSIGNMENT    -->  DEC | ID ':=" EXP | (ID ':=:' ID)
+    ASSIGNMENT    -->  DEC | ID ':=" EXP | SWAP
+    SWAP          -->  ID ':=:' ID
     PRINTSTMT     -->  'p:' EXP
     EXPSTMT       -->  EXP
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??'
