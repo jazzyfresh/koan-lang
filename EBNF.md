@@ -40,7 +40,7 @@ Macrosyntax
     ARRAYREF      -->  ID '[' EXP | RANGE ']'
     OBJECT        -->  '{' (ID ':' EXP ',')+ '}'
     HASH          -->  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
-    ANONFUN       -->  ('f:' | PARAMS)? '{' (STMT BR)+  '}'
+    ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
     RANGE         -->  ('..' | '...') EXP 
                        | EXP ('..' | '...')
                        | EXP ('..' | '...') EXP

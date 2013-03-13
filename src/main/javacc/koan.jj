@@ -86,9 +86,7 @@ void LIT(): {} { BOOL() | <INTLIT> | <STRING> }
 void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { ID() "[" ( EXP() | RANGE() ) "]" }
 void OBJECT(): {} { "{" ( ID() ":" EXP() "," )+ "}" }
-void ANONFUN(): {} {
-      ( "f:" | PARAMS() )? "{" ( STMT() <BR> )+ "}"
-}
+void ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
 
 void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
 
