@@ -37,7 +37,7 @@ Macrosyntax
     BOOL          -->  'T' | 'F'
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     ARRAYREF      -->  ID '[' EXP | RANGE ']'
-    OBJECT        -->  '{' (ID ':' EXP ',')+ '}'
+    OBJECT        -->  ID '{' (ID ':' EXP)(ID ':' EXP ',')* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
     RANGE         -->  ('..' | '...') EXP 
                        | EXP ('..' | '...')
