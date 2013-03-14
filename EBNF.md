@@ -17,7 +17,7 @@ Macrosyntax
                     |  IFSTMT
                     |  LOOP
                     |  PROCCALL
-                    |  EXPSTMT
+                    |  EXP
     DEC           -->  VARDEC | CONSTDEC | FUNDEC
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' ':=' EXP 
