@@ -28,7 +28,6 @@ Macrosyntax
     ASSIGNMENT    -->  DEC | ID ':=" EXP | SWAP
     SWAP          -->  ID ':=:' ID
     PRINTSTMT     -->  'p:' EXP
-    EXPSTMT       -->  EXP
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??'
     LOOP          -->  FORLOOP | INFINITELOOP
     FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
@@ -39,7 +38,6 @@ Macrosyntax
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     ARRAYREF      -->  ID '[' EXP | RANGE ']'
     OBJECT        -->  '{' (ID ':' EXP ',')+ '}'
-    HASH          -->  '#:{' (ID '=>' EXP) (',' ID '=>' EXP)* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
     RANGE         -->  ('..' | '...') EXP 
                        | EXP ('..' | '...')
@@ -50,7 +48,8 @@ Macrosyntax
     EXP3          -->  EXP4 (EXPNOP EXP4)*
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
-    EXP6          -->  LIT | ID | ARRAY | OBJECT | PROCCALL | HASH | ARRAYREF       EXPNOP        -->  '**'
+    EXP6          -->  LIT | ID | ARRAY | OBJECT | PROCCALL  | ARRAYREF     
+    EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
     RELOP         -->  '<' | '<=' | '==' | '!=' | '>=' | '>' 
