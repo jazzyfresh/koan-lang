@@ -44,7 +44,7 @@ void STMT(): {} {
     | PRINTSTMT()
     | IFSTMT()
     | LOOP()
-    | EXPSTMT()
+    | EXP()
 }
 
 void DEC(): {} { VARDEC() | CONSTDEC() }
@@ -64,7 +64,6 @@ void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 void ASSIGNMENT(): {} { ( ID() ":=" EXP() ) | SWAP() }
 void SWAP(): {} { ( ID() ":=:" ID() ) }
 void PRINTSTMT(): {} { "p:" EXP() }
-void EXPSTMT(): {} { EXP() }
 void IFSTMT(): {} {
     "??:" EXP() "?" STMT()
     ( ":" EXP() "?" STMT() )*
@@ -84,7 +83,7 @@ void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
 void EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
 void EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
 void EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
-void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | HASH() | ARRAYREF() }
+void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | ARRAYREF() }
 
 void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void EXPNOP(): {} { "**" }
@@ -94,7 +93,7 @@ void ADDOP():  {} { "+" | "-" }
 void LIT(): {} { BOOL() | <INTLIT> | <STRING> }
 void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { ID() "[" ( EXP() | RANGE() ) "]" }
-void OBJECT(): {} { "{" ( ID() ":" EXP() "," )+ "}" }
+void OBJECT(): {} { ID() "{" ( ID() ":" EXP() "," )+ "}" }
 void ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
 
 void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
