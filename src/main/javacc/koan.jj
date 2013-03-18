@@ -39,6 +39,7 @@ TOKEN: {
 
 void SCRIPT(): {} { ( STMT() <BR> )+ }
 void STMT(): {} {
+    LOOKAHEAD(6)
       DEC()
     | ASSIGNMENT()
     | PRINTSTMT()
@@ -47,7 +48,11 @@ void STMT(): {} {
     | EXP()
 }
 
-void DEC(): {} { VARDEC() | CONSTDEC() }
+void DEC(): {} { 
+    LOOKAHEAD(2)
+      VARDEC() 
+    | CONSTDEC() 
+    }
 void VARDEC(): {} { TYPE() ID() ":=" EXP() }
 void CONSTDEC(): {} { TYPE() ID() "!" ":=" EXP() }
 void TYPE(): {} { 
@@ -61,16 +66,24 @@ void TYPE(): {} {
 void RETURNTYPE(): {} { TYPE() }
 void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 
-void ASSIGNMENT(): {} { ( ID() ":=" EXP() ) | SWAP() }
-void SWAP(): {} { ( ID() ":=:" ID() ) }
+void ASSIGNMENT(): {} {
+     LOOKAHEAD(2) 
+       ( ID() ":=" EXP() ) 
+     | SWAP() }
+void SWAP(): {} {  ID() ":=:" ID()  }
 void PRINTSTMT(): {} { "p:" EXP() }
 void IFSTMT(): {} {
-    "??:" EXP() "?" STMT()
+    "??:" EXP() "?" STMT() 
+    LOOKAHEAD(2)
     ( ":" EXP() "?" STMT() )*
     ( ":" STMT() )? "??"
 }
 
-void LOOP(): {} { FORLOOP() | INFINITELOOP() }
+void LOOP(): {} { 
+    LOOKAHEAD(2)
+      FORLOOP() 
+    | INFINITELOOP() 
+    }
 void FORLOOP(): {} { "8:" RANGE() ( ANONFUN() | ( ID() BLOCK() ) ) }
 void INFINITELOOP(): {} { "8:" BLOCK() }
 void PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
@@ -83,16 +96,29 @@ void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
 void EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
 void EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
 void EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
-void EXP6(): {} { LIT() | ID() | ARRAY() | OBJECT() | PROCCALL() | ARRAYREF() }
+void EXP6(): {} { 
+    LOOKAHEAD(5)
+      LIT() 
+    | ID() 
+    | ARRAY() 
+    | OBJECT() 
+    | PROCCALL() 
+    | ARRAYREF() 
+    }
 
 void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
 void EXPNOP(): {} { "**" }
 void MULOP():  {} { "*" | "/" | "%"}
 void ADDOP():  {} { "+" | "-" }
 
-void LIT(): {} { BOOL() | <INTLIT> | <STRING> }
+void LIT(): {} { 
+   LOOKAHEAD(3)
+   BOOL() 
+   | <INTLIT> 
+   | <STRING> 
+   }
 void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
-void ARRAYREF(): {} { ID() "[" ( EXP() | RANGE() ) "]" }
+void ARRAYREF(): {} { ID() "[" ( LOOKAHEAD(3) EXP() | RANGE() ) "]" }
 void OBJECT(): {} { ID() "{" ( ID() ":" EXP() "," )+ "}" }
 void ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
 
@@ -100,12 +126,18 @@ void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
 
 void ARGS(): {} { EXP5() ( "," EXP5() )* }
 void RANGE(): {} {
+    LOOKAHEAD(4)
       ( "..." | ".." ) EXP()
     | EXP() ( "..." | ".." )
     | EXP() ( "..." | ".." ) EXP()
 }
 
-void ID(): {} { (<CHARLIT>)+ ( "-" | "_" | <CHARLIT> | <INTLIT> )* }
+void ID(): {} { (<CHARLIT>)+ (
+    LOOKAHEAD(3)
+      "-" 
+    | "_" 
+    | <CHARLIT> 
+    | <INTLIT> )* }
 
 void HASH(): {} { "#:{" ( ID() "=>" EXP() ) ( "," ID() "=>" EXP() )* "}" }
 
