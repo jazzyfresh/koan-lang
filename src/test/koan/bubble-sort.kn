@@ -1,0 +1,19 @@
+c: bubble-sort.kn
+c:
+c: bubble-sort is a function that takes in an array and returns a sorted array
+
+f bubble-sort := f: (a) -> {
+    ^ sort-complete := false;
+    8: {
+        sort-complete := T;
+        8: 1...(`a) i {
+            ??: (a[i - 1] > a[i]) ? {
+                sort-complete = false;
+                a[i] :=: a[i - 1];
+            };
+        };
+        !! sort-complete;
+    };
+    <- a;
+};
+

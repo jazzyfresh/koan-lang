@@ -10,25 +10,26 @@ since our reserved tokens are symbols.
 Macrosyntax
 -----------
 
-    SCRIPT        -->  (STMT BR)+
+    SCRIPT        --> (BR)* (STMT BR)+ EOF
     STMT          -->  DEC 
                     |  ASSIGNMENT
                     |  PRINTSTMT
                     |  IFSTMT
+                    |  BREAKSTMT
                     |  LOOP
                     |  PROCCALL
                     |  EXP
-    DEC           -->  VARDEC | CONSTDEC | FUNDEC
+    DEC           -->  VARDEC | CONSTDEC
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' ':=' EXP 
-    FUNDEC        -->  TYPE ID ':=' ANONFUN
     TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
     RETURNTYPE    -->  TYPE
     PARAMS        -->  (ID (',' ID)*)*
     ASSIGNMENT    -->  DEC | ID ':=" EXP | SWAP
     SWAP          -->  ID ':=:' ID
     PRINTSTMT     -->  'p:' EXP
-    IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??'
+    IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? 
+    BREAKSTMT     -->  '!!' EXP
     LOOP          -->  FORLOOP | INFINITELOOP
     FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
     INFINITELOOP  -->  '8:' BLOCK
