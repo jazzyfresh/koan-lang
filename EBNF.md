@@ -19,10 +19,9 @@ Macrosyntax
                     |  LOOP
                     |  PROCCALL
                     |  EXP
-    DEC           -->  VARDEC | CONSTDEC | FUNDEC
+    DEC           -->  VARDEC | CONSTDEC
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' ':=' EXP 
-    FUNDEC        -->  TYPE ID ':=' ANONFUN
     TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
     RETURNTYPE    -->  TYPE
     PARAMS        -->  (ID (',' ID)*)*
