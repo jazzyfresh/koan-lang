@@ -147,7 +147,7 @@ Literal LIT(): {} {
 Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) EXP() | RANGE() ) "]" }
 Object OBJECT(): {} { <ID> "{" ( <ID> ":" EXP() "," )+ "}" }
-AnonymousFunction ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
+Function ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
 
 RegularExpression REGEX(): {} { <ID> ":=" "/" <STRING> "/" }
 
