@@ -1,19 +1,19 @@
-package edu.lmu.cs.xlg.iki;
+package edu.lmu.cs.xlg.koan;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 
-import edu.lmu.cs.xlg.iki.entities.Entity;
-import edu.lmu.cs.xlg.iki.entities.Program;
-import edu.lmu.cs.xlg.iki.entities.SymbolTable;
-import edu.lmu.cs.xlg.iki.generators.Generator;
-import edu.lmu.cs.xlg.iki.syntax.Parser;
+import edu.lmu.cs.xlg.koan.entities.Entity;
+import edu.lmu.cs.xlg.koan.entities.Program;
+import edu.lmu.cs.xlg.koan.entities.SymbolTable;
+import edu.lmu.cs.xlg.koan.generators.Generator;
+import edu.lmu.cs.xlg.koan.syntax.Parser;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A compiler for Iki.
+ * A compiler for Koan.
  *
  * <p>This class contains a static <code>main</code> method allowing you to run the compiler
  * from the command line, as well as a few methods to compile, or even run specific phases of
@@ -25,7 +25,7 @@ public class Compiler {
      * A logger for logging messages (both regular and error messages). The base properties file
      * is called <code>Iki.properties</code>.
      */
-    private Log log = new Log("Iki", new PrintWriter(System.out, true));
+    private Log log = new Log("Koan", new PrintWriter(System.out, true));
 
     /**
      * Runs the compiler as an application.
@@ -78,7 +78,7 @@ public class Compiler {
     }
 
     /**
-     * Checks the syntax of a Iki program read from a given reader object.
+     * Checks the syntax of a Koan program read from a given reader object.
      *
      * @param reader
      *     the source
@@ -97,8 +97,8 @@ public class Compiler {
     }
 
     /**
-     * Checks the static semantics of a Iki program object, generally one already produced from
-     * a parse.  This method is useful for testing or in cases where you want to embed an Iki
+     * Checks the static semantics of a Koan program object, generally one already produced from
+     * a parse.  This method is useful for testing or in cases where you want to embed an Koan
      * compiler in a larger application.
      *
      * @param program
@@ -113,7 +113,7 @@ public class Compiler {
     }
 
     /**
-     * Checks the syntax and static semantics of a Iki program from a reader.
+     * Checks the syntax and static semantics of a Koan program from a reader.
      *
      * @param reader
      *     the source
@@ -129,7 +129,7 @@ public class Compiler {
     }
 
     /**
-     * Reads an Iki program from the given reader and outputs an equivalent program to the
+     * Reads an Koan program from the given reader and outputs an equivalent program to the
      * given writer.
      *
      * @param name

@@ -1,9 +1,9 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki while statement.
+ * A Koan while statement.
  */
 public class WhileStatement extends Statement {
 

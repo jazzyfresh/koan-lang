@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.iki;
+package edu.lmu.cs.xlg.koan;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,10 +15,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import edu.lmu.cs.xlg.iki.entities.Program;
+import edu.lmu.cs.xlg.koan.entities.Program;
 
 /**
- * A unit test for the front end of the Iki compiler. It reads all the ".iki" files in the test
+ * A unit test for the front end of the Koan compiler. It reads all the ".koan" files in the test
  * resources directory. Whenever a filename starts with "synerror" the tester asserts that the
  * compiler will detect a syntax error. Whenever a name starts with "semerror" the tester asserts
  * that the compiler successfully parses the program, then asserts that a semantic error is

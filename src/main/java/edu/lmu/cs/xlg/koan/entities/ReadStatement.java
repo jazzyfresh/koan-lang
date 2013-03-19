@@ -1,11 +1,11 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import java.util.List;
 
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki read statement.
+ * A Koan read statement.
  */
 public class ReadStatement extends Statement {
 

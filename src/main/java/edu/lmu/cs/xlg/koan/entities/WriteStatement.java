@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -6,7 +6,7 @@ import java.util.ListIterator;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki write statement.
+ * A Koan write statement.
  */
 public class WriteStatement extends Statement {
 

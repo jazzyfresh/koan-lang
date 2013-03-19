@@ -1,24 +1,24 @@
-package edu.lmu.cs.xlg.iki.generators;
+package edu.lmu.cs.xlg.koan.generators;
 
 import java.io.PrintWriter;
 
-import edu.lmu.cs.xlg.iki.entities.AssignmentStatement;
-import edu.lmu.cs.xlg.iki.entities.BinaryExpression;
-import edu.lmu.cs.xlg.iki.entities.Block;
-import edu.lmu.cs.xlg.iki.entities.Declaration;
-import edu.lmu.cs.xlg.iki.entities.Expression;
-import edu.lmu.cs.xlg.iki.entities.Number;
-import edu.lmu.cs.xlg.iki.entities.Program;
-import edu.lmu.cs.xlg.iki.entities.ReadStatement;
-import edu.lmu.cs.xlg.iki.entities.Statement;
-import edu.lmu.cs.xlg.iki.entities.VariableReference;
-import edu.lmu.cs.xlg.iki.entities.WhileStatement;
-import edu.lmu.cs.xlg.iki.entities.WriteStatement;
+import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
+import edu.lmu.cs.xlg.koan.entities.BinaryExpression;
+import edu.lmu.cs.xlg.koan.entities.Block;
+import edu.lmu.cs.xlg.koan.entities.Declaration;
+import edu.lmu.cs.xlg.koan.entities.Expression;
+import edu.lmu.cs.xlg.koan.entities.Number;
+import edu.lmu.cs.xlg.koan.entities.Program;
+import edu.lmu.cs.xlg.koan.entities.ReadStatement;
+import edu.lmu.cs.xlg.koan.entities.Statement;
+import edu.lmu.cs.xlg.koan.entities.VariableReference;
+import edu.lmu.cs.xlg.koan.entities.WhileStatement;
+import edu.lmu.cs.xlg.koan.entities.WriteStatement;
 
 /**
- * A generator that translates an Iki program into C.
+ * A generator that translates a Koan program into C.
  */
-public class IkiToCGenerator extends Generator {
+public class KoanToCGenerator extends Generator {
 
     @Override
     public void generate(Program program, PrintWriter writer) {
@@ -34,7 +34,7 @@ public class IkiToCGenerator extends Generator {
     }
 
     /**
-     * Emits C code for the given Iki block.
+     * Emits C code for the given Koan block.
      */
     private void generateBlock(Block block) {
         indentLevel++;
@@ -48,15 +48,15 @@ public class IkiToCGenerator extends Generator {
     }
 
     /**
-     * Emits C code for the given Iki declaration.
+     * Emits C code for the given Koan declaration.
      */
     private void generateDeclaration(Declaration d) {
-        // The only kind of declaration there is in Iki is the variable.
+        // The only kind of declaration there is in Koan is the variable.
         emit("int " + id(d) + " = 0;");
     }
 
     /**
-     * Emits C code for the given Iki statement.
+     * Emits C code for the given Koan statement.
      */
     private void generateStatement(Statement s) {
         if (s instanceof AssignmentStatement) {
@@ -80,7 +80,7 @@ public class IkiToCGenerator extends Generator {
     }
 
     /**
-     * Produces the C string for the given expression.  All expressions in Iki can fit on one
+     * Produces the C string for the given expression.  All expressions in Koan can fit on one
      * line when translated to C.
      */
     private String generateExpression(Expression e) {

@@ -1,7 +1,7 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 /**
- * An Iki expression.
+ * A Koan expression.
  */
 public abstract class Expression extends Entity {
 
