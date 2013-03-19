@@ -147,7 +147,7 @@ Type parseType(): {
 }
 
 
-AssignmentStatement parseAssignment(): {
+Statement parseAssignment(): {
     Statement s = null;
     VariableReference v = null;
     Expression e = null;
@@ -165,7 +165,7 @@ AssignmentStatement parseAssignment(): {
 }
 
 
-SwapStatement parseSwap(): {
+Statement parseSwap(): {
     VariableReference v1 = null;
     VariableReference v2 = null;
 } {
@@ -178,7 +178,7 @@ SwapStatement parseSwap(): {
 }
 
 
-PrintStatement parsePrintStmt(): {
+Statement parsePrintStmt(): {
     Expression e = null;
 } { 
     ("p:" e = parseExpression())
@@ -186,12 +186,27 @@ PrintStatement parsePrintStmt(): {
 }
 
 
-Statement IFSTMT(): {} {
-    "??:" EXP() "?" STMT() 
-    ( LOOKAHEAD({getToken(3).image == "?"}) 
-    ":" EXP() "?" STMT() )*
-    (LOOKAHEAD({getToken(2).kind == Statement})
-     ":" STMT() )? 
+Statement parseIfStmt(): {
+    IfStatement.Arm arm;
+    List<IfStatement.Arm> arms = new ArrayList<IfStatement.Arm>();
+    Expression e;
+    Statement s;
+    Statement elseStatement = null;
+} {
+    (
+        "??:" e = parseExp() "?" s = parseStmt() 
+        { arms.add(new IfStatement.Arm(e,s); }
+        (
+            LOOKAHEAD({ getToken(3).image == "?" }) 
+            ":" e = parseExp() "?" elseStatement = parseStmt() 
+            { arms.add(new IfStatement.Arm(e, elseStatement); }
+        )*
+        (
+            LOOKAHEAD({ getToken(2).kind == ":" Statement })
+            ":" elseStatement = parseStmt() 
+            { arms.add(new IfStatement.Arm(null, elseStatement); }
+        )?
+    )
 }
 
 Statement LOOP(): {} { 
