@@ -80,7 +80,7 @@ Statement DEC(): {} {
     | CONSTDEC() 
     }
 Variable VARDEC(): {} { TYPE() <ID> ":=" EXP() }
-Constant CONSTDEC(): {} { TYPE() <ID> "!" ":=" EXP() }
+Variable CONSTDEC(): {} { TYPE() <ID> "!" ":=" EXP() }
 Type TYPE(): {} { 
     <NUMTYPE> 
     | <STRTYPE> 
