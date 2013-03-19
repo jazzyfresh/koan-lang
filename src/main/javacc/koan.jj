@@ -362,10 +362,33 @@ Expression parseExp6(): {
     { return e;}
 }
 
-String RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
-String EXPNOP(): {} { "**" }
-String MULOP():  {} { "*" | "/" | "%"}
-String ADDOP():  {} { "+" | "-" }
+String parseRelOp():  {
+    String s;
+} { 
+    s = "<" | s = "<=" | s = "==" | s = "!=" | s = ">=" | s = ">"
+    { return s; }
+}
+
+String parseExpnOp(): {
+    String s;
+} { 
+    s = "**"
+    { return s; }
+}
+
+String parseMulOp():  {
+    String s;
+} { 
+    s = "*" | s = "/" | s = "%"
+    { return s; }
+}
+
+String parseAddOp():  {
+    String s;
+} { 
+    s = "+" | s = "-"
+    { return s; }
+}
 
 Literal LIT(): {} { 
    LOOKAHEAD(3)
@@ -378,9 +401,9 @@ Literal LIT(): {} {
 Boolean BOOL(): {} { "T" | "F" }
 
 
-Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
-void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) EXP() | RANGE() ) "]" }
-Object OBJECT(): {} { <ID> "{" ( <ID> ":" EXP() "," )+ "}" }
+Array ARRAY(): {} { "[" ( parseExp() )* ( "," parseExp() )* "]" }
+void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) parseExp() | parseRange() ) "]" }
+Object OBJECT(): {} { <ID> "{" ( <ID> ":" parseExp() "," )+ "}" }
 
 Expression parseFunCall(): {
 } { 
@@ -418,10 +441,10 @@ void parseParams(List<Variable> params): {
 
 RegularExpression REGEX(): {} { <ID> ":=" "/" <STRING> "/" }
 
-void ARGS(): {} { EXP5() ( "," EXP5() )* }
+void ARGS(): {} { parseExp5() ( "," parseExp5() )* }
 Range RANGE(): {} {
-      ( "..." | ".." ) EXP()
-    | EXP() ( "..." | ".." ) (LOOKAHEAD({getToken(3).kind == Expression}) EXP())?
+      ( "..." | ".." ) parseExp()
+    | parseExp() ( "..." | ".." ) (LOOKAHEAD({getToken(3).kind == Expression}) EXP())?
 }
 
 void S(): {} { E() <EOF>                                   }
