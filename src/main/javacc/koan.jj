@@ -186,6 +186,7 @@ Statement parsePrintStmt(): {
 }
 
 
+
 Statement parseIfStmt(): {
     IfStatement.Arm arm;
     List<IfStatement.Arm> arms = new ArrayList<IfStatement.Arm>();
@@ -252,10 +253,17 @@ Statement parseInfiniteLoop(): {
     { return new InfiniteLoop(executeBlock); } 
 }
 
-
-
-
-Block parseBlock(): {} { "{" (STMT() <BR>)* "}" }
+Block parseBlock(): {
+    List<Statement> statements = new ArrayList<Statement>();
+    Statement s;
+} { 
+    (
+        "{"
+        ( s = parseStmt() {statemesnts.add(s);} )*
+        "}"
+    )
+    { return new Block(statements); }
+}
 
 Boolean BOOL(): {} { "T" | "F" }
 Expression EXP():  {} { EXP1() ( "||" EXP1() )* }
