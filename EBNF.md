@@ -10,11 +10,12 @@ since our reserved tokens are symbols.
 Macrosyntax
 -----------
 
-    SCRIPT        -->  (STMT BR)+
+    SCRIPT        --> (BR)* (STMT BR)+ EOF
     STMT          -->  DEC 
                     |  ASSIGNMENT
                     |  PRINTSTMT
                     |  IFSTMT
+                    |  BREAKSTMT
                     |  LOOP
                     |  PROCCALL
                     |  EXP
@@ -28,7 +29,8 @@ Macrosyntax
     ASSIGNMENT    -->  DEC | ID ':=" EXP | SWAP
     SWAP          -->  ID ':=:' ID
     PRINTSTMT     -->  'p:' EXP
-    IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??'
+    IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? 
+    BREAKSTMT     -->  '!!' EXP
     LOOP          -->  FORLOOP | INFINITELOOP
     FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
     INFINITELOOP  -->  '8:' BLOCK
