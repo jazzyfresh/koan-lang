@@ -1,23 +1,26 @@
 c: regex-examples.kn
+c: 
+c: For demonstrating the use of regexes in the koan programming language.
+c: Regexes in koan are pretty much the same as ruby regexes, but in koan,
+c: so, cooler.
 
+@ lisa-regex := /lisa/;
+@ danny-regex := /danny/;
+@ jaz-regex := /[jasmine]/;
+@ kaitlyn-regex := /^kaitlyn$/;
 
-lisa-regex := /lisa/
-danny-regex := /danny/
-jaz-regex := /[abc]/
-kaitlyn-regex := /^kaitlyn$/
+$ lisa-string := "lisa";
+$ danny-string-1 := "danny";
+$ danny-string-2 := "dannyboy";
+$ jazzy-string-1 := "jasmine";
+$ jazzy-string-2 := "jsmn";
+$ kait-string-1 := "kaitlyn";
+$ kait-string-2 := "kaitlyn is a panda";
 
-lisa := "lisa"
-danny1 := "danny"
-danny2 := "dannyboy"
-jazzy1 := "jasmine"
-jazzy2 := "jsmn"
-kait1 := "kaitlyn"
-kait2 := "kaitlyn is cool"
-
-~=(lisa, lisa-regex)      c: returns true
-~=(danny-regex, danny1)   c: returns true
-~=(danny-regex, danny2)   c: returns true
-~=(jaz-regex, jazzy1)     c: returns true
-~=(jaz-regex, jazzy2)     c: returns false
-~=(kaitlyn-regex, kait1)  c: returns true
-~=(kaitlyn-regex, kait2)  c: returns false ಠ_ಠ okay
+lisa-string ~= lisa-regex;       c: returns true
+danny-regex ~= danny-string-1;   c: returns true
+danny-regex ~= danny-string-2;   c: returns true
+jaz-regex ~= jazzy-string-1;     c: returns true
+jaz-regex ~= jazzy-string-2;     c: returns false
+kaitlyn-regex ~= kait-string-1;  c: returns true
+kaitlyn-regex ~= kait-string-2;  c: returns false ಠ_ಠ okay
