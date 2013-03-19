@@ -390,15 +390,15 @@ String parseAddOp():  {
     { return s; }
 }
 
-Literal LIT(): {} { 
+Literal parseLiteral(): {} { 
    LOOKAHEAD(3)
-   BOOL() 
+   parseBool() 
    | <INTLIT> 
    | <STRING> 
    | <CHARLIT>
 }
 
-Boolean BOOL(): {} { "T" | "F" }
+Boolean parseBool(): {} { "T" | "F" }
 
 
 Array ARRAY(): {} { "[" ( parseExp() )* ( "," parseExp() )* "]" }
