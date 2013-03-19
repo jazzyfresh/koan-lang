@@ -144,7 +144,6 @@ Type parseType(): {
     {return builder.toString();}
 }
 
-Parameters PARAMS(): {} { ( <ID> ( "," <ID> )* )* }
 
 Statement ASSIGNMENT(): {} {
      LOOKAHEAD(2) 
@@ -201,7 +200,31 @@ Literal LIT(): {} {
 Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) EXP() | RANGE() ) "]" }
 Object OBJECT(): {} { <ID> "{" ( <ID> ":" EXP() "," )+ "}" }
-Function ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
+
+Function parseAnonFun(): {
+    List<Variable> params = new ArrayList<Variable>();
+    Block body = null;
+} { 
+    (
+        "f:" 
+        ("(" parseParams(params) ")" "->")? 
+        body = parseBlock(); 
+    {return new Function(params, body);}
+}
+
+void parseParams(List<Variable> params): {
+    String t;
+    Token p;
+} { 
+    ( 
+        t = "INFERENCED" p = <ID> 
+        {params.add(new Variable(p.image, t, null, false));}
+        (
+            "," t = "INFERENCED" p = <ID>
+            {params.add(new Variable(p.image, t, null, false));}
+        )*
+    )
+}
 
 RegularExpression REGEX(): {} { <ID> ":=" "/" <STRING> "/" }
 
