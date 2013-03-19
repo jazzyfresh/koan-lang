@@ -1,14 +1,14 @@
-package edu.lmu.cs.xlg.iki.generators;
+package edu.lmu.cs.xlg.koan.generators;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.lmu.cs.xlg.iki.entities.Entity;
-import edu.lmu.cs.xlg.iki.entities.Program;
+import edu.lmu.cs.xlg.koan.entities.Entity;
+import edu.lmu.cs.xlg.koan.entities.Program;
 
 /**
- * An generator that translates an Iki program into some other form.  The result of the translation
+ * An generator that translates a Koan program into some other form.  The result of the translation
  * is written to a writer.
  */
 public abstract class Generator {
@@ -35,21 +35,19 @@ public abstract class Generator {
      */
     public static Generator getGenerator(String name) {
         if ("c".equals(name)) {
-            return new IkiToCGenerator();
+            return new KoanToCGenerator();
         } else if ("js".equals(name)) {
-            return new IkiToJavaScriptGenerator();
-        } else if ("86".equals(name)) {
-            return new IkiToX86Generator();
+            return new KoanToJavaScriptGenerator();
         } else {
             return null;
         }
     }
 
     /**
-     * Generates a target program for the given Iki program.
+     * Generates a target program for the given Koan program.
      *
      * @param program
-     *     The Iki program (source).
+     *     The Koan program (source).
      * @param writer
      *     Writer for the target program.
      */

@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki symbol table.  Iki is a dreadfully simple language, so its symbol tables are dreadfully
- * simple.  A table contains a mapping from names to variables, and a parent table, since Iki is
+ * A Koan symbol table.  Koan is a dreadfully simple language, so its symbol tables are dreadfully
+ * simple.  A table contains a mapping from names to variables, and a parent table, since Koan is
  * block-structured and lexically scoped.
  */
 public class SymbolTable {

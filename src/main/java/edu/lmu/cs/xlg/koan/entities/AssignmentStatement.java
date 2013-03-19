@@ -1,9 +1,9 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki assignment statement.
+ * A koan assignment statement.
  */
 public class AssignmentStatement extends Statement {
 

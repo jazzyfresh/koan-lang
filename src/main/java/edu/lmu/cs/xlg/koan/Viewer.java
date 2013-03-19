@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.roflkode;
+package edu.lmu.cs.xlg.koan;
 
 import static javax.swing.KeyStroke.getKeyStroke;
 
@@ -34,16 +34,16 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
-import edu.lmu.cs.xlg.roflkode.entities.Entity;
-import edu.lmu.cs.xlg.roflkode.entities.Script;
-import edu.lmu.cs.xlg.roflkode.syntax.Parser;
-import edu.lmu.cs.xlg.translators.RoflkodeToCTranslator;
+import edu.lmu.cs.xlg.koan.entities.Entity;
+import edu.lmu.cs.xlg.koan.entities.Script;
+import edu.lmu.cs.xlg.koan.syntax.Parser;
+import edu.lmu.cs.xlg.translators.KoanToCTranslator;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A simple GUI application for viewing the different things the Roflkode compiler can do.
+ * A simple GUI application for viewing the different things the Koan compiler can do.
  *
- * The application has two panes.  The left is a simple text editor in which one can edit a Roflkode
+ * The application has two panes.  The left is a simple text editor in which one can edit a Koan
  * script, load one from the file system, and save to the file system.  The right shows a view of
  * the script in response to a user selection action.  The user can choose to see
  * <ul>
@@ -158,7 +158,7 @@ public class Viewer extends JFrame {
         splitPane.setDividerLocation(480);
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
-        setTitle("Roflkode Viewer");
+        setTitle("Koan Viewer");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1024, 712);
     }
@@ -272,7 +272,7 @@ public class Viewer extends JFrame {
         Script script = analyze();
         if (log.getErrorCount() > 0) return null;
         StringWriter writer = new StringWriter();
-        RoflkodeToCTranslator.translate(script, new PrintWriter(writer));
+        KoanToCTranslator.translate(script, new PrintWriter(writer));
         return writer.toString();
     }
 

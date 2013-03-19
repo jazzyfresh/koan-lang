@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.Set;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki program.
+ * A Koan program.
  */
 public class Program extends Entity {
 

@@ -1,9 +1,9 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki numeric literal expression.
+ * A Koan numeric literal expression.
  */
 public class Number extends Expression {
 
