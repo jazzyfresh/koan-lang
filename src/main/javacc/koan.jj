@@ -22,7 +22,7 @@ SKIP: {
 TOKEN: {
     "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":="
     | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:"
-    | "8:" | "->"    
+    | "8:" | "->"  | "T" | "F"   
     
     | <NUMTYPE: "#">
     | <STRTYPE: "$">
@@ -42,7 +42,7 @@ Script SCRIPT(): {} { ( STMT() <BR> )+ }
 Statement STMT(): {} {
     LOOKAHEAD(6)
       DEC()
-    | LOOKAHEAD(ASSIGNMENT(), {getToken(2).image == ":="})ASSIGNMENT()
+    | LOOKAHEAD({getToken(2).image == ":="})ASSIGNMENT()
     | PRINTSTMT()
     | IFSTMT()
     | LOOP()
