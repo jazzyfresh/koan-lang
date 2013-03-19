@@ -11,24 +11,17 @@ import edu.lmu.cs.xlg.util.Log;
  */
 public class Function extends Declaration {
 
-    private String returnTypeName;
     private List<Variable> parameters;
     private Block body;
-    private Type returnType;
     private Integer level;
 
     /**
      * Creates a function object.
      */
-    public Function(String returnTypeName, String name, List<Variable> parameters, Block body) {
-        super(name);
-        this.returnTypeName = returnTypeName;
+    public Function(List<Variable> parameters, Block body) {
+    	super("ANONFUN");
         this.parameters = parameters;
         this.body = body;
-    }
-
-    public String getReturnTypeName() {
-        return returnTypeName;
     }
 
     public List<Variable> getParameters() {
@@ -37,10 +30,6 @@ public class Function extends Declaration {
 
     public Block getBody() {
         return body;
-    }
-
-    public Type getReturnType() {
-        return returnType;
     }
 
     public Integer getLevel() {
@@ -55,7 +44,6 @@ public class Function extends Declaration {
      * Performs semantic analysis on the function's signature and return type, but not the body.
      */
     public void analyzeSignature(Log log, SymbolTable table, Function owner, boolean inLoop) {
-        returnType = returnTypeName == null ? null : table.lookupType(returnTypeName, log);
         level = owner == null ? 1 : owner.getLevel() + 1;
         SymbolTable tableForParameters;
         if (isExternal()) {
