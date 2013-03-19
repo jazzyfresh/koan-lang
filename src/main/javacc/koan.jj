@@ -181,7 +181,7 @@ Statement parseSwap(): {
 Statement parsePrintStmt(): {
     Expression e = null;
 } { 
-    ("p:" e = parseExpression())
+    ("p:" e = parseExp())
     {return new PrintStatement(e);}
 }
 
@@ -257,28 +257,109 @@ Block parseBlock(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
 } { 
-    (
-        "{"
-        ( s = parseStmt() {statemesnts.add(s);} )*
-        "}"
-    )
+    "{" ( s = parseStmt() {statemesnts.add(s);} )* "}"
     { return new Block(statements); }
 }
 
-Boolean BOOL(): {} { "T" | "F" }
-Expression EXP():  {} { EXP1() ( "||" EXP1() )* }
-Expression EXP1(): {} { EXP2() ( "&&" EXP2() )* }
-Expression EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
-Expression EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
-Expression EXP4(): {} { EXP5() ( LOOKAHEAD({getToken(2).image == ("*" | "/" | "%")})MULOP() EXP4() )* }
-Expression EXP5(): {} { EXP6() ( LOOKAHEAD({getToken(2).image == ("+" | "-" )}) ADDOP() EXP5() )* }
-Expression EXP6(): {} {
-      LIT() 
-    | ARRAY() 
-    | LOOKAHEAD({getToken(2).image == "{"}) OBJECT()
-    | LOOKAHEAD({getToken(2).image == "("}) PROCCALL() 
-    | LOOKAHEAD({getToken(2).image == "["}) ARRAYREF() 
-    | <ID>
+Expression parseExp(): {
+    Expression e1;
+    Expression e2;
+} { 
+    e1 = parseExp1()
+    ("||" e2 = parseExp2() {e1 = new BinaryExpression(e1, "||", e2);})*
+    { return e1; } 
+}
+
+Expression parseExp1(): {
+    Expression e1;
+    Expression e2;
+} { 
+    e1 = parseExp2() 
+    ( "&&" e2 = parseExp2() {e1 = new BinaryExpression(e1, "&&", e2);} )* 
+    { return e1; }
+}
+
+Expression parseExp2(): {
+    String op;
+    Expression e1;
+    Expression e2;
+} { 
+    e1 = parseExp3() 
+    ( 
+        op = parseRelOp()
+        e2 = parseExp3() 
+        { e1 = new BinaryExpressino(e1, op, e2); }
+    )?
+    { return e1; }
+}
+
+Expression parseExp3(): {
+    String op;
+    Expression e1;
+    Expression e2;
+} { 
+    e1 = parseExp4() 
+    ( 
+        op = parseExpnOp() 
+        e2 = parseExp4() 
+        { e1 = new BinaryExpression(e1, op, e2); }
+    )?
+    { return e1; }
+}
+
+Expression parseExp4(): {
+    String op;
+    Expression e1;
+    Expression e2;
+} { 
+    e1 = parseExp5() 
+    ( 
+        //LOOKAHEAD({getToken(2).image == ("*" | "/" | "%")})
+        op = parseMulOp()
+        e2 = parseExp4()
+        { e1 = new BinaryExpression(e1, op, e2); }
+    )*
+    { return e1; }
+}
+
+Expression parseExp5(): {
+    String op;
+    Expression e1;
+    Expression e2;
+} { 
+    e1 = parseExp6() 
+    ( 
+        //LOOKAHEAD({getToken(2).image == ("+" | "-" )})
+        op = parseAddOp() 
+        e2 = parseExp5()
+        { e1 = new BinaryExpression(e1, op, e2); }
+    )*
+    { return e1; }
+}
+
+Expression parseExp6(): {
+    Expression e;
+    List<Expression> list = new ArrayList<Expression>();
+    Token t;
+} {
+    (
+	    e = parseLiteral()
+	    | e = parseArray() 
+	    | (
+	        LOOKAHEAD({getToken(2).image == "{"}) 
+	        e = parseObject()
+	      )
+	    | (
+	        LOOKAHEAD({getToken(2).image == "("}) 
+	        e = parseFunCall()
+	      ) 
+	    | (
+	        LOOKAHEAD({getToken(2).image == "["}) 
+	        e = parseArrayRef()
+	      ) 
+	    | e = parseVarRef() 
+    )
+    { return e;}
 }
 
 String RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
@@ -293,6 +374,9 @@ Literal LIT(): {} {
    | <STRING> 
    | <CHARLIT>
 }
+
+Boolean BOOL(): {} { "T" | "F" }
+
 
 Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) EXP() | RANGE() ) "]" }
