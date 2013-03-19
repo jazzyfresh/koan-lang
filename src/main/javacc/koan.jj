@@ -158,7 +158,7 @@ Statement parseAssignment(): {
           v = <ID>
           ":="
           e = parseExp()
-          s = new AssignmentStatement(v, e);
+          { s = new AssignmentStatement(v, e); }
         | s = parseSwap()
     )
     {return s;}
@@ -195,16 +195,16 @@ Statement parseIfStmt(): {
 } {
     (
         "??:" e = parseExp() "?" s = parseStmt() 
-        { arms.add(new IfStatement.Arm(e,s); }
+        { arms.add(new IfStatement.Arm(e,s)); }
         (
             LOOKAHEAD({ getToken(3).image == "?" }) 
             ":" e = parseExp() "?" elseStatement = parseStmt() 
-            { arms.add(new IfStatement.Arm(e, elseStatement); }
+            { arms.add(new IfStatement.Arm(e, elseStatement)); }
         )*
         (
-            LOOKAHEAD({ getToken(2).kind == ":" Statement })
+            LOOKAHEAD({ getToken(2).kind == ":" })
             ":" elseStatement = parseStmt() 
-            { arms.add(new IfStatement.Arm(null, elseStatement); }
+            { arms.add(new IfStatement.Arm(null, elseStatement)); }
         )?
     )
 }
