@@ -17,6 +17,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>    
 
     <build>
         <plugins>
@@ -34,16 +37,16 @@
                 <artifactId>javacc-maven-plugin</artifactId>
                 <version>2.5</version>
                 <executions>
-                    <execution>
-                        <id>javacc</id>
+<!--                     <execution>
+ -->                        <id>javacc</id>
                         <goals>
                             <goal>javacc</goal>
                         </goals>
                         <configuration>
                             <isStatic>false</isStatic>
                         </configuration>
-                    </execution>
-                </executions>
+<!--                     </execution>
+ -->                </executions>
             </plugin>
         </plugins>
     </build>
