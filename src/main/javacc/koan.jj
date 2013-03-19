@@ -144,8 +144,6 @@ Type parseType(): {
     {return builder.toString();}
 }
 
-
-Type RETURNTYPE(): {} { TYPE() }
 Parameters PARAMS(): {} { ( <ID> ( "," <ID> )* )* }
 
 Statement ASSIGNMENT(): {} {
