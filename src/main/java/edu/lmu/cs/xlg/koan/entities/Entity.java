@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
@@ -10,7 +10,7 @@ import java.util.Set;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki entity.
+ * A Koan entity.
  *
  * The front end of the compiler produces an intermediate representation in the form of a graph.
  * Each entity in the graph has some syntactic and semantic content.  The syntactic content is

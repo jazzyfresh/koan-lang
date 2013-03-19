@@ -1,9 +1,9 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki variable reference.  A variable reference is syntactically just an identifier.  During
+ * A Koan variable reference.  A variable reference is syntactically just an identifier.  During
  * semantic analysis we figure out the referenced variable.
  */
 public class VariableReference extends Expression {

@@ -1,4 +1,4 @@
-package edu.lmu.cs.xlg.iki.entities;
+package edu.lmu.cs.xlg.koan.entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An Iki block.
+ * A Koan block.
  */
 public class Block extends Entity {
 
