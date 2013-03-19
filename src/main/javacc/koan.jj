@@ -209,15 +209,53 @@ Statement parseIfStmt(): {
     )
 }
 
-Statement LOOP(): {} { 
-    LOOKAHEAD(2)
-      FORLOOP() 
-    | INFINITELOOP() 
-    }
-Statement FORLOOP(): {} { "8:" RANGE() ( ANONFUN() | ( <ID> BLOCK() ) ) }
-Statement INFINITELOOP(): {} { "8:" BLOCK() }
-Statement PROCCALL(): {} { ( ( <ID> "(" ARGS() ")" ) | ANONFUN() ) }
-Block BLOCK(): {} { "{" (STMT() <BR>)* "}" }
+Statement parseLoopStmt(): {
+    Statement s;
+} { 
+    (
+	    LOOKAHEAD(2)
+	      s = parseForLoop() 
+	    | s = parseInfiniteLoop()
+    )
+    { return s; }
+}
+
+Statement parseForLoop(): {
+    String name = null;
+    Array iterationValues = null;
+    Function executeFunction = null;
+    Block executeBlock = null;
+    String blockParam = null;
+} { 
+    (
+        "8:" 
+        ( 
+            iterationValues = parseRange() 
+            | iterationValues = parseArray() 
+            | iterationValues = parseVariableRef()
+        )
+        ( 
+            executeFunction = parseAnonymousFunction()
+            | ( 
+                blockParam = <ID>
+                executeBlock = parseBlock() 
+            )
+        )
+    )
+    { return new ForLoop(iterationValues, executeFunction, executeBlock, blockParam); } 
+}
+
+Statement parseInfiniteLoop(): {
+    Block executeBlock;
+} { 
+    ("8:" executeBlock = parseBlock())
+    { return new InfiniteLoop(executeBlock); } 
+}
+
+
+
+
+Block parseBlock(): {} { "{" (STMT() <BR>)* "}" }
 
 Boolean BOOL(): {} { "T" | "F" }
 Expression EXP():  {} { EXP1() ( "||" EXP1() )* }
@@ -250,6 +288,8 @@ Literal LIT(): {} {
 Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) EXP() | RANGE() ) "]" }
 Object OBJECT(): {} { <ID> "{" ( <ID> ":" EXP() "," )+ "}" }
+
+Expression parseFunCall(): {} { ( ( <ID> "(" ARGS() ")" ) | ANONFUN() ) }
 
 Function parseAnonFun(): {
     List<Variable> params = new ArrayList<Variable>();
