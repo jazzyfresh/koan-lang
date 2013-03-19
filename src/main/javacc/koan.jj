@@ -178,7 +178,14 @@ SwapStatement parseSwap(): {
 }
 
 
-Statement PRINTSTMT(): {} { "p:" EXP() }
+PrintStatement parsePrintStmt(): {
+    Expression e = null;
+} { 
+    ("p:" e = parseExpression())
+    {return new PrintStatement(e);}
+}
+
+
 Statement IFSTMT(): {} {
     "??:" EXP() "?" STMT() 
     ( LOOKAHEAD({getToken(3).image == "?"}) 
