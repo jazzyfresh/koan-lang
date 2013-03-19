@@ -112,7 +112,8 @@ Variable parseVarDec(): {
     (":=" e = parseExp())?
     {return new Variable(v.image, t, e, constant);}
 }
-Variable CONSTDEC(): {
+
+Variable parseConstDec(): {
     String t = null;
     Token v = null;
     Expression e = null;
@@ -124,14 +125,26 @@ Variable CONSTDEC(): {
     {return new Variable(v.image, t, e, constant);}
 }
 
-Type TYPE(): {} { 
-    <NUMTYPE> 
-    | <STRTYPE> 
-    | <BOOLTYPE> 
-    | <FUNTYPE> 
-    | <REGEXTYPE>
-    | <NULLTYPE> 
+
+Type parseType(): {
+    Token i;
+    StringBuilder builder = new StringBuilder();
+} { 
+    (   i = <NUMTYPE> 
+        | i = <STRTYPE> 
+        | i = <BOOLTYPE> 
+        | i = <FUNTYPE> 
+        | i = <REGEXTYPE>
+        | i = <NULLTYPE>
+    )
+    {builder.append(i.image);}
+    (
+        LOOKAHEAD(2) parseArray() {builder.append(" Array");}
+    )*
+    {return builder.toString();}
 }
+
+
 Type RETURNTYPE(): {} { TYPE() }
 Parameters PARAMS(): {} { ( <ID> ( "," <ID> )* )* }
 
