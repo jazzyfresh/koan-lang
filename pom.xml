@@ -37,16 +37,16 @@
                 <artifactId>javacc-maven-plugin</artifactId>
                 <version>2.5</version>
                 <executions>
-<!--                     <execution>
- -->                        <id>javacc</id>
+                     <execution>
+                        <id>javacc</id>
                         <goals>
                             <goal>javacc</goal>
                         </goals>
                         <configuration>
                             <isStatic>false</isStatic>
                         </configuration>
-<!--                     </execution>
- -->                </executions>
+                     </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
