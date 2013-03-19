@@ -60,6 +60,7 @@ TOKEN: {
     | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
     | <CHARLIT: (["A"-"Z", "a"-"z"])>
     | <BR: ";">
+    | <EMPTYLINE: "\n">
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
 
@@ -67,9 +68,9 @@ Script parseScript(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
 } { 
-    (<BR>)* 
+    (<EMPTYLINE>)* 
     (s = parseStmt() {statements.add(s);})+
-    (<BR>)*
+    (<EMPTYLINE>)*
     <EOF>
     {return new Script(statements);}
 }
@@ -86,7 +87,8 @@ Statement parseStmt(): {
         | s = parseLoopStmt()
         | s = parseExp()
     )
-    (<BR>)+
+    (<BR>)
+    (<EMPTYLINE>)*
     {return s;}
 }
 
@@ -208,7 +210,8 @@ Function parseAnonFun(): {
     (
         "f:" 
         ("(" parseParams(params) ")" "->")? 
-        body = parseBlock(); 
+        body = parseBlock()
+    )
     {return new Function(params, body);}
 }
 
