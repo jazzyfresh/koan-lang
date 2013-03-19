@@ -37,8 +37,8 @@ TOKEN: {
     | <BR: ";">
 }
 
-void SCRIPT(): {} { ( STMT() <BR> )+ }
-void STMT(): {} {
+Script SCRIPT(): {} { ( STMT() <BR> )+ }
+Statement STMT(): {} {
     LOOKAHEAD(6)
       DEC()
     | ASSIGNMENT()
@@ -48,14 +48,14 @@ void STMT(): {} {
     | EXP()
 }
 
-void DEC(): {} { 
+Statement DEC(): {} { 
     LOOKAHEAD(2)
       VARDEC() 
     | CONSTDEC() 
     }
-void VARDEC(): {} { TYPE() ID() ":=" EXP() }
-void CONSTDEC(): {} { TYPE() ID() "!" ":=" EXP() }
-void TYPE(): {} { 
+Variable VARDEC(): {} { TYPE() ID() ":=" EXP() }
+Constant CONSTDEC(): {} { TYPE() ID() "!" ":=" EXP() }
+Type TYPE(): {} { 
     <NUMTYPE> 
     | <STRTYPE> 
     | <BOOLTYPE> 
@@ -63,85 +63,81 @@ void TYPE(): {} {
     | <REGEXTYPE>
     | <NULLTYPE> 
 }
-void RETURNTYPE(): {} { TYPE() }
-void PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
+Type RETURNTYPE(): {} { TYPE() }
+Parameters PARAMS(): {} { ( "" |  ID() ( "," ID() )* ) }
 
-void ASSIGNMENT(): {} {
+Statement ASSIGNMENT(): {} {
      LOOKAHEAD(2) 
        ( ID() ":=" EXP() ) 
      | SWAP() }
-void SWAP(): {} {  ID() ":=:" ID()  }
-void PRINTSTMT(): {} { "p:" EXP() }
-void IFSTMT(): {} {
+Statement SWAP(): {} {  ID() ":=:" ID()  }
+Statement PRINTSTMT(): {} { "p:" EXP() }
+Statement IFSTMT(): {} {
     "??:" EXP() "?" STMT() 
     LOOKAHEAD(2)
     ( ":" EXP() "?" STMT() )*
     ( ":" STMT() )? "??"
 }
 
-void LOOP(): {} { 
+Statement LOOP(): {} { 
     LOOKAHEAD(2)
       FORLOOP() 
     | INFINITELOOP() 
     }
-void FORLOOP(): {} { "8:" RANGE() ( ANONFUN() | ( ID() BLOCK() ) ) }
-void INFINITELOOP(): {} { "8:" BLOCK() }
-void PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
-void BLOCK(): {} { "{" (STMT() <BR>)* "}" }
+Statement FORLOOP(): {} { "8:" RANGE() ( ANONFUN() | ( ID() BLOCK() ) ) }
+Statement INFINITELOOP(): {} { "8:" BLOCK() }
+Statement PROCCALL(): {} { ( ( ID() "(" ARGS() ")" ) | ANONFUN() ) }
+Block BLOCK(): {} { "{" (STMT() <BR>)* "}" }
 
-void BOOL(): {} { "T" | "F" }
-void EXP():  {} { EXP1() ( "||" EXP1() )* }
-void EXP1(): {} { EXP2() ( "&&" EXP2() )* }
-void EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
-void EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
-void EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
-void EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
-void EXP6(): {} { 
-    LOOKAHEAD(5)
+Boolean BOOL(): {} { "T" | "F" }
+Expression EXP():  {} { EXP1() ( "||" EXP1() )* }
+Expression EXP1(): {} { EXP2() ( "&&" EXP2() )* }
+Expression EXP2(): {} { EXP3() ( RELOP() EXP3() )? }
+Expression EXP3(): {} { EXP4() ( EXPNOP() EXP4() )? }
+Expression EXP4(): {} { EXP5() ( MULOP() EXP4() )* }
+Expression EXP5(): {} { EXP6() ( ADDOP() EXP5() )* }
+Expression EXP6(): {} { 
+    LOOKAHEAD()
       LIT() 
     | ID() 
     | ARRAY() 
     | OBJECT() 
     | PROCCALL() 
     | ARRAYREF() 
-    }
+}
 
-void RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
-void EXPNOP(): {} { "**" }
-void MULOP():  {} { "*" | "/" | "%"}
-void ADDOP():  {} { "+" | "-" }
+String RELOP():  {} { "<" | "<=" | "==" | "!=" | ">=" | ">" }
+String EXPNOP(): {} { "**" }
+String MULOP():  {} { "*" | "/" | "%"}
+String ADDOP():  {} { "+" | "-" }
 
-void LIT(): {} { 
+Literal LIT(): {} { 
    LOOKAHEAD(3)
    BOOL() 
    | <INTLIT> 
    | <STRING> 
-   }
-void ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
+}
+Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { ID() "[" ( LOOKAHEAD(3) EXP() | RANGE() ) "]" }
-void OBJECT(): {} { ID() "{" ( ID() ":" EXP() "," )+ "}" }
-void ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
+Object OBJECT(): {} { ID() "{" ( ID() ":" EXP() "," )+ "}" }
+AnonymousFunction ANONFUN(): {} { "f:" ( PARAMS() "->" )? BLOCK() }
 
 void REGEX(): {} { ID() ":=" "/" <STRING> "/" }
 
 void ARGS(): {} { EXP5() ( "," EXP5() )* }
-void RANGE(): {} {
+Range RANGE(): {} {
     LOOKAHEAD(4)
       ( "..." | ".." ) EXP()
     | EXP() ( "..." | ".." )
     | EXP() ( "..." | ".." ) EXP()
 }
 
-void ID(): {} { (<CHARLIT>)+ (
+String ID(): {} { (<CHARLIT>)+ (
     LOOKAHEAD(3)
       "-" 
     | "_" 
     | <CHARLIT> 
     | <INTLIT> )* }
-
-void HASH(): {} { "#:{" ( ID() "=>" EXP() ) ( "," ID() "=>" EXP() )* "}" }
-
-
 
 
 void S(): {} { E() <EOF>                                   }
