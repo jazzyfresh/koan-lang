@@ -285,11 +285,18 @@ Literal LIT(): {} {
    | <STRING> 
    | <CHARLIT>
 }
+
 Array ARRAY(): {} { "[" ( EXP() )* ( "," EXP() )* "]" }
 void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) EXP() | RANGE() ) "]" }
 Object OBJECT(): {} { <ID> "{" ( <ID> ":" EXP() "," )+ "}" }
 
-Expression parseFunCall(): {} { ( ( <ID> "(" ARGS() ")" ) | ANONFUN() ) }
+Expression parseFunCall(): {
+} { 
+    ( 
+        ( <ID> "(" parseArgs() ")" ) 
+        | parseAnonFun() 
+    )
+}
 
 Function parseAnonFun(): {
     List<Variable> params = new ArrayList<Variable>();
