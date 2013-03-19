@@ -147,11 +147,37 @@ Type parseType(): {
 }
 
 
-Statement ASSIGNMENT(): {} {
-     LOOKAHEAD(2) 
-       ( <ID> ":=" EXP() ) 
-     | SWAP() }
-Statement SWAP(): {} {  <ID> ":=:" <ID>  }
+AssignmentStatement parseAssignment(): {
+    Statement s = null;
+    VariableReference v = null;
+    Expression e = null;
+} {
+    (
+        LOOKAHEAD(2) 
+          ( <ID> ":=" parseExp() )
+          v = <ID>
+          ":="
+          e = parseExp()
+          s = new AssignmentStatement(v, e);
+        | s = parseSwap()
+    )
+    {return s;}
+}
+
+
+SwapStatement parseSwap(): {
+    VariableReference v1 = null;
+    VariableReference v2 = null;
+} {
+    (
+        v1 = <ID> 
+        ":=:" 
+        v2 = <ID>
+    )  
+    {return new SwapStatement(v1, v2);}
+}
+
+
 Statement PRINTSTMT(): {} { "p:" EXP() }
 Statement IFSTMT(): {} {
     "??:" EXP() "?" STMT() 
