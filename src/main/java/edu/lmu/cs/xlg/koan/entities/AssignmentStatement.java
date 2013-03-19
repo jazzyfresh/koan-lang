@@ -3,40 +3,44 @@ package edu.lmu.cs.xlg.koan.entities;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A koan assignment statement.
+ * A Koan assignment statement.
  */
 public class AssignmentStatement extends Statement {
 
-    private VariableReference variableReference;
-    private Expression expression;
+    private VariableExpression left;
+    private Expression right;
 
-    public AssignmentStatement(VariableReference v, Expression e) {
-        this.variableReference = v;
-        this.expression = e;
+    /**
+     * Creates an assignment statement.
+     */
+    public AssignmentStatement(VariableExpression left, Expression right) {
+        this.left = left;
+        this.right = right;
     }
 
-    public VariableReference getVariableReference() {
-        return variableReference;
+    /**
+     * Returns the destination of the assignment.
+     */
+    public VariableExpression getLeft() {
+        return left;
     }
 
-    public Expression getExpression() {
-        return expression;
+    /**
+     * Returns the source of the assignment.
+     */
+    public Expression getRight() {
+        return right;
     }
 
+    /**
+     * Analyzes the statement, ensuring that the target variable is writable and the right hand side
+     * is type compatible with the type of the variable.
+     */
     @Override
-    public void analyze(SymbolTable table, Log log) {
-        variableReference.analyze(table, log);
-        expression.analyze(table, log);
+    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
+        left.analyze(log, table, function, inLoop);
+        right.analyze(log, table, function, inLoop);
+        left.assertWritable(log);
+        right.assertAssignableTo(left.type, log, "assignment.type.error");
     }
-
-    @Override
-    public Statement optimize() {
-        expression = expression.optimize();
-        if (variableReference.sameVariableAs(expression)) {
-            // Assignment to self is a no-op
-            return null;
-        }
-        return this;
-    }
-
 }

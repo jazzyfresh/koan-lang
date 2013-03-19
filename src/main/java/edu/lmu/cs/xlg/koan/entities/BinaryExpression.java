@@ -3,86 +3,108 @@ package edu.lmu.cs.xlg.koan.entities;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A Koan binary expression.
+ * A Roflkode expression made up of a binary operator and two operands.
  */
 public class BinaryExpression extends Expression {
 
-    public static enum Operator {
-        PLUS("+"), MINUS("-"), TIMES("*"), DIVIDE("/");
-
-        private String text;
-
-        private Operator(String text) {
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-        }
-    }
-
-    private Operator operator;
+    private String op;
     private Expression left;
     private Expression right;
 
-    public BinaryExpression(Operator op, Expression x, Expression y) {
-        this.operator = op;
-        this.left = x;
-        this.right = y;
+    /**
+     * Creates a binary expression for a given operator and operands.
+     */
+    public BinaryExpression(Expression left, String op, Expression right) {
+        this.left = left;
+        this.op = op;
+        this.right = right;
     }
 
-    public Operator getOperator() {
-        return operator;
-    }
-
+    /**
+     * Returns the left operand.
+     */
     public Expression getLeft() {
         return left;
     }
 
+    /**
+     * Returns the operator as a string.
+     */
+    public String getOp() {
+        return op;
+    }
+
+    /**
+     * Returns the right operand.
+     */
     public Expression getRight() {
         return right;
     }
 
+    /**
+     * Analyzes the expression.
+     */
     @Override
-    public void analyze(SymbolTable table, Log log) {
-        left.analyze(table, log);
-        right.analyze(table, log);
-    }
+    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
+        left.analyze(log, table, function, inLoop);
+        right.analyze(log, table, function, inLoop);
 
-    @Override
-    public Expression optimize() {
-        left = left.optimize();
-        right = right.optimize();
-        if (left instanceof Number && right instanceof Number) {
-            int x = Number.class.cast(left).getValue();
-            int y = Number.class.cast(right).getValue();
-            switch (operator) {
-            case PLUS: return new Number(x + y);
-            case MINUS: return new Number(x - y);
-            case TIMES: return new Number(x * y);
-            case DIVIDE: if (y != 0) return new Number(x / y);
+        // num op num (for arithmetic op)
+        if (op.matches("[-+*/]")) {
+            left.assertArithmetic(op, log);
+            right.assertArithmetic(op, log);
+            type = (left.type == Type.NUMBR || right.type == Type.NUMBR)
+                ? Type.NUMBR : Type.INT;
+
+        // int op int returning int (for shifts and mod)
+        } else if (op.matches("%|<<|>>")) {
+            left.assertInteger(op, log);
+            right.assertInteger(op, log);
+            type = Type.INT;
+
+        // int DIVIDZ int
+        } else if (op.matches("\\\\")) {
+            left.assertInteger(op, log);
+            right.assertInteger(op, log);
+            type = Type.B00L;
+
+        // int bit operator int
+        } else if (op.matches("BIT(?:AND|X?OR)")) {
+            left.assertInteger(op, log);
+            right.assertInteger(op, log);
+            type = Type.INT;
+
+        // char/num/str op char/num/str (for greater/less inequalities)
+        } else if (op.matches("<|<=|>|>=")) {
+            if (left.type == Type.KAR) {
+                right.assertChar(op, log);
+            } else if (left.type == Type.YARN) {
+                right.assertString(op, log);
+            } else if (left.type.isArithmetic()){
+                left.assertArithmetic(op, log);
+                right.assertArithmetic(op, log);
             }
-        } else {
-            switch (operator) {
-            case PLUS:
-                if (right.isZero()) return left;
-                if (left.isZero()) return right;
-            case MINUS:
-                if (right.isZero()) return left;
-                if (left.sameVariableAs(right)) return new Number(0);
-            case TIMES:
-                if (right.isOne()) return left;
-                if (left.isOne()) return right;
-                if (right.isZero()) return new Number(0);
-                if (left.isZero()) return new Number(0);
-            case DIVIDE:
-                if (right.isOne()) return left;
-                if (left.sameVariableAs(right)) return new Number(1);
+            type = Type.B00L;
+
+        // str ~~ str
+        } else if (op.matches("~~")) {
+            left.assertString("~~", log);
+            right.assertString("~~", log);
+            type = Type.YARN;
+
+        // any SAME AS any
+        } else if (op.matches("==")) {
+            if (!(left.isCompatibleWith(right.type) || right.isCompatibleWith(left.type))) {
+                log.error("eq.type.error", op, left.type.getName(), right.type.getName());
             }
+            type = Type.B00L;
+
+        // bool ANALSO bool
+        // bool ORELSE bool
+        } else if (op.matches("ANALSO|ORELSE")) {
+            left.assertBoolean(op, log);
+            right.assertBoolean(op, log);
+            type = Type.B00L;
         }
-
-        // Could not find any optimizations
-        return this;
     }
 }
