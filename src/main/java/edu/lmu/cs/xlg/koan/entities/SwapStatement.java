@@ -5,17 +5,16 @@ import edu.lmu.cs.xlg.util.Log;
 /**
  * A Koan assignment statement.
  */
-public class AssignmentStatement extends Statement {
+public class SwapStatement extends AssignmentStatement {
 
     private VariableReference left;
-    private Expression right;
+    private VariableReference right;
 
     /**
-     * Creates an assignment statement.
+     * Creates an swap statement.
      */
-    public AssignmentStatement(VariableReference left, Expression right) {
-        this.left = left;
-        this.right = right;
+    public SwapStatement(VariableReference left, VariableReference right) {
+    	super(left, right);
     }
 
     /**
@@ -28,7 +27,7 @@ public class AssignmentStatement extends Statement {
     /**
      * Returns the source of the assignment.
      */
-    public Expression getRight() {
+    public VariableReference getRight() {
         return right;
     }
 
