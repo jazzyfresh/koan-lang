@@ -63,24 +63,67 @@ TOKEN: {
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
 
-Script SCRIPT(): {} { ( STMT() <BR> )+ }
-Statement STMT(): {} {
-    LOOKAHEAD(6)
-      DEC()
-    | LOOKAHEAD({getToken(2).image == ":="})ASSIGNMENT()
-    | PRINTSTMT()
-    | IFSTMT()
-    | LOOP()
-    | EXP()
+Script parseScript(): {
+    List<Statement> statements = new ArrayList<Statement>();
+    Statement s;
+} { 
+    (<BR>)* 
+    (s = parseStmt() {statements.add(s);})+
+    (<BR>)*
+    <EOF>
+    {return new Script(statements);}
 }
 
-Statement DEC(): {} { 
-    LOOKAHEAD(2)
-      VARDEC() 
-    | CONSTDEC() 
-    }
-Variable VARDEC(): {} { TYPE() <ID> ":=" EXP() }
-Variable CONSTDEC(): {} { TYPE() <ID> "!" ":=" EXP() }
+Statement parseStmt(): {
+    Statement s;
+} {
+    (
+        LOOKAHEAD(6)
+        s = parseDec()
+        | s = parseAssignment()
+        | s = parsePrintStmt()
+        | s = parseIfStmt()
+        | s = parseLoopStmt()
+        | s = parseExp()
+    )
+    (<BR>)+
+    {return s;}
+}
+
+Statement parseDec(): {
+    Statement s;
+} { 
+    (
+        LOOKAHEAD(2)
+          s = parseVarDec() 
+        | s = parseConstDec()
+    ) 
+    {return s;}
+}
+
+Variable parseVarDec(): {
+    String t = null;
+    Token v = null;
+    Expression e = null;
+    boolean constant = false;
+} { 
+    (LOOKAHEAD (parseType() <ID>) t = parseType())? 
+    v = <ID>
+    (":=" e = parseExp())?
+    {return new Variable(v.image, t, e, constant);}
+}
+Variable CONSTDEC(): {
+    String t = null;
+    Token v = null;
+    Expression e = null;
+    boolean constant = true;
+} { 
+    (LOOKAHEAD (parseType() <ID> "!") t = parseType())? 
+    v = <ID>
+    (":=" e = parseExp())?
+    {return new Variable(v.image, t, e, constant);}
+}
+
 Type TYPE(): {} { 
     <NUMTYPE> 
     | <STRTYPE> 
