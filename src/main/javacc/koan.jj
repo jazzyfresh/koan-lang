@@ -127,6 +127,11 @@ Variable parseConstDec(): {
     {return new Variable(v.image, t, e, constant);}
 }
 
+Entity parseVarRef(): {} {
+    <ID>
+    { return new Entity(); }
+}
+
 
 Type parseType(): {
     Token i;
@@ -233,10 +238,10 @@ Statement parseForLoop(): {
         ( 
             iterationValues = parseRange() 
             | iterationValues = parseArray() 
-            | iterationValues = parseVariableRef()
+            | iterationValues = parseVarRef()
         )
         ( 
-            executeFunction = parseAnonymousFunction()
+            executeFunction = parseAnonFun()
             | ( 
                 blockParam = <ID>
                 executeBlock = parseBlock() 
@@ -398,19 +403,31 @@ Literal parseLiteral(): {} {
    | <CHARLIT>
 }
 
-Boolean parseBool(): {} { "T" | "F" }
+Entity parseBool(): {} { "T" | "F" }
 
 
-Array ARRAY(): {} { "[" ( parseExp() )* ( "," parseExp() )* "]" }
-void ARRAYREF(): {} { <ID> "[" ( LOOKAHEAD(2) parseExp() | parseRange() ) "]" }
-Object OBJECT(): {} { <ID> "{" ( <ID> ":" parseExp() "," )+ "}" }
+Entity parseArray(): {} { 
+    "[" ( parseExp() )* ( "," parseExp() )* "]" 
+    {return new Entity();}
+}
 
-Expression parseFunCall(): {
+Entity parseArrayRef(): {} { 
+    <ID> "[" ( LOOKAHEAD(2) parseExp() | parseRange() ) "]" 
+    { return new Entity(); }
+}
+
+Entity parseObject(): {} { 
+    <ID> "{" ( <ID> ":" parseExp() "," )+ "}"
+    { return new Entity(); }
+}
+
+Entity parseFunCall(): {
 } { 
     ( 
         ( <ID> "(" parseArgs() ")" ) 
         | parseAnonFun() 
     )
+    { return new Entity(); }
 }
 
 Function parseAnonFun(): {
@@ -439,12 +456,20 @@ void parseParams(List<Variable> params): {
     )
 }
 
-RegularExpression REGEX(): {} { <ID> ":=" "/" <STRING> "/" }
+Entity parseRegex(): {} { 
+    <ID> ":=" "/" <STRING> "/" 
+    { return new Entity(); }
+}
 
-void ARGS(): {} { parseExp5() ( "," parseExp5() )* }
-Range RANGE(): {} {
+Entity parseArgs(): {} {
+    parseExp5() ( "," parseExp5() )* 
+    { return new Entity(); }
+}
+
+Entity parseRange(): {} {
       ( "..." | ".." ) parseExp()
-    | parseExp() ( "..." | ".." ) (LOOKAHEAD({getToken(3).kind == Expression}) EXP())?
+    | parseExp() ( "..." | ".." ) (LOOKAHEAD({getToken(3).kind == Expression}) parseExp())?
+    { return new Entity(); }
 }
 
 void S(): {} { E() <EOF>                                   }
