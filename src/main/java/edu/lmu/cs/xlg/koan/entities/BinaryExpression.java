@@ -3,7 +3,7 @@ package edu.lmu.cs.xlg.koan.entities;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A Roflkode expression made up of a binary operator and two operands.
+ * A Koan expression made up of a binary operator and two operands.
  */
 public class BinaryExpression extends Expression {
 
@@ -11,74 +11,59 @@ public class BinaryExpression extends Expression {
     private Expression left;
     private Expression right;
 
-    /**
-     * Creates a binary expression for a given operator and operands.
-     */
+
     public BinaryExpression(Expression left, String op, Expression right) {
         this.left = left;
         this.op = op;
         this.right = right;
     }
 
-    /**
-     * Returns the left operand.
-     */
+
     public Expression getLeft() {
         return left;
     }
 
-    /**
-     * Returns the operator as a string.
-     */
+
     public String getOp() {
         return op;
     }
 
-    /**
-     * Returns the right operand.
-     */
+
     public Expression getRight() {
         return right;
     }
 
-    /**
-     * Analyzes the expression.
-     */
+//checks for certain types depending on the op.. we don't assign types semantic analysis
+    // so for each binary operation we need to define the cases of what types might be at stake
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
         left.analyze(log, table, function, inLoop);
         right.analyze(log, table, function, inLoop);
-
-        // num op num (for arithmetic op)
-        if (op.matches("[-+*/]")) {
+       
+        // integer op integer (for exponential)
+        if (op.matches("**")) {
+        	left.assertArithmetic("**", log);
+        	right.assertArithmetic("**", log);
+        	type = (left.type == Type.INTEGER || right.type == Type.INTEGER)
+        		? Type.INTEGER : Type.INTEGER;
+        
+        // integer op integer (for arithmetic op)
+        } else if (op.matches("[-+*/]")) {
             left.assertArithmetic(op, log);
             right.assertArithmetic(op, log);
-            type = (left.type == Type.NUMBR || right.type == Type.NUMBR)
-                ? Type.NUMBR : Type.INT;
+            type = (left.type == Type.INTEGER || right.type == Type.INTEGER)
+                ? Type.INTEGER : Type.INTEGER;
 
-        // int op int returning int (for shifts and mod)
-        } else if (op.matches("%|<<|>>")) {
+        // int op int returning int (mod)
+        } else if (op.matches("%")) {
             left.assertInteger(op, log);
             right.assertInteger(op, log);
-            type = Type.INT;
+            type = Type.INTEGER;
 
-        // int DIVIDZ int
-        } else if (op.matches("\\\\")) {
-            left.assertInteger(op, log);
-            right.assertInteger(op, log);
-            type = Type.B00L;
 
-        // int bit operator int
-        } else if (op.matches("BIT(?:AND|X?OR)")) {
-            left.assertInteger(op, log);
-            right.assertInteger(op, log);
-            type = Type.INT;
-
-        // char/num/str op char/num/str (for greater/less inequalities)
+        // num/str op num/str (for greater/less inequalities)
         } else if (op.matches("<|<=|>|>=")) {
-            if (left.type == Type.KAR) {
-                right.assertChar(op, log);
-            } else if (left.type == Type.YARN) {
+            if (left.type == Type.STRING) {
                 right.assertString(op, log);
             } else if (left.type.isArithmetic()){
                 left.assertArithmetic(op, log);
@@ -86,11 +71,11 @@ public class BinaryExpression extends Expression {
             }
             type = Type.B00L;
 
-        // str ~~ str
-        } else if (op.matches("~~")) {
-            left.assertString("~~", log);
-            right.assertString("~~", log);
-            type = Type.YARN;
+        // string concat
+        } else if (op.matches("+")) {
+            left.assertString("+", log);
+            right.assertString("+", log);
+            type = Type.STRING;
 
         // any SAME AS any
         } else if (op.matches("==")) {
