@@ -1,0 +1,19 @@
+c: 99bottles.kn
+c:
+c: the traditional 99 bottles of beer of the wall 
+
+f 99bottles := f: () -> {
+    $ plural := "s";
+    # bottles-left := 99;
+    8: 1..99 {
+        p: "%d bottle%s of beer on the wall,\n", bottles-left, plural;
+        p: "%d bottle%s of beer \n", bottles-left, plural;
+        p: "Take one down, pass it around! \n", bottles-left;
+        
+        bottles-left := bottles-left -1;
+        ??: bottles-left < 2 ? plural := "";
+        
+        p: "%d bottle%s of beer on the wall! \n", bottles-left, plural;
+    }
+    !!
+}
