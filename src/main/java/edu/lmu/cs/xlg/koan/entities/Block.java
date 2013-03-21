@@ -137,4 +137,9 @@ public class Block extends Entity {
             s.analyze(log, table, owner, inLoop);
         }
     }
+    //Added for ToCGenerator
+	public Object getDeclarations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

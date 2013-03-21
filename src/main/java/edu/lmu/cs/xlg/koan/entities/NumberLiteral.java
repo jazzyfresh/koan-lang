@@ -1,5 +1,5 @@
 package edu.lmu.cs.xlg.koan.entities;
 
-public class NumberLiteral {
+public class NumberLiteral extends Literal {
 
 }

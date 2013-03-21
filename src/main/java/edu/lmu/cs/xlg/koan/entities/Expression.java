@@ -26,6 +26,7 @@ public abstract class Expression extends Entity {
      * Returns whether this expression is compatible with (that is, "can be assigned to an object
      * of") a given type.
      */
+    //note that these search || are way sexier than if staetments
     public boolean isCompatibleWith(Type testType) {
         return this.type == testType
             || this.type == Type.INT && testType == Type.NUMBR
@@ -85,6 +86,7 @@ public abstract class Expression extends Entity {
         }
     }
 
+   
     void assertArrayOrString(String context, Log log) {
         if (!(type == Type.YARN || type instanceof ArrayType)) {
             log.error("non.array.or.string", context);

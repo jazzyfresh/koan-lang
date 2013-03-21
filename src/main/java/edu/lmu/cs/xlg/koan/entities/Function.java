@@ -95,4 +95,14 @@ public class Function extends Declaration {
             }
         }
     }
+
+	public Type getReturnType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getReturnType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

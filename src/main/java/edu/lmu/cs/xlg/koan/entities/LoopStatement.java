@@ -5,7 +5,7 @@ import edu.lmu.cs.xlg.util.Log;
 /**
  * A Roflkode loop statement.
  */
-public class LoopStatement extends Declaration {
+public abstract class LoopStatement extends Statement {
 
     private String loopType;
     private Expression condition;
