@@ -1,6 +1,7 @@
-package edu.lmu.cs.xlg.koan.Translators;
+package src.main.java.edu.lmu.cs.xlg.koan.translators;
 
 import java.io.PrintWriter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,26 +46,26 @@ import edu.lmu.cs.xlg.koan.entities.PrintStatement;
  */
 public class KoanToCTranslator {
 
-    @SuppressWarnings("serial")
+ /*   @SuppressWarnings("serial")
     private static final Map<String, String> C_BINARY_OPERATORS = new HashMap<String, String>() {{
         put("OR", "||");
         put("AND", "&&");
     }};
-
+*/
     /**
      * Translates the given script, writing the target C program to the given writer.
      */
     public static void translate(Script script, PrintWriter writer) {
-        new KoanToCTranslator(writer).translateScript(script);
+//        new KoanToCTranslator(writer).translateScript(script);
     }
 
-    private PrintWriter writer;
+/*    private PrintWriter writer;
     private List<Function> functions = new ArrayList<Function>();
     private List<ObjectType> ObjectTypes = new ArrayList<ObjectType>();
     private Set<Variable> nonLocallyAccessedVariables = new HashSet<Variable>();
-
+*/
     private KoanToCTranslator(PrintWriter writer) {
-        this.writer = writer;
+//        this.writer = writer;
     }
 
     /**
@@ -72,7 +73,7 @@ public class KoanToCTranslator {
      * Precondition: The script has already been semantically analyzed and is error-free.
      */
     private void translateScript(Script script) {
-
+/*
         writer.println("#include <stdio.h>");
         writer.println("#include <stdlib.h>");
         writer.println("#include <math.h>");
@@ -108,15 +109,15 @@ public class KoanToCTranslator {
         translateBlock(script, "    ");
         writer.println("    return 0;");
         writer.println("}");
-    }
+*/    }
 
 
     private void translateStructTypeDeclaration(ObjectType type) {
-        writer.println("struct _Object" + type.getId() + ";");
+//        writer.println("struct _Object" + type.getId() + ";");
     }
 
     private void translateStructTypeDefinition(ObjectType type) {
-        writer.println("struct _Object" + type.getId() + " {");
+/*        writer.println("struct _Object" + type.getId() + " {");
         for (Property p: type.getProperties()) {
             writer.print("    ");
             translateType(p.getType());
@@ -125,7 +126,7 @@ public class KoanToCTranslator {
             writer.println(";");
         }
         writer.println("};");
-    }
+*/    }
 
     /**
      * Writes the C string representation of a Koan type.  Notice that Strings, Objects, and
@@ -133,7 +134,7 @@ public class KoanToCTranslator {
      * in C.
      */
     private void translateType(Type type) {
-        if (type == Type.INT) {
+/*        if (type == Type.INT) {
             writer.print("int");
         } else if (type == Type.INTEGER) {
             writer.print("double");
@@ -150,52 +151,52 @@ public class KoanToCTranslator {
             // Ww should not have any real types here, but just in case...
             writer.print("int");
         }
-    }
+*/    }
 
     /**
      * Writes the C string representation of a Koan variable.
      */
     private void translateVariableName(Variable variable) {
-        writer.print("_v" + variable.getId());
+//        writer.print("_v" + variable.getId());
     }
 
     /**
      * Writes the C string representation of a Koan object property.
      */
     private void translatePropertyName(Property property) {
-        writer.print("_p" + property.getId());
+//        writer.print("_p" + property.getId());
     }
 
     /**
      * Writes the C string representation of a object function name.
      */
     private void translateFunctionName(Function function) {
-        if (function.getBody() != null) {
+/*        if (function.getBody() != null) {
             writer.print("_f" + function.getId());
         } else {
             writer.print("__koan__" + function.getName());
         }
-    }
+*/    }
 
     /**
      * Writes the C label for the top of the given loop.
      */
     private void translateLoopTop(LoopStatement s) {
-        writer.print("top" + s.getId());
+//        writer.print("top" + s.getId());
     }
 
     /**
      * Writes the C label for the top of the given loop.
      */
     private void translateLoopBottom(LoopStatement s) {
-        writer.print("bottom" + s.getId());
+//        writer.print("bottom" + s.getId());
     }
 
     /**
      * Writes the function signature, in C, only.
      */
     private void translateFunctionSignature(Function function) {
-        if (function.getReturnType() == null) {
+/*        if (function.getReturnType() == null) {
             writer.print("void");
         } else {
             translateType(function.getReturnType());
@@ -203,14 +204,14 @@ public class KoanToCTranslator {
         writer.print(" ");
         translateFunctionName(function);
         translateParameters(function.getParameters());
-    }
+*/    }
 
     /**
      * Writes the given function in C, with the signature and the body, if applicable.  If there
      * is no body, the function is external and nothing at all is written.
      */
     private void translateWholeFunction(Function function) {
-        if (function.getBody() == null) {
+/*        if (function.getBody() == null) {
             // Do nothing, the signature was already done and there is not body
             return;
         }
@@ -218,13 +219,13 @@ public class KoanToCTranslator {
         writer.println(" {");
         translateBlock(function.getBody(), "    ");
         writer.println("}");
-    }
+*/    }
 
     /**
      * Writes the given parameter list in C, with parentheses.
      */
     private void translateParameters(List<Variable> parameters) {
-        writer.print("(");
+/*        writer.print("(");
         boolean first = true;
         for (Variable v: parameters) {
             if (!first) {
@@ -236,16 +237,16 @@ public class KoanToCTranslator {
             first = false;
         }
         writer.print(")");
-    }
+*/    }
 
     private void translateBlock(Block b, String indent) {
-        for (Statement s: b.getStatements()) {
+/*        for (Statement s: b.getStatements()) {
             translateStatement(s, indent);
         }
-    }
+*/    }
 
     private void translateStatement(Statement s, String indent) {
-        if (s instanceof Variable) {
+/*        if (s instanceof Variable) {
             translateVariableDeclaration(Variable.class.cast(s), indent);
         } else if (s instanceof ObjectType) {
             // All types already defined at the top-level of the script
@@ -271,10 +272,10 @@ public class KoanToCTranslator {
             throw new RuntimeException("FATAL ERROR: Translator DOESN'T KNOW ABOUT " +
                     s.getClass().getName());
         }
-    }
+*/    }
 
     private void translateVariableDeclaration(Variable v, String indent) {
-        writer.print(indent);
+/*        writer.print(indent);
         if (v.isConstant()) {
             writer.print("const ");
         }
@@ -286,10 +287,10 @@ public class KoanToCTranslator {
             translateExpression(v.getInitializer());
         }
         writer.println(";");
-    }
+*/    }
 
     private void translatePrintStatement(PrintStatement s, String indent) {
-        for (Expression e: s.getExpressions()) {
+/*        for (Expression e: s.getExpressions()) {
             writer.print(indent);
             if (e.getType() == Type.B00L) {
                 writer.print("printf(");
@@ -311,36 +312,36 @@ public class KoanToCTranslator {
                 throw new RuntimeException("Unknown type made it to code Translator");
             }
         }
-    }
+*/    }
 
 
 
 
 
     private void translateAssignmentStatement(AssignmentStatement s, String indent) {
-        writer.print(indent);
+/*        writer.print(indent);
         translateVariable(s.getLeft());
         writer.print(" = ");
         translateExpression(s.getRight());
         writer.println(";");
-    }
+*/    }
 
     private void translateGtfoStatement(BreakStatement s, String indent) {
-        if (s.getTarget() instanceof LoopStatement) {
+/*        if (s.getTarget() instanceof LoopStatement) {
             writer.print(indent + "goto ");
             translateLoopBottom(LoopStatement.class.cast(s.getTarget()));
             writer.println(";");
         } else {
             writer.println(indent + "return;");
         }
-    }
+*/    }
 
 
     private void translateHerezStatement(ReturnStatement s, String indent) {
-        writer.print(indent + "return ");
+/*        writer.print(indent + "return ");
         translateExpression(s.getExpression());
         writer.println(";");
-    }
+*/    }
 
 
 
@@ -348,17 +349,17 @@ public class KoanToCTranslator {
 
 
     private void translateCallStatement(CallStatement s, String indent) {
-        writer.println(indent + "TODO_Call_Statement");
+//        writer.println(indent + "TODO_Call_Statement");
     }
 
 
 
     private void translateConditionalStatement(IfStatement s, String indent) {
-        writer.println(indent + "TODO_IF_STATEMENT");
+//        writer.println(indent + "TODO_IF_STATEMENT");
     }
 
     private void translateLoopStatement(LoopStatement s, String indent) {
-        writer.println(indent);
+/*        writer.println(indent);
         translateLoopTop(s);
         writer.println(":");
         if ("WHIEL".equals(s.getLoopType())) {
@@ -387,11 +388,11 @@ public class KoanToCTranslator {
         writer.println(indent);
         translateLoopBottom(s);
         writer.println(": ;");
-    }
+*/    }
 
 
     private void translateExpression(Expression e) {
-        if (e instanceof Literal) {
+/*        if (e instanceof Literal) {
             translateLiteral(Literal.class.cast(e));
         } else if (e instanceof Variable) {
             translateVariableExpression(Variable.class.cast(e));
@@ -401,29 +402,29 @@ public class KoanToCTranslator {
             translateBinaryExpression(BinaryExpression.class.cast(e));
         } else if (e instanceof ArrayExpression) {
             translateArrayExpression(ArrayExpression.class.cast(e));
-        } else /* BukkitExpression */ {
+        } else /* BukkitExpression */ /*{
             translateBukkitExpression(ObjectExpression.class.cast(e));
         }
-    }
+ */   }
 
     private void translateLiteral(Literal e) {
-        if (e instanceof MuLiteral) {
+/*        if (e instanceof MuLiteral) {
             writer.print("0");
         } else if (e instanceof BooleanLiteral) {
             writer.print(e == BooleanLiteral.WIN ? "1" : "0");
         } else if (e instanceof IntegerLiteral) {
             writer.print(IntegerLiteral.class.cast(e).getValue());
-        } else /* StringLiteral */ {
+        } else /* StringLiteral */ /*{
             writer.print("L\"");
             for (Integer codepoint: StringLiteral.class.cast(e).getCodepoints()) {
                 writer.print(character(codepoint));
             }
             writer.print("\"");
         }
-    }
+*/    }
 
     private void translateVariableExpression(VariableExpression e) {
-        if (e instanceof SimpleVariableExpression) {
+/*        if (e instanceof SimpleVariableExpression) {
             SimpleVariableExpression v = SimpleVariableExpression.class.cast(e);
             translateVariableName(v.getReferent());
         } else if (e instanceof PropertyVariableExpression) {
@@ -440,11 +441,11 @@ public class KoanToCTranslator {
         } else {
             writer.print("TODO_FUNCTION_CALL");
         }
-    }
+*/    }
 
 
     private void translateBinaryExpression(BinaryExpression e) {
-        writer.print("(");
+/*        writer.print("(");
         if ("~~".equals(e.getOp())) {
             writer.print("TODO_CONCAT_EXPRESSION");
         } else if ("\\".equals(e.getOp())) {
@@ -459,18 +460,18 @@ public class KoanToCTranslator {
             translateExpression(e.getRight());
         }
         writer.print(")");
-    }
+*/    }
 
     private void translateArrayExpression(ArrayExpression e) {
-        writer.print("TODO_ARRAY_EXPRESSION");
+//        writer.print("TODO_ARRAY_EXPRESSION");
     }
 
     private void translateBukkitExpression(ObjectExpression e) {
-        writer.print("TODO_OBJECT_EXPRESSION");
+//        writer.print("TODO_OBJECT_EXPRESSION");
     }
 
     private void preprocess(Script script) {
-        script.traverse(new Visitor() {
+/*        script.traverse(new Visitor() {
             public void visit(Entity e) {
                 if (e.getClass() == ObjectType.class) {
                     bukkitTypes.add(ObjectType.class.cast(e));
@@ -484,7 +485,7 @@ public class KoanToCTranslator {
                 }
             }
         });
-    }
+*/    }
 
     /**
      * Returns a representation of a character for use in a C character or string literal.
@@ -492,7 +493,7 @@ public class KoanToCTranslator {
      * most suitable form from \xhh, \ uhhhh, or \Uhhhhhhhh.
      */
     String character(int codepoint) {
-        if (0x20 <= codepoint && codepoint <= 0x7f) {
+/*        if (0x20 <= codepoint && codepoint <= 0x7f) {
             return Character.toString((char)codepoint);
         } else if (codepoint <= 0xff) {
             return String.format("\\x%02x", codepoint);
@@ -501,5 +502,5 @@ public class KoanToCTranslator {
         } else {
             return String.format("\\U%08x", codepoint);
         }
-    }
+*/    }
 }
