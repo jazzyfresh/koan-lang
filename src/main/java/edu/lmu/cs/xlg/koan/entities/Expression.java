@@ -51,7 +51,7 @@ public abstract class Expression extends Entity {
     }
 
     void assertArithmeticOrChar(String context, Log log) {
-        if (!(type == Type.INT /* || type == Type.NUMBR */ )) {
+        if (!(type == Type.INTEGER /* || type == Type.NUMBR */ )) {
             log.error("non.arithmetic.or.char", context);
         }
     }
