@@ -17,9 +17,9 @@ public class Number extends Expression {
         return value;
     }
 
-    @Override
-    public void analyze(SymbolTable table, Log log) {
-        // TODO - Nothing for now, but we might want later to check for the literal being
-        // too large.  Something to think about.
-    }
+//    @Override
+//    public void analyze(SymbolTable table, Log log) {
+//        // TODO - Nothing for now, but we might want later to check for the literal being
+//        // too large.  Something to think about.
+//    }
 }
