@@ -20,7 +20,7 @@ public class Script extends Block {
      * imports have already been resolved so the script can just be analyzed like the block that
      * it is.
      */
-    public void analyze(Log log) {
-        analyze(log, null, null, false);
-    }
+//    public void analyze(Log log) {
+//        analyze(log, null, null, false);
+//    }
 }
