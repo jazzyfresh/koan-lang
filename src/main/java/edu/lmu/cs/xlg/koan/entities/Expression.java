@@ -20,7 +20,7 @@ public abstract class Expression extends Entity {
     /**
      * Performs semantic analysis on the expression.
      */
-    public abstract void analyze(Log log, SymbolTable table, Function function, boolean inLoop);
+    //public abstract void analyze(Log log, SymbolTable table, Function function, boolean inLoop);
 
     /**
      * Returns whether this expression is compatible with (that is, "can be assigned to an object

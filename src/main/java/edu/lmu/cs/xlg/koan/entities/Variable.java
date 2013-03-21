@@ -59,7 +59,7 @@ public class Variable extends Declaration {
         return level == null ? 0 : level;
     }
 
-    @Override
+/*    @Override
     public void analyze(Log log, SymbolTable table, Function owner, boolean inLoop) {
         level = owner == null ? 0 : owner.getLevel();
 
@@ -85,4 +85,5 @@ public class Variable extends Declaration {
             }
         }
     }
+*/
 }
