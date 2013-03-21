@@ -20,10 +20,10 @@ public class Program extends Entity {
         return block;
     }
 
-    @Override
-    public void analyze(SymbolTable table, Log log) {
-        block.analyze(table, log);
-    }
+//    @Override
+//    public void analyze(SymbolTable table, Log log) {
+//        block.analyze(table, log);
+//    }
 
     /**
      * Optimizes the program.
