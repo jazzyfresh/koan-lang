@@ -101,8 +101,4 @@ public class Function extends Declaration {
 		return null;
 	}
 
-	public Object getReturnType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
