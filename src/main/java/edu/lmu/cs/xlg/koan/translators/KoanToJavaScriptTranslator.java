@@ -9,18 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
-import edu.lmu.cs.xlg.koan.entities.BinaryExpression;
-import edu.lmu.cs.xlg.koan.entities.Block;
-import edu.lmu.cs.xlg.koan.entities.Declaration;
-import edu.lmu.cs.xlg.koan.entities.Expression;
-import edu.lmu.cs.xlg.koan.entities.Number;
-import edu.lmu.cs.xlg.koan.entities.Program;
-import edu.lmu.cs.xlg.koan.entities.ReadStatement;
-import edu.lmu.cs.xlg.koan.entities.Statement;
-import edu.lmu.cs.xlg.koan.entities.VariableReference;
-import edu.lmu.cs.xlg.koan.entities.WhileStatement;
-import edu.lmu.cs.xlg.koan.entities.WriteStatement;
 
 
 
@@ -29,20 +17,20 @@ import edu.lmu.cs.xlg.koan.entities.WriteStatement;
  */
 public class KoanToJavaScriptTranslator {
 
-    public void generate(Program program, PrintWriter writer) {
-/*        this.writer = writer;
+	/*    public void generate(Program program, PrintWriter writer) {
+        this.writer = writer;
 
         emit("(function () {");
         generateBlock(program.getBlock());
         emit("}());");
-*/    }
+    }
 
     /**
      * Emits JavaScript code for the given Koan block.
      */
 
-    private void generateBlock(Block block) {
-/*        indentLevel++;
+/*    private void generateBlock(Block block) {
+        indentLevel++;
         for (Declaration d: block.getDeclarations()) {
             generateDeclaration(d);
         }
@@ -50,12 +38,12 @@ public class KoanToJavaScriptTranslator {
             generateStatement(s);
         }
         indentLevel--;
-*/    }
+    }
 
     /**
      * Emits JavaScript code for the given Koan declaration.
      */
-    private void generateDeclaration(Declaration d) {
+/*    private void generateDeclaration(Declaration d) {
         // The only kind of declaration there is in Koan is the variable.
 //        emit("var " + id(d) + " = 0;");
     }
@@ -63,8 +51,8 @@ public class KoanToJavaScriptTranslator {
     /**
      * Emits JavaScript code for the given Koan statement.
      */
-    private void generateStatement(Statement s) {
-/*        if (s instanceof AssignmentStatement) {
+/*    private void generateStatement(Statement s) {
+        if (s instanceof AssignmentStatement) {
             AssignmentStatement a = AssignmentStatement.class.cast(s);
             emit(String.format("%s = %s;", generateExpression(a.getVariableReference()),
                     generateExpression(a.getExpression())));
@@ -82,14 +70,14 @@ public class KoanToJavaScriptTranslator {
             generateBlock(w.getBody());
             emit("}");
         }
-*/    }
+    }
 
     /**
      * Produces the JavaScript string for the given expression.  All expressions in Koan can fit
      * on one line when translated to JavaScript.
      */
-    private String generateExpression(Expression e) {
-/*        if (e instanceof Number) {
+/*    private String generateExpression(Expression e) {
+        if (e instanceof Number) {
             return Number.class.cast(e).getValue() + "";
         } else if (e instanceof VariableReference) {
             return id(VariableReference.class.cast(e).getReferent());
@@ -100,5 +88,5 @@ public class KoanToJavaScriptTranslator {
         } else {
             throw new RuntimeException("Internal Compiler Error");
         }
-*/    }
-}
+    }
+*/}

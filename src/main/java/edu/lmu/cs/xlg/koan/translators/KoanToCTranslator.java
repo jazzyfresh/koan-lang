@@ -9,35 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.lmu.cs.xlg.koan.entities.ArrayExpression;
-import edu.lmu.cs.xlg.koan.entities.ArrayType;
-import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
-import edu.lmu.cs.xlg.koan.entities.BinaryExpression;
-import edu.lmu.cs.xlg.koan.entities.Block;
-import edu.lmu.cs.xlg.koan.entities.BooleanLiteral;
-import edu.lmu.cs.xlg.koan.entities.ObjectExpression;
-import edu.lmu.cs.xlg.koan.entities.ObjectType;
-import edu.lmu.cs.xlg.koan.entities.ObjectType.Property;
-import edu.lmu.cs.xlg.koan.entities.CallStatement;
-import edu.lmu.cs.xlg.koan.entities.IfStatement;
-import edu.lmu.cs.xlg.koan.entities.Entity;
-import edu.lmu.cs.xlg.koan.entities.Entity.Visitor;
-import edu.lmu.cs.xlg.koan.entities.Expression;
-import edu.lmu.cs.xlg.koan.entities.Function;
-import edu.lmu.cs.xlg.koan.entities.ReturnStatement;
-import edu.lmu.cs.xlg.koan.entities.BreakStatement;
-import edu.lmu.cs.xlg.koan.entities.IndexVariableExpression;
-import edu.lmu.cs.xlg.koan.entities.IntegerLiteral;
-import edu.lmu.cs.xlg.koan.entities.Literal;
-import edu.lmu.cs.xlg.koan.entities.LoopStatement;
-import edu.lmu.cs.xlg.koan.entities.MuLiteral;
-import edu.lmu.cs.xlg.koan.entities.Script;
-import edu.lmu.cs.xlg.koan.entities.Statement;
-import edu.lmu.cs.xlg.koan.entities.StringLiteral;
-import edu.lmu.cs.xlg.koan.entities.Type;
-import edu.lmu.cs.xlg.koan.entities.Variable;
-import edu.lmu.cs.xlg.koan.entities.VariableReference;
-import edu.lmu.cs.xlg.koan.entities.PrintStatement;
+
 
 /**
  * A Translator that produces a C program for a given Koan script.  Translator objects are
