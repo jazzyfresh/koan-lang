@@ -17,11 +17,8 @@ public class PrintStatement extends Statement {
         return expression;
     }
 
-    /**
-     * Analyzes the statement.
-     */
-//    @Override
-//    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-//        expression.analyze(log, table, function, inLoop);
-//    }
+    @Override
+    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
+        expression.analyze(log, table, function, inLoop);
+    }
 }

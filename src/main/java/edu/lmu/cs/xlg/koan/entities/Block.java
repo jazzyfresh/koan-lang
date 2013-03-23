@@ -3,7 +3,6 @@ package edu.lmu.cs.xlg.koan.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import edu.lmu.cs.xlg.util.Log;
 
 /**
@@ -132,16 +131,13 @@ public class Block extends Entity {
                 table.insert((Variable)s, log);
             }
 
-            if (s instanceof LoopStatement) {
-                table.insert((LoopStatement)s, log);
-            }
 
             s.analyze(log, table, owner, inLoop);
         }
     }
     //Added for ToCGenerator
-	public Object getDeclarations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Object getDeclarations() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

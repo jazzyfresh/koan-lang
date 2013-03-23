@@ -15,9 +15,8 @@ public abstract class LoopStatement extends Statement {
     private Expression collection;
     private Block body;
 
-    public LoopStatement(String name, String loopType, Expression condition, String iterator,
+    public LoopStatement(String loopType, Expression condition, String iterator,
             Expression start, Expression end, Expression collection, Block body) {
-        super(name);
         this.loopType = loopType;
         this.condition = condition;
         this.iterator = iterator;

@@ -19,7 +19,7 @@ public class Function extends Declaration {
      * Creates a function object.
      */
     public Function(List<Variable> parameters, Block body) {
-    	super("ANONFUN");
+        super("ANONFUN");
         this.parameters = parameters;
         this.body = body;
     }
@@ -65,13 +65,13 @@ public class Function extends Declaration {
      * so the body's symbol table has already been constructed and the parameters have already been
      * loaded.
      */
-//    public void analyze(Log log, SymbolTable table, Function owner, boolean inLoop) {
-//
-//        // Some functions have no body, but analyze the bodies of those that do.
-//        if (body != null) {
-//            body.analyze(log, table, this, false);
-//        }
-//    }
+    public void analyze(Log log, SymbolTable table, Function owner, boolean inLoop) {
+
+        // Some functions have no body, but analyze the bodies of those that do.
+        if (body != null) {
+            body.analyze(log, table, this, false);
+        }
+    }
 
     /**
      * Asserts that this function can be called with the given list of arguments. There have to be
@@ -96,9 +96,9 @@ public class Function extends Declaration {
         }
     }
 
-	public Type getReturnType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Type getReturnType() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

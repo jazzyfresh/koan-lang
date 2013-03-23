@@ -3,7 +3,7 @@ package edu.lmu.cs.xlg.koan.entities;
 /**
  * A Koan declaration.
  */
-public abstract class Declaration extends Entity {
+public abstract class Declaration extends Statement {
 
     private String name;
 

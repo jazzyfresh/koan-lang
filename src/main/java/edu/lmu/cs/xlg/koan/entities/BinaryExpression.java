@@ -39,14 +39,14 @@ public class BinaryExpression extends Expression {
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
         left.analyze(log, table, function, inLoop);
         right.analyze(log, table, function, inLoop);
-       
+
         // integer op integer (for exponential)
         if (op.matches("**")) {
-        	left.assertArithmetic("**", log);
-        	right.assertArithmetic("**", log);
-        	type = (left.type == Type.INTEGER || right.type == Type.INTEGER)
-        		? Type.INTEGER : Type.INTEGER;
-        
+            left.assertArithmetic("**", log);
+            right.assertArithmetic("**", log);
+            type = (left.type == Type.INTEGER || right.type == Type.INTEGER)
+                ? Type.INTEGER : Type.INTEGER;
+
         // integer op integer (for arithmetic op)
         } else if (op.matches("[-+*/]")) {
             left.assertArithmetic(op, log);
@@ -69,7 +69,7 @@ public class BinaryExpression extends Expression {
                 left.assertArithmetic(op, log);
                 right.assertArithmetic(op, log);
             }
-            type = Type.B00L;
+            type = Type.BOOL;
 
         // string concat
         } else if (op.matches("+")) {
@@ -82,14 +82,14 @@ public class BinaryExpression extends Expression {
             if (!(left.isCompatibleWith(right.type) || right.isCompatibleWith(left.type))) {
                 log.error("eq.type.error", op, left.type.getName(), right.type.getName());
             }
-            type = Type.B00L;
+            type = Type.BOOL;
 
         // bool ANALSO bool
         // bool ORELSE bool
         } else if (op.matches("ANALSO|ORELSE")) {
             left.assertBoolean(op, log);
             right.assertBoolean(op, log);
-            type = Type.B00L;
+            type = Type.BOOL;
         }
     }
 }

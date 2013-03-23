@@ -20,7 +20,7 @@ public abstract class Expression extends Entity {
     /**
      * Performs semantic analysis on the expression.
      */
-    //public abstract void analyze(Log log, SymbolTable table, Function function, boolean inLoop);
+    public abstract void analyze(Log log, SymbolTable table, Function function, boolean inLoop);
 
     /**
      * Returns whether this expression is compatible with (that is, "can be assigned to an object
@@ -29,7 +29,7 @@ public abstract class Expression extends Entity {
     //note that these search || are way sexier than if staetments
     public boolean isCompatibleWith(Type testType) {
         return this.type == testType
-            || this.type == Type.INTEGER //&& testType == Type.NUMBER 
+            || this.type == Type.INTEGER //&& testType == Type.NUMBER
             || this.type == Type.NULL_TYPE && testType.isReference()
             || this.type == Type.ARBITRARY
             || testType == Type.ARBITRARY;
@@ -63,7 +63,7 @@ public abstract class Expression extends Entity {
     }
 
     void assertBoolean(String context, Log log) {
-        if (!(type == Type.B00L)) {
+        if (!(type == Type.BOOL)) {
             log.error("non.boolean", context, type);
         }
     }
@@ -86,7 +86,7 @@ public abstract class Expression extends Entity {
         }
     }
 
-   
+
     void assertArrayOrString(String context, Log log) {
         if (!(type == Type.STRING || type instanceof ArrayType)) {
             log.error("non.array.or.string", context);

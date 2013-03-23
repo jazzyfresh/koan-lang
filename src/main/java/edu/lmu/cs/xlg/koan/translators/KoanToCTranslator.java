@@ -1,4 +1,4 @@
-package src.main.java.edu.lmu.cs.xlg.koan.translators;
+package edu.lmu.cs.xlg.koan.translators;
 
 import java.io.PrintWriter;
 
@@ -27,7 +27,7 @@ public class KoanToCTranslator {
     /**
      * Translates the given script, writing the target C program to the given writer.
      */
-/*	
+/*
     public static void translate(Script script, PrintWriter writer) {
 //        new KoanToCTranslator(writer).translateScript(script);
     }

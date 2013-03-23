@@ -15,5 +15,5 @@ public abstract class Statement extends Entity {
      * @param function the innermost enclosing function containing this statement
      * @param loop whether or not this statement is in a loop
      */
-    //public abstract void analyze(Log log, SymbolTable table, Function function, boolean inLoop);
+    public abstract void analyze(Log log, SymbolTable table, Function function, boolean inLoop);
 }
