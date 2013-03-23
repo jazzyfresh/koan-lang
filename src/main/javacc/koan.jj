@@ -3,7 +3,8 @@
  *
  *  JavaCC specification for Koan.
  */
-
+//DG - One option to solve parser errs is to change each String t that has a getType returned to it is to make them Types
+//instead of Strings
 options {
   UNICODE_INPUT = true;
   STATIC = false;
@@ -85,6 +86,8 @@ Statement parseStmt(): {
         | s = parsePrintStmt()
         | s = parseIfStmt()
         | s = parseLoopStmt()
+        //Expression is not a statement, though derived as such in EBNF
+        //maybe use the simplestmnt as roflkode does
         | s = parseExp()
     )
     (<BR>)
@@ -104,11 +107,12 @@ Statement parseDec(): {
 }
 
 Variable parseVarDec(): {
-    String t = null;
+    Type t = null;
     Token v = null;
     Expression e = null;
     boolean constant = false;
 } {
+    // t is declared Statement, parseType returns Type
     (LOOKAHEAD (parseType() <ID>) t = parseType())?
     v = <ID>
     (":=" e = parseExp())?
@@ -121,6 +125,7 @@ Variable parseConstDec(): {
     Expression e = null;
     boolean constant = true;
 } {
+    
     (LOOKAHEAD (parseType() <ID> "!") t = parseType())?
     v = <ID>
     (":=" e = parseExp())?
