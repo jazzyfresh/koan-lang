@@ -3,6 +3,7 @@ package edu.lmu.cs.xlg.koan.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import edu.lmu.cs.xlg.util.Log;
 
 /**
@@ -12,6 +13,7 @@ public class Block extends Entity {
 
     private List<Statement> statements;
     private SymbolTable table = null;
+    private List<Type> types;
 
     /**
      * Creates a block.
@@ -41,7 +43,7 @@ public class Block extends Entity {
      */
     public List<Type> getTypes() {
         List<Type> result = new ArrayList<Type>();
-        for (Statement s: statements) {
+        for (Statement s : statements) {
             if (s instanceof Type) {
                 result.add((Type)s);
             }
