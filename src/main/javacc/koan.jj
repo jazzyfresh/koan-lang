@@ -87,7 +87,7 @@ Statement parseStmt(): {
         | s = parseIfStmt()
         | s = parseLoopStmt()
         //Expression is not a statement, though derived as such in EBNF
-        //maybe use the simplestmnt as roflkode does
+        //maybe use the simplestmnt as roflkode does... heirarchy matter
         | s = parseExp()
     )
     (<BR>)
@@ -116,7 +116,7 @@ Variable parseVarDec(): {
     (LOOKAHEAD (parseType() <ID>) t = parseType())?
     v = <ID>
     (":=" e = parseExp())?
-    {return new Variable(v.image, t, e, constant);}
+    {return new Variable(v.image, t.toString(), e, constant);}
 }
 
 Variable parseConstDec(): {
@@ -413,17 +413,17 @@ Entity parseBool(): {} { "T" | "F" }
 
 Entity parseArray(): {} {
     "[" ( parseExp() )* ( "," parseExp() )* "]"
-    {return new Entity();}
+    {return new ArrayExpression();}
 }
 
 Entity parseArrayRef(): {} {
     <ID> "[" ( LOOKAHEAD(2) parseExp() | parseRange() ) "]"
-    { return new Entity(); }
+    { return new ArrayExpression(); }
 }
 
 Entity parseObject(): {} {
     <ID> "{" ( <ID> ":" parseExp() "," )+ "}"
-    { return new Entity(); }
+    { return new ObjectExpression(); }
 }
 
 Entity parseFunCall(): {
