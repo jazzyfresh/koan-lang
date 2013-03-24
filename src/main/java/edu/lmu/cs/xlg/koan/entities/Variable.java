@@ -2,9 +2,7 @@ package edu.lmu.cs.xlg.koan.entities;
 
 import edu.lmu.cs.xlg.util.Log;
 
-/**
- * A Koan variable declaration.
- */
+
 public class Variable extends Declaration {
 
     private String typename;
@@ -39,7 +37,11 @@ public class Variable extends Declaration {
         this.type = type;
     }
 
-    public Expression getInitializer() {
+//    public Variable(String image, Type t, Expression e, boolean constant2) {
+//		// TODO Auto-generated constructor stub
+//	}
+
+	public Expression getInitializer() {
         return initializer;
     }
 

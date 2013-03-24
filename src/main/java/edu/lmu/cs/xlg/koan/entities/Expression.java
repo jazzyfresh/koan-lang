@@ -5,7 +5,7 @@ import edu.lmu.cs.xlg.util.Log;
 /**
  * A Koan expression.
  */
-public abstract class Expression extends Entity {
+public abstract class Expression extends Statement {
 
     // As Koan is statically typed, we can compute and store the type at compile time.
     Type type;
@@ -26,7 +26,7 @@ public abstract class Expression extends Entity {
      * Returns whether this expression is compatible with (that is, "can be assigned to an object
      * of") a given type.
      */
-    //note that these search || are way sexier than if staetments
+    //note that these search || are way sexier than if statements
     public boolean isCompatibleWith(Type testType) {
         return this.type == testType
             || this.type == Type.INTEGER //&& testType == Type.NUMBER

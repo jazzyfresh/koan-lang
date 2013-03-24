@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Superclass for all entities in the compiler.
+ * Superclass for all Koan entities in the compiler.
  *
  * The front end of the compiler produces an abstract syntax tree which is then decorated (or
  * transformed) into a semantic graph. The nodes this structure are called entities. The hierarchy
@@ -24,46 +24,27 @@ import java.util.Set;
  *     Block
  *         Script
  *     Statement
+ *         Expression
+ *             Literal
+ *                 MuLiteral (To add 3/23)
+ *                 Number
+ *                 BooleanLiteral
+ *                 StringLiteral (To add 3/23)
+ *             BinaryExpression
+ *             ObjectExpression     
  *         Declaration
  *             Variable
+ *             Constant
  *             Type
  *                 ArrayType
- *                 BukkitType
+ *                 ObjectType
  *             Function
- *         YoStatement
- *         FacepalmStatement
- *         UpzorzStatement
- *         NerfzorzStatement
+ *         PrintStatement
  *         AssignmentStatement
- *         GtfoStatement
- *         AgainStatement
- *         HerezStatement
- *         DiafStatement
- *         GimmehStatement
- *         BrbStatement
- *         CallStatement
- *         ModifiedSimpleStatement
- *         ConditionalStatement
- *         SwitchStatement
+ *             SwapStatement
+ *         IfStatement
  *         LoopStatement
- *         TryStatement
- *     Expression
- *         Literal
- *             NoobLiteral
- *             IntegerLiteral
- *             NumberLiteral
- *             BooleanLiteral
- *             KarLiteral
- *             StringLiteral
- *         VariableExpression
- *             SimpleVariableExpression
- *             IndexVariableExpression
- *             PropertyVariableExpression
- *             CallExpression
- *         UnaryExpression
- *         BinaryExpression
- *         ArrayExpression
- *         BukkitExpression
+
  * </pre>
  *
  * Each concrete entity class has a constructor to fill in the "syntactic" part of the entity. For
