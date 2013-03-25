@@ -5,20 +5,14 @@ import edu.lmu.cs.xlg.util.Log;
 /**
  * A Koan numeric literal expression.
  */
-public class Number extends Expression {
+public class Number extends Literal {
 
-    private int value;
-
-    public Number(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
+    public Number(String lexeme) {
+        super(lexeme);
     }
 
     @Override
-    public void analyze(SymbolTable table, Log log) {
+    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
         // TODO - Nothing for now, but we might want later to check for the literal being
         // too large.  Something to think about.
     }

@@ -51,8 +51,8 @@ public class SymbolTable extends Entity {
       //      return Type.NUMBR;
         } else if ("OBJECT".equals(name)) {
             return Type.OBJECT;
-        } else if ("B00L".equals(name)) {
-            return Type.B00L;
+        } else if ("BOOL".equals(name)) {
+            return Type.BOOL;
         }
 
         if (name.endsWith(" LIST")) {

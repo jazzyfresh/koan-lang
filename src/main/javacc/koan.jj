@@ -3,7 +3,8 @@
  *
  *  JavaCC specification for Koan.
  */
-
+//DG - One option to solve parser errs is to change each String t that has a getType returned to it is to make them Types
+//instead of Strings
 options {
   UNICODE_INPUT = true;
   STATIC = false;
@@ -39,24 +40,24 @@ public class Parser {
 
 PARSER_END(Parser)
 
-SKIP: { 
-    < (" " | "\t" | "\r" | "\n")+ > 
+SKIP: {
+    < (" " | "\t" | "\r" | "\n")+ >
     | <"c:" (~["\n","\r"])*>
 }
 
 TOKEN: {
     "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":="
     | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:"
-    | "8:" | "->"  | "T" | "F"   
-    
+    | "8:" | "->"  | "T" | "F"
+
     | <NUMTYPE: "#">
     | <STRTYPE: "$">
     | <BOOLTYPE: "^">
     | <FUNTYPE: "f">
     | <REGEXTYPE: "@">
     | <NULLTYPE: "~">
-    
-    | <INTLIT: (["0"-"9"])+> 
+
+    | <INTLIT: (["0"-"9"])+>
     | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
     | <CHARLIT: (["A"-"Z", "a"-"z"])>
     | <BR: ";">
@@ -67,8 +68,8 @@ TOKEN: {
 Script parseScript(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
-} { 
-    (<EMPTYLINE>)* 
+} {
+    (<EMPTYLINE>)*
     (s = parseStmt() {statements.add(s);})+
     (<EMPTYLINE>)*
     <EOF>
@@ -85,6 +86,8 @@ Statement parseStmt(): {
         | s = parsePrintStmt()
         | s = parseIfStmt()
         | s = parseLoopStmt()
+        //Expression is not a statement, though derived as such in EBNF
+        //maybe use the simplestmnt as roflkode does... heirarchy matter
         | s = parseExp()
     )
     (<BR>)
@@ -94,25 +97,26 @@ Statement parseStmt(): {
 
 Statement parseDec(): {
     Statement s;
-} { 
+} {
     (
         LOOKAHEAD(2)
-          s = parseVarDec() 
+          s = parseVarDec()
         | s = parseConstDec()
-    ) 
+    )
     {return s;}
 }
 
 Variable parseVarDec(): {
-    String t = null;
+    Type t = null;
     Token v = null;
     Expression e = null;
     boolean constant = false;
-} { 
-    (LOOKAHEAD (parseType() <ID>) t = parseType())? 
+} {
+    // t is declared Statement, parseType returns Type
+    (LOOKAHEAD (parseType() <ID>) t = parseType())?
     v = <ID>
     (":=" e = parseExp())?
-    {return new Variable(v.image, t, e, constant);}
+    {return new Variable(v.image, t.toString(), e, constant);}
 }
 
 Variable parseConstDec(): {
@@ -120,8 +124,9 @@ Variable parseConstDec(): {
     Token v = null;
     Expression e = null;
     boolean constant = true;
-} { 
-    (LOOKAHEAD (parseType() <ID> "!") t = parseType())? 
+} {
+    
+    (LOOKAHEAD (parseType() <ID> "!") t = parseType())?
     v = <ID>
     (":=" e = parseExp())?
     {return new Variable(v.image, t, e, constant);}
@@ -136,11 +141,11 @@ Entity parseVarRef(): {} {
 Type parseType(): {
     Token i;
     StringBuilder builder = new StringBuilder();
-} { 
-    (   i = <NUMTYPE> 
-        | i = <STRTYPE> 
-        | i = <BOOLTYPE> 
-        | i = <FUNTYPE> 
+} {
+    (   i = <NUMTYPE>
+        | i = <STRTYPE>
+        | i = <BOOLTYPE>
+        | i = <FUNTYPE>
         | i = <REGEXTYPE>
         | i = <NULLTYPE>
     )
@@ -158,7 +163,7 @@ Statement parseAssignment(): {
     Expression e = null;
 } {
     (
-        LOOKAHEAD(2) 
+        LOOKAHEAD(2)
           ( <ID> ":=" parseExp() )
           v = <ID>
           ":="
@@ -175,17 +180,17 @@ Statement parseSwap(): {
     VariableReference v2 = null;
 } {
     (
-        v1 = <ID> 
-        ":=:" 
+        v1 = <ID>
+        ":=:"
         v2 = <ID>
-    )  
+    )
     {return new SwapStatement(v1, v2);}
 }
 
 
 Statement parsePrintStmt(): {
     Expression e = null;
-} { 
+} {
     ("p:" e = parseExp())
     {return new PrintStatement(e);}
 }
@@ -200,16 +205,16 @@ Statement parseIfStmt(): {
     Statement elseStatement = null;
 } {
     (
-        "??:" e = parseExp() "?" s = parseStmt() 
+        "??:" e = parseExp() "?" s = parseStmt()
         { arms.add(new IfStatement.Arm(e,s)); }
         (
-            LOOKAHEAD({ getToken(3).image == "?" }) 
-            ":" e = parseExp() "?" elseStatement = parseStmt() 
+            LOOKAHEAD({ getToken(3).image == "?" })
+            ":" e = parseExp() "?" elseStatement = parseStmt()
             { arms.add(new IfStatement.Arm(e, elseStatement)); }
         )*
         (
             LOOKAHEAD({ getToken(2).kind == ":" })
-            ":" elseStatement = parseStmt() 
+            ":" elseStatement = parseStmt()
             { arms.add(new IfStatement.Arm(null, elseStatement)); }
         )?
     )
@@ -217,11 +222,11 @@ Statement parseIfStmt(): {
 
 Statement parseLoopStmt(): {
     Statement s;
-} { 
+} {
     (
-	    LOOKAHEAD(2)
-	      s = parseForLoop() 
-	    | s = parseInfiniteLoop()
+      LOOKAHEAD(2)
+        s = parseForLoop()
+      | s = parseInfiniteLoop()
     )
     { return s; }
 }
@@ -232,55 +237,55 @@ Statement parseForLoop(): {
     Function executeFunction = null;
     Block executeBlock = null;
     String blockParam = null;
-} { 
+} {
     (
-        "8:" 
-        ( 
-            iterationValues = parseRange() 
-            | iterationValues = parseArray() 
+        "8:"
+        (
+            iterationValues = parseRange()
+            | iterationValues = parseArray()
             | iterationValues = parseVarRef()
         )
-        ( 
+        (
             executeFunction = parseAnonFun()
-            | ( 
+            | (
                 blockParam = <ID>
-                executeBlock = parseBlock() 
+                executeBlock = parseBlock()
             )
         )
     )
-    { return new ForLoop(iterationValues, executeFunction, executeBlock, blockParam); } 
+    { return new ForLoop(iterationValues, executeFunction, executeBlock, blockParam); }
 }
 
 Statement parseInfiniteLoop(): {
     Block executeBlock;
-} { 
+} {
     ("8:" executeBlock = parseBlock())
-    { return new InfiniteLoop(executeBlock); } 
+    { return new InfiniteLoop(executeBlock); }
 }
 
 Block parseBlock(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
-} { 
-    "{" ( s = parseStmt() {statemesnts.add(s);} )* "}"
+} {
+    "{" ( s = parseStmt() {statements.add(s);} )* "}"
     { return new Block(statements); }
 }
 
 Expression parseExp(): {
     Expression e1;
     Expression e2;
-} { 
+} {
     e1 = parseExp1()
     ("||" e2 = parseExp2() {e1 = new BinaryExpression(e1, "||", e2);})*
-    { return e1; } 
+    { return e1; }
 }
 
 Expression parseExp1(): {
     Expression e1;
     Expression e2;
-} { 
-    e1 = parseExp2() 
-    ( "&&" e2 = parseExp2() {e1 = new BinaryExpression(e1, "&&", e2);} )* 
+} {
+    e1 = parseExp2()
+    ( "&&" e2 = parseExp2() {e1 = new BinaryExpression(e1, "&&", e2);} )*
     { return e1; }
 }
 
@@ -288,12 +293,12 @@ Expression parseExp2(): {
     String op;
     Expression e1;
     Expression e2;
-} { 
-    e1 = parseExp3() 
-    ( 
+} {
+    e1 = parseExp3()
+    (
         op = parseRelOp()
-        e2 = parseExp3() 
-        { e1 = new BinaryExpressino(e1, op, e2); }
+        e2 = parseExp3()
+        { e1 = new BinaryExpression(e1, op, e2); }
     )?
     { return e1; }
 }
@@ -302,11 +307,11 @@ Expression parseExp3(): {
     String op;
     Expression e1;
     Expression e2;
-} { 
-    e1 = parseExp4() 
-    ( 
-        op = parseExpnOp() 
-        e2 = parseExp4() 
+} {
+    e1 = parseExp4()
+    (
+        op = parseExpnOp()
+        e2 = parseExp4()
         { e1 = new BinaryExpression(e1, op, e2); }
     )?
     { return e1; }
@@ -316,9 +321,9 @@ Expression parseExp4(): {
     String op;
     Expression e1;
     Expression e2;
-} { 
-    e1 = parseExp5() 
-    ( 
+} {
+    e1 = parseExp5()
+    (
         //LOOKAHEAD({getToken(2).image == ("*" | "/" | "%")})
         op = parseMulOp()
         e2 = parseExp4()
@@ -331,11 +336,11 @@ Expression parseExp5(): {
     String op;
     Expression e1;
     Expression e2;
-} { 
-    e1 = parseExp6() 
-    ( 
+} {
+    e1 = parseExp6()
+    (
         //LOOKAHEAD({getToken(2).image == ("+" | "-" )})
-        op = parseAddOp() 
+        op = parseAddOp()
         e2 = parseExp5()
         { e1 = new BinaryExpression(e1, op, e2); }
     )*
@@ -348,84 +353,84 @@ Expression parseExp6(): {
     Token t;
 } {
     (
-	    e = parseLiteral()
-	    | e = parseArray() 
-	    | (
-	        LOOKAHEAD({getToken(2).image == "{"}) 
-	        e = parseObject()
-	      )
-	    | (
-	        LOOKAHEAD({getToken(2).image == "("}) 
-	        e = parseFunCall()
-	      ) 
-	    | (
-	        LOOKAHEAD({getToken(2).image == "["}) 
-	        e = parseArrayRef()
-	      ) 
-	    | e = parseVarRef() 
+      e = parseLiteral()
+      | e = parseArray()
+      | (
+          LOOKAHEAD({getToken(2).image == "{"})
+          e = parseObject()
+        )
+      | (
+          LOOKAHEAD({getToken(2).image == "("})
+          e = parseFunCall()
+        )
+      | (
+          LOOKAHEAD({getToken(2).image == "["})
+          e = parseArrayRef()
+        )
+      | e = parseVarRef()
     )
     { return e;}
 }
 
 String parseRelOp():  {
-    String s;
-} { 
+    Token s;
+} {
     s = "<" | s = "<=" | s = "==" | s = "!=" | s = ">=" | s = ">"
-    { return s; }
+    { return s.image; }
 }
 
 String parseExpnOp(): {
-    String s;
-} { 
+    Token s;
+} {
     s = "**"
-    { return s; }
+    { return s.image; }
 }
 
 String parseMulOp():  {
-    String s;
-} { 
+    Token s;
+} {
     s = "*" | s = "/" | s = "%"
-    { return s; }
+    { return s.image; }
 }
 
 String parseAddOp():  {
-    String s;
-} { 
+    Token s;
+} {
     s = "+" | s = "-"
-    { return s; }
+    { return s.image; }
 }
 
-Literal parseLiteral(): {} { 
+Literal parseLiteral(): {} {
    LOOKAHEAD(3)
-   parseBool() 
-   | <INTLIT> 
-   | <STRING> 
+   parseBool()
+   | <INTLIT>
+   | <STRING>
    | <CHARLIT>
 }
 
 Entity parseBool(): {} { "T" | "F" }
 
 
-Entity parseArray(): {} { 
-    "[" ( parseExp() )* ( "," parseExp() )* "]" 
-    {return new Entity();}
+Entity parseArray(): {} {
+    "[" ( parseExp() )* ( "," parseExp() )* "]"
+    {return new ArrayExpression();}
 }
 
-Entity parseArrayRef(): {} { 
-    <ID> "[" ( LOOKAHEAD(2) parseExp() | parseRange() ) "]" 
-    { return new Entity(); }
+Entity parseArrayRef(): {} {
+    <ID> "[" ( LOOKAHEAD(2) parseExp() | parseRange() ) "]"
+    { return new ArrayExpression(); }
 }
 
-Entity parseObject(): {} { 
+Entity parseObject(): {} {
     <ID> "{" ( <ID> ":" parseExp() "," )+ "}"
-    { return new Entity(); }
+    { return new ObjectExpression(); }
 }
 
 Entity parseFunCall(): {
-} { 
-    ( 
-        ( <ID> "(" parseArgs() ")" ) 
-        | parseAnonFun() 
+} {
+    (
+        ( <ID> "(" parseArgs() ")" )
+        | parseAnonFun()
     )
     { return new Entity(); }
 }
@@ -433,10 +438,10 @@ Entity parseFunCall(): {
 Function parseAnonFun(): {
     List<Variable> params = new ArrayList<Variable>();
     Block body = null;
-} { 
+} {
     (
-        "f:" 
-        ("(" parseParams(params) ")" "->")? 
+        "f:"
+        ("(" parseParams(params) ")" "->")?
         body = parseBlock()
     )
     {return new Function(params, body);}
@@ -445,9 +450,9 @@ Function parseAnonFun(): {
 void parseParams(List<Variable> params): {
     String t;
     Token p;
-} { 
-    ( 
-        t = "INFERENCED" p = <ID> 
+} {
+    (
+        t = "INFERENCED" p = <ID>
         {params.add(new Variable(p.image, t, null, false));}
         (
             "," t = "INFERENCED" p = <ID>
@@ -456,13 +461,13 @@ void parseParams(List<Variable> params): {
     )
 }
 
-Entity parseRegex(): {} { 
-    <ID> ":=" "/" <STRING> "/" 
+Entity parseRegex(): {} {
+    <ID> ":=" "/" <STRING> "/"
     { return new Entity(); }
 }
 
 Entity parseArgs(): {} {
-    parseExp5() ( "," parseExp5() )* 
+    parseExp5() ( "," parseExp5() )*
     { return new Entity(); }
 }
 

@@ -20,9 +20,6 @@ public class Variable extends Declaration {
      */
     public static final Variable ARBITRARY = new Variable("<arbitrary>", Type.ARBITRARY);
 
-    /**
-     * Constructs a variable.
-     */
     public Variable(String name, String typename, Expression initializer, boolean constant) {
         super(name);
         this.typename = typename;
@@ -42,30 +39,18 @@ public class Variable extends Declaration {
         this.type = type;
     }
 
-    /**
-     * Returns the initializer.
-     */
     public Expression getInitializer() {
         return initializer;
     }
 
-    /**
-     * Returns the typename.
-     */
     public String getTypename() {
         return typename;
     }
 
-    /**
-     * Returns the type of this variable.
-     */
     public Type getType() {
         return type;
     }
 
-    /**
-     * Returns whether this variable is readonly.
-     */
     public boolean isConstant() {
         return constant;
     }
@@ -74,33 +59,34 @@ public class Variable extends Declaration {
         return level == null ? 0 : level;
     }
 
-    /**
-     * Analyzes this variable.
-     */
     @Override
     public void analyze(Log log, SymbolTable table, Function owner, boolean inLoop) {
-        level = owner == null ? 0 : owner.getLevel();
 
-        // If initializer is not present, then there had better be a type.
-        if (initializer == null && typename == null) {
-            log.error("intializer.or.type.required");
-            type = Type.ARBITRARY;
-        }
+        // TODoO - Implement this method
 
-        // The declaration may or may not have a type name.  Look it up if it does.
-        if (typename != null) {
-            type = table.lookupType(typename, log);
-        }
 
-        // If an initializer is present, analyze it and check types.
-        if (initializer != null) {
-            initializer.analyze(log, table, owner, inLoop);
-            if (typename == null) {
-                // Here is the type inference part
-                type = initializer.type;
-            } else {
-                initializer.assertAssignableTo(type, log, "initializer.type.mismatch");
-            }
-        }
+//        level = owner == null ? 0 : owner.getLevel();
+//
+//        // If initializer is not present, then there had better be a type.
+//        if (initializer == null && typename == null) {
+//            log.error("intializer.or.type.required");
+//            type = Type.ARBITRARY;
+//        }
+//
+//        // The declaration may or may not have a type name.  Look it up if it does.
+//        if (typename != null) {
+//            type = table.lookupType(typename, log);
+//        }
+//
+//        // If an initializer is present, analyze it and check types.
+//        if (initializer != null) {
+//            initializer.analyze(log, table, owner, inLoop);
+//            if (typename == null) {
+//                // Here is the type inference part
+//                type = initializer.type;
+//            } else {
+//                initializer.assertAssignableTo(type, log, "initializer.type.mismatch");
+//            }
+//        }
     }
 }

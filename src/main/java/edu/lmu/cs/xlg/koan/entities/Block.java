@@ -12,6 +12,7 @@ public class Block extends Entity {
 
     private List<Statement> statements;
     private SymbolTable table = null;
+    private List<Type> types;
 
     /**
      * Creates a block.
@@ -41,7 +42,7 @@ public class Block extends Entity {
      */
     public List<Type> getTypes() {
         List<Type> result = new ArrayList<Type>();
-        for (Statement s: statements) {
+        for (Statement s : statements) {
             if (s instanceof Type) {
                 result.add((Type)s);
             }
@@ -130,11 +131,13 @@ public class Block extends Entity {
                 table.insert((Variable)s, log);
             }
 
-            if (s instanceof LoopStatement) {
-                table.insert((LoopStatement)s, log);
-            }
 
             s.analyze(log, table, owner, inLoop);
         }
+    }
+    //Added for ToCGenerator
+    public Object getDeclarations() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

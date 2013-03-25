@@ -3,11 +3,11 @@ package edu.lmu.cs.xlg.koan.entities;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A Roflkode expression.
+ * A Koan expression.
  */
 public abstract class Expression extends Entity {
 
-    // As Roflkode is statically typed, we can compute and store the type at compile time.
+    // As Koan is statically typed, we can compute and store the type at compile time.
     Type type;
 
     /**
@@ -26,10 +26,11 @@ public abstract class Expression extends Entity {
      * Returns whether this expression is compatible with (that is, "can be assigned to an object
      * of") a given type.
      */
+    //note that these search || are way sexier than if staetments
     public boolean isCompatibleWith(Type testType) {
         return this.type == testType
-            || this.type == Type.INT && testType == Type.NUMBR
-            || this.type == Type.N00B_TYPE && testType.isReference()
+            || this.type == Type.INTEGER //&& testType == Type.NUMBER
+            || this.type == Type.NULL_TYPE && testType.isReference()
             || this.type == Type.ARBITRARY
             || testType == Type.ARBITRARY;
     }
@@ -44,32 +45,32 @@ public abstract class Expression extends Entity {
     }
 
     void assertArithmetic(String context, Log log) {
-        if (!(type == Type.INT || type == Type.NUMBR)) {
+        if (!(type == Type.INTEGER /*|| type == Type.NUMBR*/)) {
             log.error("non.arithmetic", context);
         }
     }
 
     void assertArithmeticOrChar(String context, Log log) {
-        if (!(type == Type.INT || type == Type.NUMBR || type == Type.KAR)) {
+        if (!(type == Type.INTEGER /* || type == Type.NUMBR */ )) {
             log.error("non.arithmetic.or.char", context);
         }
     }
 
     void assertInteger(String context, Log log) {
-        if (!(type == Type.INT)) {
+        if (!(type == Type.INTEGER)) {
             log.error("non.integer", context);
         }
     }
 
     void assertBoolean(String context, Log log) {
-        if (!(type == Type.B00L)) {
+        if (!(type == Type.BOOL)) {
             log.error("non.boolean", context, type);
         }
     }
 
-    void assertChar(String context, Log log) {
-        if (!(type == Type.KAR)) {
-            log.error("non.char", context);
+    void assertFun(String context, Log log) {
+        if (!(type == Type.ANONFUN)) {
+            log.error("non.anonfun", context);
         }
     }
 
@@ -80,13 +81,14 @@ public abstract class Expression extends Entity {
     }
 
     void assertString(String context, Log log) {
-        if (!(type == Type.YARN)) {
+        if (!(type == Type.STRING)) {
             log.error("non.string", context);
         }
     }
 
+
     void assertArrayOrString(String context, Log log) {
-        if (!(type == Type.YARN || type instanceof ArrayType)) {
+        if (!(type == Type.STRING || type instanceof ArrayType)) {
             log.error("non.array.or.string", context);
         }
     }

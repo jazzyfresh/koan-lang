@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import edu.lmu.cs.xlg.koan.entities.Program;
+import edu.lmu.cs.xlg.koan.entities.Script;
 
 /**
  * A unit test for the front end of the Koan compiler. It reads all the ".koan" files in the test
@@ -28,8 +28,8 @@ import edu.lmu.cs.xlg.koan.entities.Program;
 @RunWith(Parameterized.class)
 public class FrontEndTest {
 
-    private static final String TEST_DIRECTORY = "src/test/iki";
-    private static final String EXTENSION = ".iki";
+    private static final String TEST_DIRECTORY = "src/test/koan";
+    private static final String EXTENSION = ".koan";
 
     private String filename;
 
@@ -72,9 +72,9 @@ public class FrontEndTest {
 
             } else if (filename.startsWith("semerror")) {
                 // Expect no syntax errors, but one or more semantic errors
-                Program program = compiler.checkSyntax(reader);
+                Script script = compiler.checkSyntax(reader);
                 assertTrue("Supposed to have NO syntax errors", compiler.getErrorCount() == 0);
-                compiler.checkSemantics(program);
+                compiler.checkSemantics(script);
                 assertTrue("Supposed to have semantic errors", compiler.getErrorCount() != 0);
 
             } else {

@@ -8,7 +8,7 @@ import edu.lmu.cs.xlg.util.Log;
 public class Type extends Declaration {
 
     public static final Type INTEGER = new Type("#");
-    public static final Type B00L = new Type("^");
+    public static final Type BOOL = new Type("^");
     public static final Type OBJECT = new Type("o");
     public static final Type STRING = new Type("$");
     public static final Type ANONFUN = new Type("f");
@@ -69,4 +69,5 @@ public class Type extends Declaration {
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
         // Intentionally empty.
     }
+
 }

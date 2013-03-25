@@ -43,4 +43,9 @@ public class AssignmentStatement extends Statement {
         left.assertWritable(log);
         right.assertAssignableTo(left.type, log, "assignment.type.error");
     }
+
+    public Expression getVariableReference() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

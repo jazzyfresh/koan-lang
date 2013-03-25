@@ -3,6 +3,7 @@ package edu.lmu.cs.xlg.koan.entities;
 import java.util.List;
 
 import edu.lmu.cs.xlg.util.Log;
+import edu.lmu.cs.xlg.koan.entities.Statement;
 
 /**
  * A koan if statement.  Like most languages, it contains a list of one or more arms

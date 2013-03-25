@@ -19,7 +19,7 @@ public class Function extends Declaration {
      * Creates a function object.
      */
     public Function(List<Variable> parameters, Block body) {
-    	super("ANONFUN");
+        super("ANONFUN");
         this.parameters = parameters;
         this.body = body;
     }
@@ -95,4 +95,10 @@ public class Function extends Declaration {
             }
         }
     }
+
+    public Type getReturnType() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

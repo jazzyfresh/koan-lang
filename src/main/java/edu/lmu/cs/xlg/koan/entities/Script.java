@@ -5,9 +5,7 @@ import java.util.List;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A Koan script. A script is really just a top-level block. Technically a script contains
- * imports, but imports are really handled by a preprocessor. At the syntactic level, scripts are
- * statement sequences, period.
+ * A Koan script. A script is really just a top-level block
  */
 public class Script extends Block {
 
