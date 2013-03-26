@@ -480,12 +480,13 @@ ArrayExpression parseArrayExp(): {
 }
 
 Entity parseFunCall(): {
+    List<Expression> list = new ArrayList<Expression>();
 } {
     (
-        ( <ID> "(" parseArgs() ")" )
+        ( <ID> "(" list = parseArgs() ")" )
         | parseAnonFun()
     )
-    { return new Function(); }
+    { return new Function(list); }
 }
 
 Function parseAnonFun(): {
@@ -513,16 +514,22 @@ void parseParams(List<Variable> params): {
         )*
     )
 }
-
+/*
 Entity parseRegex(): {} {
     <ID> ":=" "/" <STRING> "/"
     { return new Entity(); }
 }
+*/
 
-Entity parseArgs(): {} {
-    parseExp5() ( "," parseExp5() )*
-    { return new Entity(); }
+List parseArgs(): {
+    List<Expression> expressions = new ArrayList<Expression>();
+    Expression e = null;
+} {
+    e = parseExp5() { expressions.add(e); }
+    ( "," parseExp5() { expressions.add(e); })*
+    { return expressions; }
 }
+
 /*
 Range parseRange(): {
     Expression lowerBound = null;
