@@ -327,7 +327,11 @@ Expression parseExp4(): {
 } {
     e1 = parseExp5()
     (
-        LOOKAHEAD({getToken(2).image == ("*" | "/" | "%")})
+        LOOKAHEAD({ 
+            getToken(2).image == "*"
+            | getToken(2).image == "/"
+            | getToken(2).image == "%"
+        })
         op = parseMulOp()
         e2 = parseExp4()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -342,7 +346,10 @@ Expression parseExp5(): {
 } {
     e1 = parseExp6()
     (
-        LOOKAHEAD({getToken(2).image == ("+" | "-" )})
+        LOOKAHEAD({ 
+            getToken(2).image == "+"
+            | getToken(2).image == "-"
+        })
         op = parseAddOp()
         e2 = parseExp5()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -357,7 +364,10 @@ Expression parseExp6(): {
 } {
     e1 = parseExp7()
     (
-        LOOKAHEAD({getToken(2).image == ("+" | "-" )})
+        LOOKAHEAD({ 
+            getToken(2).image == ".."
+            | getToken(2).image == "..."
+        })
         op = parseRangeOp()
         e2 = parseExp6()
         { e1 = new BinaryExpression(e1, op, e2); }
