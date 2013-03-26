@@ -238,7 +238,7 @@ Statement parseForLoop(): {
     Entity iterationValues = null;
     Function executeFunction = null;
     Block executeBlock = null;
-    String blockParam = null;
+    Token blockParam = null;
 } {
     (
         "8:"
@@ -255,7 +255,7 @@ Statement parseForLoop(): {
             )
         )
     )
-    { return new ForLoop(iterationValues, executeFunction, executeBlock, blockParam); }
+    { return new LoopStatement(iterationValues, executeFunction, executeBlock, blockParam.image); }
 }
 
 Statement parseInfiniteLoop(): {
