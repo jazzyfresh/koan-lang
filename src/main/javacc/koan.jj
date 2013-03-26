@@ -242,11 +242,13 @@ Statement parseForLoop(): {
 } {
     (
         "8:"
+        iterationValues = parseExp()
+        /*
         (
             iterationValues = parseRange()
             | iterationValues = parseArrayExp()
             | iterationValues = parseVarRef()
-        )
+        )*/
         (
             executeFunction = parseAnonFun()
             | (
@@ -326,7 +328,7 @@ Expression parseExp4(): {
 } {
     e1 = parseExp5()
     (
-        //LOOKAHEAD({getToken(2).image == ("*" | "/" | "%")})
+        LOOKAHEAD({getToken(2).image == ("*" | "/" | "%")})
         op = parseMulOp()
         e2 = parseExp4()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -341,7 +343,7 @@ Expression parseExp5(): {
 } {
     e1 = parseExp6()
     (
-        //LOOKAHEAD({getToken(2).image == ("+" | "-" )})
+        LOOKAHEAD({getToken(2).image == ("+" | "-" )})
         op = parseAddOp()
         e2 = parseExp5()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -350,6 +352,21 @@ Expression parseExp5(): {
 }
 
 Expression parseExp6(): {
+    String op;
+    Expression e1;
+    Expression e2;
+} {
+    e1 = parseExp7()
+    (
+        LOOKAHEAD({getToken(2).image == ("+" | "-" )})
+        op = parseRangeOp()
+        e2 = parseExp6()
+        { e1 = new BinaryExpression(e1, op, e2); }
+    )*
+    { return e1; }
+}
+
+Expression parseExp7(): {
     Expression e;
     Token t;
 } {
@@ -369,7 +386,7 @@ Expression parseExp6(): {
         )
       | e = parseVarRef()
     )
-    { return e;}
+    { return e; }
 }
 
 
@@ -399,6 +416,13 @@ String parseAddOp():  {
     Token s;
 } {
     s = "+" | s = "-"
+    { return s.image; }
+}
+
+String parseRangeOp():  {
+    Token s;
+} {
+    s = ".." | s = "..."
     { return s.image; }
 }
 
@@ -469,7 +493,7 @@ Entity parseArgs(): {} {
     parseExp5() ( "," parseExp5() )*
     { return new Entity(); }
 }
-
+/*
 Range parseRange(): {
     Expression lowerBound = null;
     Expression upperBound = null;
@@ -479,7 +503,7 @@ Range parseRange(): {
       (LOOKAHEAD({getToken(3).kind == Expression}) upperBound = parseExp())?
     { return new Range(lowerBound, upperBound); }
 }
-
+*/
 void S(): {} { E() <EOF>                                   }
 void E(): {} { LOOKAHEAD(2) <ID> ":=" E() | T() ( "+" T() )* }
 void T(): {} { F() ( "*" F() )*                              }
