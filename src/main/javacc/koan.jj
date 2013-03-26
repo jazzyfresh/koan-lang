@@ -235,7 +235,7 @@ Statement parseLoopStmt(): {
 
 Statement parseForLoop(): {
     String name = null;
-    ArrayType iterationValues = null;
+    Entity iterationValues = null;
     Function executeFunction = null;
     Block executeBlock = null;
     String blockParam = null;
@@ -244,6 +244,7 @@ Statement parseForLoop(): {
         "8:"
         (
             iterationValues = parseRange()
+            | iterationValues = parseArrayExp()
             | iterationValues = parseVarRef()
         )
         (
@@ -469,10 +470,14 @@ Entity parseArgs(): {} {
     { return new Entity(); }
 }
 
-Entity parseRange(): {} {
-      ( "..." | ".." ) parseExp()
-    | parseExp() ( "..." | ".." ) (LOOKAHEAD({getToken(3).kind == Expression}) parseExp())?
-    { return new Entity(); }
+Range parseRange(): {
+    Expression lowerBound = null;
+    Expression upperBound = null;
+} {
+      ( "..." | ".." ) upperBound = parseExp()
+    | lowerBound = parseExp() ( "..." | ".." ) 
+      (LOOKAHEAD({getToken(3).kind == Expression}) upperBound = parseExp())?
+    { return new Range(lowerBound, upperBound); }
 }
 
 void S(): {} { E() <EOF>                                   }
