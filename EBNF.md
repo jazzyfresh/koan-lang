@@ -40,16 +40,14 @@ Macrosyntax
     ARRAYREF      -->  ID '[' EXP | RANGE ']'
     OBJECT        -->  ID '{' (ID ':' EXP)(ID ':' EXP ',')* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
-    RANGE         -->  ('..' | '...') EXP 
-                       | EXP ('..' | '...')
-                       | EXP ('..' | '...') EXP
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
     EXP2          -->  EXP3 (RELOP EXP3)?
     EXP3          -->  EXP4 (EXPNOP EXP4)*
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
-    EXP6          -->  LIT | ID | ARRAY | OBJECT | PROCCALL  | ARRAYREF     
+    EXP6          -->  EXP7 (('..'|'...') EXP7)?
+    EXP7          -->  LIT | ID | ARRAY | OBJECT | PROCCALL  | ARRAYREF     
     EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
