@@ -14,7 +14,7 @@ public class ArrayType extends Type {
      * Constructs an array type for arrays with the given base type.
      */
     public ArrayType(Type baseType) {
-        super(baseType.getName() + " LIST");
+        super(baseType.getName() + " ARRAY");
         this.baseType = baseType;
     }
 

@@ -10,7 +10,14 @@ import edu.lmu.cs.xlg.util.Log;
 //Perhaps this should be abstract in a working parser?
 public  class VariableReference extends Expression {
 
-    /**
+	
+	String name;
+	
+    public VariableReference(String name) {
+		this.name = name;
+	}
+
+	/**
      * Returns whether or not this variable expression references a non read-only variable.
      */
 	//again, abstract?
@@ -28,8 +35,7 @@ public  class VariableReference extends Expression {
     }
 
 	@Override
-	public void analyze(Log log, SymbolTable table, Function function,
-			boolean inLoop) {
+	public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
 		// TODO Auto-generated method stub
 		
 	}
