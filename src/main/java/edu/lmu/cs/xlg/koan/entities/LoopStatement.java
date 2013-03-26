@@ -3,56 +3,16 @@ package edu.lmu.cs.xlg.koan.entities;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * A Roflkode loop statement.
+ * A Koan loop statement.
  */
 public abstract class LoopStatement extends Statement {
 
     private String loopType;
-    private Expression condition;
-    private String iterator;
-    private Expression start;
-    private Expression end;
-    private Expression collection;
-    private Block body;
 
-    public LoopStatement(String loopType, Expression condition, String iterator,
-            Expression start, Expression end, Expression collection, Block body) {
-        this.loopType = loopType;
-        this.condition = condition;
-        this.iterator = iterator;
-        this.start = start;
-        this.end = end;
-        this.collection = collection;
-        this.body = body;
-    }
+	public LoopStatement(String loopType) {
+		this.loopType = loopType;
+	}
 
-    public String getLoopType() {
-        return loopType;
-    }
-
-    public Expression getCondition() {
-        return condition;
-    }
-
-    public String getIterator() {
-        return iterator;
-    }
-
-    public Expression getStart() {
-        return start;
-    }
-
-    public Expression getEnd() {
-        return end;
-    }
-
-    public Expression getCollection() {
-        return collection;
-    }
-
-    public Block getBody() {
-        return body;
-    }
 
 //    @Override
 //    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {

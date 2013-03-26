@@ -234,15 +234,14 @@ Statement parseLoopStmt(): {
 }
 
 Statement parseForLoop(): {
-    String name = null;
-    Entity iterationValues = null;
-    Function executeFunction = null;
+    Expression iterationExpression = null;
+    Expression executeFunction = null;
     Block executeBlock = null;
     Token blockParam = null;
 } {
     (
         "8:"
-        iterationValues = parseExp()
+        iterationExpression = parseExp()
         /*
         (
             iterationValues = parseRange()
@@ -250,14 +249,14 @@ Statement parseForLoop(): {
             | iterationValues = parseVarRef()
         )*/
         (
-            executeFunction = parseAnonFun()
+            executeFunction = parseExp()
             | (
                 blockParam = <ID>
                 executeBlock = parseBlock()
             )
         )
     )
-    { return new LoopStatement(iterationValues, executeFunction, executeBlock, blockParam.image); }
+    { return new ForLoop(iterationExpression, executeFunction, executeBlock, blockParam.image); }
 }
 
 Statement parseInfiniteLoop(): {
