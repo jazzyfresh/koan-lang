@@ -12,9 +12,6 @@ import edu.lmu.cs.xlg.util.Log;
  */
 public class ObjectType extends Type {
 
-    /**
-     * A name/type pair, or property, of a bukkit type.
-     */
     public static class Property extends Entity {
         private String name;
         private String typename;
@@ -47,9 +44,6 @@ public class ObjectType extends Type {
             return type;
         }
 
-        /**
-         * Analyzes this field, checking that type indicated by the typename exists.
-         */
         public void analyze(Log log, SymbolTable table) {
             type = table.lookupType(typename, log);
         }

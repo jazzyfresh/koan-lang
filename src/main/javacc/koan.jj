@@ -102,6 +102,7 @@ Statement parseDec(): {
         LOOKAHEAD(2)
           s = parseVarDec()
         | s = parseConstDec()
+        //| s = parseObjectDec()
     )
     {return s;}
 }
@@ -130,6 +131,30 @@ Variable parseConstDec(): {
     (":=" e = parseExp())?
     {return new Variable(v.image, t, e, constant);}
 }
+
+/*
+ObjectType parseObjectDec(): {
+    String t;
+    Token objectTypeName;
+    Token key;
+    Expression value;
+    List<ObjectType.Property> properties = new ArrayList<ObjectType.Property>();
+} {
+    (LOOKAHEAD ({parseType() == "o"}) t = parseType())?
+    objectTypeName = <ID> "{"
+    ( 
+       key = <ID> ":" value = parseExp() "," 
+       {properties.add(new ObjectType.Property(key.image, value));}
+       (<BR>)*
+    )*
+    ( 
+       key = <ID> ":" value = parseExp()
+       {properties.add(new ObjectType.Property(key.image, value));}
+       (<BR>)*
+    )+
+    { return new ObjectType(objectTypeName.image, properties); }
+}
+*/
 
 VariableReference parseVarRef(): {
     Token t;
@@ -381,10 +406,11 @@ Expression parseExp7(): {
 } {
     (
       e = parseLiteral()
-      | (
+   /*   | (
           LOOKAHEAD({getToken(2).image == "{"})
           e = parseObject()
         )
+    */
       | (
           LOOKAHEAD({getToken(2).image == "("})
           e = parseFunCall()
@@ -451,11 +477,6 @@ ArrayExpression parseArrayExp(): {
 } {
     "[" (e = parseExp() {list.add(e);} ",")* e = parseExp() {list.add(e);} "]"
     {return new ArrayExpression(list);}
-}
-
-Entity parseObject(): {} {
-    <ID> "{" ( <ID> ":" parseExp() "," )+ "}"
-    { return new ObjectExpression(); }
 }
 
 Entity parseFunCall(): {
