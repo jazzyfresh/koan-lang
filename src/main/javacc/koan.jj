@@ -87,7 +87,7 @@ Statement parseStmt(): {
         | s = parseIfStmt()
         | s = parseLoopStmt()
         //Expression is not a statement, though derived as such in EBNF
-        //maybe use the simplestmnt as roflkode does... heirarchy matter
+        //maybe use the simplestmnt as roflkode does... hierarchy matter
         | s = parseExp()
     )
     (<BR>)
@@ -134,7 +134,7 @@ Variable parseConstDec(): {
 
 Entity parseVarRef(): {} {
     <ID>
-    { return new Entity(); }
+    { return new VariableReference(); }
 }
 
 
@@ -432,7 +432,7 @@ Entity parseFunCall(): {
         ( <ID> "(" parseArgs() ")" )
         | parseAnonFun()
     )
-    { return new Entity(); }
+    { return new Function(); }
 }
 
 Function parseAnonFun(): {

@@ -90,18 +90,18 @@ public class Block extends Entity {
             table = new SymbolTable(outer);
         }
 
-        // Bukkit types should go into the table first.  They can be used for everything in this
+        // Object types should go into the table first.  They can be used for everything in this
         // scope: function return types, parameter types, variable types, field types, etc.  Note
         // that they go into the symbol table without being analyzed, because when analyzing them
-        // we have to check the types of their fields, and these fields may refer to other bukkit
+        // we have to check the types of their fields, and these fields may refer to other object
         // types declared in this block.
         for (Type type: types) {
             table.insert(type, log);
         }
 
-        // Pre-analyze bukkit types so the fields are available. This has to be done AFTER all the
+        // Pre-analyze object types so the fields are available. This has to be done AFTER all the
         // struct types have been added to the symbol table, but BEFORE any variables are handled,
-        // since the variables may refer to bukkit properties in their initializing expressions.
+        // since the variables may refer to object properties in their initializing expressions.
         for (Type type: types) {
             type.analyze(log, table, owner, inLoop);
         }
