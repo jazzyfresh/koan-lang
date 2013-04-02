@@ -17,9 +17,10 @@ Macrosyntax
                     |  IFSTMT
                     |  BREAKSTMT
                     |  LOOP
-                    |  PROCCALL
+                    |  FUNCALL
                     |  EXP
     DEC           -->  VARDEC | CONSTDEC
+    VAR           -->  ID ( "." ID  | "(" PARAMS ")" | "[" EXP "]" )*
     VARDEC        -->  TYPE ID ':=' EXP 
     CONSTDEC      -->  TYPE ID '!' ':=' EXP 
     TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
@@ -33,12 +34,13 @@ Macrosyntax
     LOOP          -->  FORLOOP | INFINITELOOP
     FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
     INFINITELOOP  -->  '8:' BLOCK
-    PROCCALL      -->  (ID '('ARGS')') | ANONFUN
+    FUNCALL       -->  (ID '('ARGS')') | ANONFUN
     BLOCK         -->  '{' (STMT BR)* '}'
     BOOL          -->  'T' | 'F'
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     ARRAYREF      -->  ID '[' EXP | RANGE ']'
     OBJECT        -->  ID '{' (ID ':' EXP)(ID ':' EXP ',')* '}'
+    HASH          -->  '#' '{' (ID '=>' EXP) (ID '=>' EXP ',')* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
@@ -47,14 +49,14 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | ID | ARRAY | OBJECT | PROCCALL  | ARRAYREF     
+    EXP7          -->  LIT | VAR | ARRAY | HASH | ANONFUN  
     EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
     RELOP         -->  '<' | '<=' | '==' | '!=' | '>=' | '>' 
     REGEX         -->  ID ':=' '/' .* '/'
     ARGS          -->  EXP5 (',' EXP5)*
-    TYPE          -->  '^' | '$' | '#' 
+    TYPE          -->  '^' | '$' | '#' | 'f' | '~'
     LIT           -->  BOOL | STRING | INTLIT
 
     
