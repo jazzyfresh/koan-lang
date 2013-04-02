@@ -61,7 +61,7 @@ TOKEN: {
     | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
     | <CHARLIT: (["A"-"Z", "a"-"z"])>
     | <BR: ";">
-    | <EMPTYLINE: "\n">
+    | <EMPTYLINE: "\\n">
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
 
@@ -80,9 +80,10 @@ Statement parseStmt(): {
     Statement s;
 } {
     (
-        LOOKAHEAD(6)
+         LOOKAHEAD(parseDec())
         s = parseDec()
-        | s = parseAssignment()
+        |LOOKAHEAD({getToken(2).image == ":="})
+        s = parseAssignment()
         | s = parsePrintStmt()
         | s = parseIfStmt()
         | s = parseLoopStmt()
@@ -91,7 +92,7 @@ Statement parseStmt(): {
         | s = parseExp()
     )
     (<BR>)
-    (<EMPTYLINE>)*
+    (LOOKAHEAD(<EMPTYLINE>)<EMPTYLINE>)*
     {return s;}
 }
 
@@ -274,6 +275,7 @@ Statement parseForLoop(): {
             | iterationValues = parseVarRef()
         )*/
         (
+            LOOKAHEAD(parseExp())
             executeFunction = parseExp()
             | (
                 blockParam = <ID>
@@ -475,7 +477,10 @@ ArrayExpression parseArrayExp(): {
     Expression e = null;
     List<Expression> list = new ArrayList<Expression>();
 } {
-    "[" (e = parseExp() {list.add(e);} ",")* e = parseExp() {list.add(e);} "]"
+    "["
+      e = parseExp() {list.add(e);}
+      (LOOKAHEAD(2)","e = parseExp() {list.add(e);} )*
+    "]"
     {return new ArrayExpression(list);}
 }
 
