@@ -125,7 +125,7 @@ Variable parseConstDec(): {
     Expression e = null;
     boolean constant = true;
 } {
-    
+
     (LOOKAHEAD (parseType() <ID> "!") t = parseType())?
     v = <ID>
     (":=" e = parseExp())?
@@ -142,12 +142,12 @@ ObjectType parseObjectDec(): {
 } {
     (LOOKAHEAD ({parseType() == "o"}) t = parseType())?
     objectTypeName = <ID> "{"
-    ( 
-       key = <ID> ":" value = parseExp() "," 
+    (
+       key = <ID> ":" value = parseExp() ","
        {properties.add(new ObjectType.Property(key.image, value));}
        (<BR>)*
     )*
-    ( 
+    (
        key = <ID> ":" value = parseExp()
        {properties.add(new ObjectType.Property(key.image, value));}
        (<BR>)*
@@ -352,7 +352,7 @@ Expression parseExp4(): {
 } {
     e1 = parseExp5()
     (
-        LOOKAHEAD({ 
+        LOOKAHEAD({
             getToken(2).image == "*"
             | getToken(2).image == "/"
             | getToken(2).image == "%"
@@ -371,7 +371,7 @@ Expression parseExp5(): {
 } {
     e1 = parseExp6()
     (
-        LOOKAHEAD({ 
+        LOOKAHEAD({
             getToken(2).image == "+"
             | getToken(2).image == "-"
         })
@@ -389,7 +389,7 @@ Expression parseExp6(): {
 } {
     e1 = parseExp7()
     (
-        LOOKAHEAD({ 
+        LOOKAHEAD({
             getToken(2).image == ".."
             | getToken(2).image == "..."
         })
@@ -462,11 +462,11 @@ String parseRangeOp():  {
 }
 
 Literal parseLiteral(): {} {
-   LOOKAHEAD(3)
-   parseBool()
+   (LOOKAHEAD(3) parseBool()
    | <INTLIT>
    | <STRING>
-   | <CHARLIT>
+   | <CHARLIT>)
+   {return new Literal("Not done yet");}
 }
 
 Entity parseBool(): {} { "T" | "F" }
@@ -502,18 +502,18 @@ Function parseAnonFun(): {
 }
 
 void parseParams(List<Variable> params): {
-    String t;
     Token p;
 } {
     (
-        t = "INFERENCED" p = <ID>
-        {params.add(new Variable(p.image, t, null, false));}
+        p = <ID>
+        {params.add(new Variable(p.image, "INFERENCED", null, false));}
         (
-            "," t = "INFERENCED" p = <ID>
-            {params.add(new Variable(p.image, t, null, false));}
+            "," p = <ID>
+            {params.add(new Variable(p.image, "INFERENCED", null, false));}
         )*
     )
 }
+
 /*
 Entity parseRegex(): {} {
     <ID> ":=" "/" <STRING> "/"
@@ -536,7 +536,7 @@ Range parseRange(): {
     Expression upperBound = null;
 } {
       ( "..." | ".." ) upperBound = parseExp()
-    | lowerBound = parseExp() ( "..." | ".." ) 
+    | lowerBound = parseExp() ( "..." | ".." )
       (LOOKAHEAD({getToken(3).kind == Expression}) upperBound = parseExp())?
     { return new Range(lowerBound, upperBound); }
 }
