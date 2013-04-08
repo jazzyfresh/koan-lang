@@ -491,9 +491,9 @@ Entity parseFunCall(): {
     Block body = new ArrayList<Expression>();
 } {
     (
-        LOOKAHEAD({getToken(5) == "->"})
-        (<ID> "(" list = parseArgs() ")" "->" "{" body = parseBlock()"}" )         
-        |( <ID>  "(" list = parseArgs() ")")
+        LOOKAHEAD({getToken(5).image == "->"})
+        (t = <ID> "(" list = parseArgs() ")" "->" "{" body = parseBlock()"}" )         
+        |( t = <ID>  "(" list = parseArgs() ")")
         | parseAnonFun()
     )
     { return new Function(list, body); }
