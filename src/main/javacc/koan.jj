@@ -246,6 +246,7 @@ Statement parseIfStmt(): {
             { arms.add(new IfStatement.Arm(null, elseBlock)); }
         )?
     )
+    {return new IfStatement(arms, elseBlock);}
 }
 
 Statement parseLoopStmt(): {
@@ -403,7 +404,7 @@ Expression parseExp6(): {
 }
 
 Expression parseExp7(): {
-    Expression e;
+    Entity e;
     Token t;
 } {
     (
@@ -423,7 +424,7 @@ Expression parseExp7(): {
         )
       | e = parseVarRef()
     )
-    { return e; }
+    { return (Expression)e; }
 }
 
 
