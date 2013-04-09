@@ -39,4 +39,8 @@ public  class VariableReference extends Expression {
 		// TODO Auto-generated method stub
 		
 	}
+
+    public String getName() {
+        return name;
+    }
 }

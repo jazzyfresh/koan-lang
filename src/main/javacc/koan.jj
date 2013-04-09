@@ -472,8 +472,13 @@ Literal parseLiteral(): {} {
    {return new Literal("Not done yet");}
 }
 
-Entity parseBool(): {} { "T" | "F" }
-
+BooleanLiteral parseBool(): {
+    BooleanLiteral b;
+    }{
+     "T" {return BooleanLiteral.T;} 
+| 
+     "F" {return BooleanLiteral.F; }
+}
 ArrayExpression parseArrayExp(): {
     Expression e = null;
     List<Expression> list = new ArrayList<Expression>();
@@ -488,7 +493,7 @@ ArrayExpression parseArrayExp(): {
 Entity parseFunCall(): {
     Token t;
     List<Expression> list = new ArrayList<Expression>();
-    Block body = new ArrayList<Expression>();
+    Block body = new ArrayList<VariableReference>();
 } {
     (
         LOOKAHEAD({getToken(5).image == "->"})
