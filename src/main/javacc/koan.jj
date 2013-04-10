@@ -491,9 +491,9 @@ ArrayExpression parseArrayExp(): {
 }
 
 Entity parseFunCall(): {
-    Token t;
-    List<Expression> list = new ArrayList<Expression>();
-    Block body = new ArrayList<VariableReference>();
+   Token t;
+    List<Variable> list = new ArrayList<Variable>();
+    Block body = null;
 } {
     (
         LOOKAHEAD({getToken(5).image == "->"})
