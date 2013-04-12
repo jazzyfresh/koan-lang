@@ -1,8 +1,0 @@
-
-anagramGenerator := f: (s) -> { 
-   $ result := ""
-   a := s.split();
-   8: (`a - 1)..1 i { a[i] :=: a[Math.random() * i]; };
-   8: 0...`a |i| result := result + a[i]
-   <- a;
-}
