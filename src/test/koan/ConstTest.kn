@@ -1,8 +1,0 @@
-# x! := 3
-x := 4
-
-$ s! := "constant"
-s := "new"
-
-^ b! := true
-b := false
