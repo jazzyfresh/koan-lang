@@ -1,0 +1,11 @@
+testArray := [5, 10, 15, 20, 25]
+p: testArray[0] == 5 
+p: testArray[.] == 25
+p: testArray[1..2] == [5, 10]
+p: testArray[1...4] == [5, 10, 15]
+p: testArray[1...] == [5, 10, 15, 20, 25]
+p: testArray[1..1] == [5]
+p: testArray[1...1]
+
+testArray :< 1
+p: testArray[1...]
