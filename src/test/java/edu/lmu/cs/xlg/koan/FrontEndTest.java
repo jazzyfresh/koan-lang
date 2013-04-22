@@ -18,7 +18,7 @@ import org.junit.runners.Parameterized.Parameters;
 import edu.lmu.cs.xlg.koan.entities.Script;
 
 /**
- * A unit test for the front end of the Koan compiler. It reads all the ".koan" files in the test
+ * A unit test for the front end of the Koan compiler. It reads all the ".kn" files in the test
  * resources directory. Whenever a filename starts with "synerror" the tester asserts that the
  * compiler will detect a syntax error. Whenever a name starts with "semerror" the tester asserts
  * that the compiler successfully parses the program, then asserts that a semantic error is
@@ -29,7 +29,7 @@ import edu.lmu.cs.xlg.koan.entities.Script;
 public class FrontEndTest {
 
     private static final String TEST_DIRECTORY = "src/test/koan";
-    private static final String EXTENSION = ".koan";
+    private static final String EXTENSION = ".kn";
 
     private String filename;
 
