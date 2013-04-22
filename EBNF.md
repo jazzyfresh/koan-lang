@@ -10,7 +10,7 @@ Regex notation is used in the Microsyntax.
 Macrosyntax
 -----------
 
-    SCRIPT        --> (BR)* (STMT BR)+ EOF
+    SCRIPT        --> BR* (STMT BR+)+
     STMT          -->  VARDEC 
                     |  ASSIGNMENT
                     |  SWAP
@@ -38,7 +38,7 @@ Macrosyntax
     INFINITELOOP  -->  '8:' BLOCK
     FUNCALL       -->  ID '(' PARAMS ')'
     PARAMS        -->  (EXP (',' EXP)*)*
-    BLOCK         -->  '{' (STMT BR)* '}'
+    BLOCK         -->  '{' (STMT BR+)* '}'
     
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
@@ -47,27 +47,24 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | VAR | ARRAY | OBJECT | ANONFUN
+    EXP7          -->  LIT | VAR | ARRAY | HASH | ANONFUN
     
     LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
-    VAR           -->  ID ( '.' ID  | '(' PARAMS ')' | '[' EXP ']' )*
+    VAR           -->  ID ( '.' ID  | '[' EXP ']' | '(' PARAMS ')' )*
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
-    OBJECT        -->  ID '{' (ID ':' EXP) (',' ID ':' EXP)* '}'
+    HASH          -->  '{' ID ':' EXP (',' ID ':' EXP)* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
     
     EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
     RELOP         -->  '<' | '<=' | '==' | '!=' | '>=' | '>' 
-    TYPE          -->  '^' | '$' | '#' | 'f' | '~'
     
 Microsyntax
 -----------
 
-    BR            -->  ';'
-    COMMENT       -->  'c:'  ( )*   NEWLINE
-    ID            -->  CHARLIT+ ([-_a-Z0-9])*
-    NUMLIT        -->  [0-9]+ ('.' [0-9]*)?
-    STRINGLIT     -->  (CHARLIT | NUMLIT) +
-    CHARLIT       -->  [a-Z]
-    REGEX         -->  '/' [^/]*  '/'
+    BR            -->  [;\n]
+    COMMENT       -->  c:.*\n
+    ID            -->  [A-Za-z][-_A-Za-z0-9]*
+    NUMLIT        -->  [0-9]+(\.[0-9]*)?
+    STRINGLIT     -->  \"[^"\p{Cc}]*\"
