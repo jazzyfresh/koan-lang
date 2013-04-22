@@ -28,13 +28,13 @@ Macrosyntax
     FUNTYPE       --> 'f'
     NULLTYPE      --> '~'
     
-    ASSIGNMENT    -->  ID ':=' EXP
-    SWAP          -->  ID ':=:' ID
+    ASSIGNMENT    -->  VAR ':=' EXP
+    SWAP          -->  VAR ':=:' VAR
     PRINTSTMT     -->  'p:' EXP
     BREAKSTMT     -->  '!!' 
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??' 
     LOOP          -->  FORLOOP | INFINITELOOP
-    FORLOOP       -->  '8:' (RANGE)? (ANONFUN | ID BLOCK)
+    FORLOOP       -->  '8:' EXP (ANONFUN | ID BLOCK)
     INFINITELOOP  -->  '8:' BLOCK
     FUNCALL       -->  ID '(' PARAMS ')'
     PARAMS        -->  (EXP (',' EXP)*)*
@@ -47,10 +47,10 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | VAR | ARRAY | HASH | ANONFUN
+    EXP7          -->  LIT | VAR | FUNCALL | ARRAY | HASH | ANONFUN
     
     LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
-    VAR           -->  ID ( '.' ID  | '[' EXP ']' | '(' PARAMS ')' )*
+    VAR           -->  ID ( '.' ID  | '[' EXP ']')*
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     HASH          -->  '{' ID ':' EXP (',' ID ':' EXP)* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
