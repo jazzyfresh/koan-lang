@@ -26,7 +26,7 @@ Macrosyntax
     TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
     RETURNTYPE    -->  TYPE
     PARAMS        -->  (EXP (',' EXP)*)*
-    ASSIGNMENT    -->  DEC | ID ':=' EXP | SWAP
+    ASSIGNMENT    -->  ID ':=' EXP | SWAP
     SWAP          -->  ID ':=:' ID
     PRINTSTMT     -->  'p:' EXP
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??' 
