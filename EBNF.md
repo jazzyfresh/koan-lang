@@ -5,7 +5,7 @@ Here is a brief EBNF for the macrosyntax.  Here syntax categories and compound t
 caps (NB: boolean tokens `T` and `F` are exceptions). Reserved tokens and symbols are always quoted, 
 since our reserved tokens are symbols.  
 
-
+Regex notation is used in the Microsyntax.
 
 Macrosyntax
 -----------
@@ -39,10 +39,7 @@ Macrosyntax
     BOOL          -->  'T' | 'F'
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     ARRAYREF      -->  ID '[' EXP ']'
- 
-   only class for object in entities right now is roflkode bukkit  
-   OBJECT        -->  ID '{' (ID ':' EXP)(ID ':' EXP ',')* '}'
-   
+    OBJECT        -->  ID '{' (ID ':' EXP)(ID ':' EXP ',')* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
@@ -62,7 +59,7 @@ Macrosyntax
 
     
     
-Microsyntax. We use regex down here.
+Microsyntax
 -----------
 
     BR            -->  ';'
