@@ -11,36 +11,35 @@ Macrosyntax
 -----------
 
     SCRIPT        --> (BR)* (STMT BR)+ EOF
-    STMT          -->  DEC 
+    STMT          -->  VARDEC 
                     |  ASSIGNMENT
+                    |  SWAP
                     |  PRINTSTMT
-                    |  IFSTMT
                     |  BREAKSTMT
+                    |  IFSTMT
                     |  LOOP
                     |  FUNCALL
-                    |  EXP
-    DEC           -->  VARDEC | CONSTDEC
-    VAR           -->  ID ( '.' ID  | '(' PARAMS ')' | '[' EXP ']' )*
-    VARDEC        -->  TYPE ID ':=' EXP 
-    CONSTDEC      -->  TYPE ID '!' ':=' EXP 
+    
+    VARDEC        -->  TYPE ID ('!')? ':=' EXP 
     TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
-    RETURNTYPE    -->  TYPE
-    PARAMS        -->  (EXP (',' EXP)*)*
-    ASSIGNMENT    -->  ID ':=' EXP | SWAP
+    NUMTYPE       --> '#'
+    STRTYPE       --> '$'
+    BOOLTYPE      --> '^'
+    FUNTYPE       --> 'f'
+    NULLTYPE      --> '~'
+    
+    ASSIGNMENT    -->  ID ':=' EXP
     SWAP          -->  ID ':=:' ID
     PRINTSTMT     -->  'p:' EXP
-    IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??' 
     BREAKSTMT     -->  '!!' 
+    IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' (STMT))? '??' 
     LOOP          -->  FORLOOP | INFINITELOOP
-    FORLOOP       -->  '8:' (RANGE)? (ANONFUN | (ID BLOCK))
+    FORLOOP       -->  '8:' (RANGE)? (ANONFUN | ID BLOCK)
     INFINITELOOP  -->  '8:' BLOCK
-    FUNCALL       -->  (ID '('PARAMS')') | ANONFUN
+    FUNCALL       -->  ID '(' PARAMS ')'
+    PARAMS        -->  (EXP (',' EXP)*)*
     BLOCK         -->  '{' (STMT BR)* '}'
-    BOOL          -->  'T' | 'F'
-    ARRAY         -->  '[' EXP* (',' EXP)* ']'
-    ARRAYREF      -->  ID '[' EXP ']'
-    OBJECT        -->  ID '{' (ID ':' EXP)(ID ':' EXP ',')* '}'
-    ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
+    
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
     EXP2          -->  EXP3 (RELOP EXP3)?
@@ -48,16 +47,19 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | VAR | ARRAY | HASH | ANONFUN | OBJECT
+    EXP7          -->  LIT | VAR | ARRAY | OBJECT | ANONFUN
+    
+    LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
+    VAR           -->  ID ( '.' ID  | '(' PARAMS ')' | '[' EXP ']' )*
+    ARRAY         -->  '[' EXP* (',' EXP)* ']'
+    OBJECT        -->  ID '{' (ID ':' EXP) (',' ID ':' EXP)* '}'
+    ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
+    
     EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
     RELOP         -->  '<' | '<=' | '==' | '!=' | '>=' | '>' 
-    REGEX         -->  ID ':=' '/' ANY*  '/'
     TYPE          -->  '^' | '$' | '#' | 'f' | '~'
-    LIT           -->  BOOL | STRING | NUMLIT
-
-    
     
 Microsyntax
 -----------
@@ -66,13 +68,6 @@ Microsyntax
     COMMENT       -->  'c:'  ( )*   NEWLINE
     ID            -->  CHARLIT+ ([-_a-Z0-9])*
     NUMLIT        -->  [0-9]+ ('.' [0-9]*)?
-    STRING        -->  (CHARLIT | NUMLIT) +
+    STRINGLIT     -->  (CHARLIT | NUMLIT) +
     CHARLIT       -->  [a-Z]
-    ANY           -->  .
-
-    NUMTYPE       --> '#'
-    STRTYPE       --> '$'
-    BOOLTYPE      --> '^'
-    FUNTYPE       --> 'f'
-    NULLTYPE      --> '~'
-
+    REGEX         -->  '/' [^/]*  '/'
