@@ -4,8 +4,6 @@
  *  JavaCC specification for Koan.
  */
 
-// DG - One option to solve parser errs is to change each String t that has a getType returned to it is to make them Types
-// instead of Strings
 
 options {
   UNICODE_INPUT = true;
@@ -44,9 +42,9 @@ SKIP: {
 }
 
 TOKEN: {
-    "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":=" | ":=:"
-    | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:"
-    | "8:" | "->"  | "T" | "F"
+    "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "%" | "**" | "!" | ":=" | ":=:"
+    | "&&" | "||" | "<" | ">" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:" | "??:" 
+    | "8:" | "p:" | "??" |  "->"  | "T" | "F"
 
     | <NUMTYPE: "#">
     | <STRTYPE: "$">
@@ -63,7 +61,7 @@ TOKEN: {
         "\""
       >
 
-    | <INTLIT: (["0"-"9"])+>
+    | <NUMLIT: (["0"-"9"]+ ("." ["0"-"9"]+)?)>
     | <BR: ";" | "\n">
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
@@ -87,13 +85,17 @@ Statement parseStmt(): {
     |
         s = parseAssignment()
     |
+        s = parseSwap()
+    |    
         s = parsePrintStmt()
     |
-        s = parseIfStmt()
+        s = parseBreakStmt()
     |
+        s = parseIfStmt()        
+    |    
         s = parseLoopStmt()
     |
-        s = parseExp()
+        s = parseFunCall()
     )
     {return s;}
 }
@@ -113,12 +115,11 @@ Variable parseVarDec(): {
 
 VariableReference parseVarRef(): {
     Token t;
+    Token u = null;
 } {
     t = <ID>
     {return new VariableReference(t.image);}
 }
-
-
 
 String parseType(): {
     Token i;
@@ -132,10 +133,7 @@ String parseType(): {
         | i = <NULLTYPE>
     )
     {builder.append(i.image);}
-    (
-        LOOKAHEAD(2) parseArrayExp() {builder.append(" ARRAY");}
-    )*
-    {return builder.toString();}
+  {return builder.toString();}
 }
 
 
@@ -144,15 +142,11 @@ Statement parseAssignment(): {
     VariableReference v = null;
     Expression e = null;
 } {
-    (
-        LOOKAHEAD(2)
-          ( parseVarRef() ":=" parseExp() )
-          v = parseVarRef()
+      (    v = parseVarRef()
           ":="
           e = parseExp()
           { s = new AssignmentStatement(v, e); }
-        | s = parseSwap()
-    )
+      )        
     {return s;}
 }
 
@@ -177,7 +171,10 @@ Statement parsePrintStmt(): {
     {return new PrintStatement(e);}
 }
 
-
+Statement parseBreakStmt(): {
+    "!!"
+    return null; // for now... we'll have to deal with errors or the table in our loop?
+}
 
 Statement parseIfStmt(): {
     IfStatement.Arm arm;
@@ -187,7 +184,7 @@ Statement parseIfStmt(): {
     Block elseBlock = null;
 } {
     (
-        "??:" e = parseExp() "?" b = parseBlock()
+        "??:" e = parseExp() "?" arm = parseStmt()
         { arms.add(new IfStatement.Arm(e,b)); }
         (
             LOOKAHEAD({ getToken(3).image == "?" })

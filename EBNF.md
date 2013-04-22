@@ -26,6 +26,7 @@ Macrosyntax
     STRTYPE       --> '$'
     BOOLTYPE      --> '^'
     FUNTYPE       --> 'f'
+    REGEXTYPE     --> '@'
     NULLTYPE      --> '~'
     
     ASSIGNMENT    -->  VAR ':=' EXP
