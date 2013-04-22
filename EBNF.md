@@ -56,13 +56,13 @@ Macrosyntax
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
     RELOP         -->  '<' | '<=' | '==' | '!=' | '>=' | '>' 
-    REGEX         -->  ID ':=' '/' .* '/'
+    REGEX         -->  ID ':=' '/' ANY*  '/'
     TYPE          -->  '^' | '$' | '#' | 'f' | '~'
     LIT           -->  BOOL | STRING | NUMLIT
 
     
     
-Microsyntax
+Microsyntax. We use regex down here.
 -----------
 
     BR            -->  ';'
@@ -71,7 +71,8 @@ Microsyntax
     NUMLIT        -->  [0-9]+ ('.' [0-9]*)?
     STRING        -->  (CHARLIT | NUMLIT) +
     CHARLIT       -->  [a-Z]
-    
+    ANY           -->  .
+
     NUMTYPE       --> '#'
     STRTYPE       --> '$'
     BOOLTYPE      --> '^'
