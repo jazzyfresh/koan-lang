@@ -54,7 +54,8 @@ Macrosyntax
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     HASH          -->  '{' ID ':' EXP (',' ID ':' EXP)* '}'
     ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
-    
+    RANGE         -->  EXP7 '..' | '...' EXP7
+
     EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
     ADDOP         -->  '+' | '-'
