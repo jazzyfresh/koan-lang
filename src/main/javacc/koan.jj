@@ -60,8 +60,7 @@ TOKEN: {
     | <INTLIT: (["0"-"9"])+>
     | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
     | <CHARLIT: (["A"-"Z", "a"-"z"])>
-    | <BR: ";">
-    | <EMPTYLINE: "\\n">
+    | <BR: ";" | "\\n">
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
 
@@ -69,9 +68,9 @@ Script parseScript(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
 } {
-    (<EMPTYLINE>)*
+    (<BR>)*
     (s = parseStmt() {statements.add(s);})+
-    (<EMPTYLINE>)*
+    (<BR>)*
     <EOF>
     {return new Script(statements);}
 }
@@ -87,12 +86,10 @@ Statement parseStmt(): {
         | s = parsePrintStmt()
         | s = parseIfStmt()
         | s = parseLoopStmt()
-        //Expression is not a statement, though derived as such in EBNF
-        //maybe use the simplestmnt as roflkode does... hierarchy matter
         | s = parseExp()
     )
     (<BR>)
-    (LOOKAHEAD(<EMPTYLINE>)<EMPTYLINE>)*
+    (LOOKAHEAD(<BR>)<BR>)*
     {return s;}
 }
 
