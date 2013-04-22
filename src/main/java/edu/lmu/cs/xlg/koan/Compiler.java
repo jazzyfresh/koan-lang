@@ -23,7 +23,7 @@ public class Compiler {
      * A logger for logging messages (both regular and error messages). The base properties file is
      * called <code>roflkode.properties</code>.
      */
-    private Log log = new Log("koan", new PrintWriter(System.out, true));
+    private Log log = new Log("Koan", new PrintWriter(System.out, true));
 
     /**
      * Runs the compiler as an application.
@@ -39,6 +39,7 @@ public class Compiler {
         Reader reader = (args.length == 0) ? new BufferedReader(new InputStreamReader(System.in))
                 : new FileReader(args[0]);
         Script script = compiler.checkSyntax(reader);
+        script.printSyntaxTree("", "", new PrintWriter(System.out, true));
         script.analyze(compiler.log);
 
         // TODO: Obviously, this is a stub.

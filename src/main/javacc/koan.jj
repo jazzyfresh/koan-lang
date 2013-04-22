@@ -3,8 +3,10 @@
  *
  *  JavaCC specification for Koan.
  */
-//DG - One option to solve parser errs is to change each String t that has a getType returned to it is to make them Types
-//instead of Strings
+
+// DG - One option to solve parser errs is to change each String t that has a getType returned to it is to make them Types
+// instead of Strings
+
 options {
   UNICODE_INPUT = true;
   STATIC = false;
@@ -20,11 +22,7 @@ import java.io.Reader;
 import edu.lmu.cs.xlg.util.Log;
 import edu.lmu.cs.xlg.koan.entities.*;
 
-
 public class Parser {
-    /**
-     * Returns the result of parsing the Koan program on the given Reader.
-     */
     public Script parse(Reader reader, Log log) {
         try {
             return parseScript();
@@ -41,12 +39,12 @@ public class Parser {
 PARSER_END(Parser)
 
 SKIP: {
-    < (" " | "\t" | "\r" | "\n")+ >
+    < (" " | "\t")+ >
     | <"c:" (~["\n","\r"])*>
 }
 
 TOKEN: {
-    "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":="
+    "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "**" | ":=" | ":=:"
     | "&&" | "||" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:"
     | "8:" | "->"  | "T" | "F"
 
@@ -57,10 +55,16 @@ TOKEN: {
     | <REGEXTYPE: "@">
     | <NULLTYPE: "~">
 
+    | < STRINGLIT:
+        "\""
+        (
+            ~["\"", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
+        )*
+        "\""
+      >
+
     | <INTLIT: (["0"-"9"])+>
-    | <STRING: (["A"-"Z", "a"-"z", "0"-"9"])+ >
-    | <CHARLIT: (["A"-"Z", "a"-"z"])>
-    | <BR: ";" | "\\n">
+    | <BR: ";" | "\n">
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
 
@@ -79,28 +83,17 @@ Statement parseStmt(): {
     Statement s;
 } {
     (
-         LOOKAHEAD(parseDec())
-        s = parseDec()
-        |LOOKAHEAD({getToken(2).image == ":="})
+        s = parseVarDec()
+    |
         s = parseAssignment()
-        | s = parsePrintStmt()
-        | s = parseIfStmt()
-        | s = parseLoopStmt()
-        | s = parseExp()
-    )
-    (<BR>)
-    (LOOKAHEAD(<BR>)<BR>)*
-    {return s;}
-}
-
-Statement parseDec(): {
-    Statement s;
-} {
-    (
-        LOOKAHEAD(2)
-          s = parseVarDec()
-        | s = parseConstDec()
-        //| s = parseObjectDec()
+    |
+        s = parsePrintStmt()
+    |
+        s = parseIfStmt()
+    |
+        s = parseLoopStmt()
+    |
+        s = parseExp()
     )
     {return s;}
 }
@@ -111,48 +104,12 @@ Variable parseVarDec(): {
     Expression e = null;
     boolean constant = false;
 } {
-    (LOOKAHEAD (parseType() <ID>) t = parseType())?
+    t = parseType()
     v = <ID>
-    (":=" e = parseExp())?
+    ("!" {constant = true;})?
+    ":=" e = parseExp()
     {return new Variable(v.image, t.toString(), e, constant);}
 }
-
-Variable parseConstDec(): {
-    String t = null;
-    Token v = null;
-    Expression e = null;
-    boolean constant = true;
-} {
-
-    (LOOKAHEAD (parseType() <ID> "!") t = parseType())?
-    v = <ID>
-    (":=" e = parseExp())?
-    {return new Variable(v.image, t, e, constant);}
-}
-
-/*
-ObjectType parseObjectDec(): {
-    String t;
-    Token objectTypeName;
-    Token key;
-    Expression value;
-    List<ObjectType.Property> properties = new ArrayList<ObjectType.Property>();
-} {
-    (LOOKAHEAD ({parseType() == "o"}) t = parseType())?
-    objectTypeName = <ID> "{"
-    (
-       key = <ID> ":" value = parseExp() ","
-       {properties.add(new ObjectType.Property(key.image, value));}
-       (<BR>)*
-    )*
-    (
-       key = <ID> ":" value = parseExp()
-       {properties.add(new ObjectType.Property(key.image, value));}
-       (<BR>)*
-    )+
-    { return new ObjectType(objectTypeName.image, properties); }
-}
-*/
 
 VariableReference parseVarRef(): {
     Token t;
@@ -464,16 +421,16 @@ String parseRangeOp():  {
 Literal parseLiteral(): {} {
    (LOOKAHEAD(3) parseBool()
    | <INTLIT>
-   | <STRING>
-   | <CHARLIT>)
+   | <STRINGLIT>
+   )
    {return new Literal("Not done yet");}
 }
 
 BooleanLiteral parseBool(): {
     BooleanLiteral b;
     }{
-     "T" {return BooleanLiteral.T;} 
-| 
+     "T" {return BooleanLiteral.T;}
+|
      "F" {return BooleanLiteral.F; }
 }
 ArrayExpression parseArrayExp(): {
@@ -494,7 +451,7 @@ Entity parseFunCall(): {
 } {
     (
         LOOKAHEAD({getToken(5).image == "->"})
-        (t = <ID> "(" list = parseArgs() ")" "->" "{" body = parseBlock()"}" )         
+        (t = <ID> "(" list = parseArgs() ")" "->" "{" body = parseBlock()"}" )
         |( t = <ID>  "(" list = parseArgs() ")")
         | parseAnonFun()
     )
@@ -526,13 +483,6 @@ void parseParams(List<Variable> params): {
     )
 }
 
-/*
-Entity parseRegex(): {} {
-    <ID> ":=" "/" <STRING> "/"
-    { return new Entity(); }
-}
-*/
-
 List parseArgs(): {
     List<Expression> expressions = new ArrayList<Expression>();
     Expression e = null;
@@ -553,7 +503,4 @@ Range parseRange(): {
     { return new Range(lowerBound, upperBound); }
 }
 */
-void S(): {} { E() <EOF>                                   }
-void E(): {} { LOOKAHEAD(2) <ID> ":=" E() | T() ( "+" T() )* }
-void T(): {} { F() ( "*" F() )*                              }
-void F(): {} { <INTLIT> | <STRING> | <CHARLIT> | <BR> | "(" E() ")"                  }
+
