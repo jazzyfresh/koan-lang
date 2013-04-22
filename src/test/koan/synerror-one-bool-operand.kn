@@ -1,0 +1,7 @@
+c: very simple synerror example 
+c: note that all we do is look for something that can't follow from the ebnf
+c: then we write that up, and preface the .kn with "synerror"
+c: in this case, we are checking an or statement with only one operand
+
+^ failure := F ||
+c: this is a syntax error from the rule of EXP1. if there is an || operator, we need two operands!
