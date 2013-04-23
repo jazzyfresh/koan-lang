@@ -13,27 +13,36 @@ public class IfStatement extends Statement {
 
     public static class Arm extends Entity {
         private Expression guard;
-        private Block block;
+        private Statement statement;
 
-        public Arm(Expression guard, Block block) {
+        public Arm(Expression guard, Statement statement) {
             this.guard = guard;
-            this.block = block;
+            this.statement = statement;
         }
+
+        public Expression getGuard() {
+            return guard;
+        }
+
+        public Statement getStatement() {
+            return statement;
+        }
+
     }
 
     private List<Arm> arms;
-    private Block elsePart;
+    private Statement elsePart;
 
-    public IfStatement(List<Arm> arms, Block elsePart) {
+    public IfStatement(List<Arm> arms, Statement statement) {
         this.arms = arms;
-        this.elsePart = elsePart;
+        this.elsePart = statement;
     }
 
     public List<Arm> getArms() {
         return arms;
     }
 
-    public Block getElsePart() {
+    public Statement getElsePart() {
         return elsePart;
     }
 
@@ -42,7 +51,7 @@ public class IfStatement extends Statement {
         for (Arm arm: arms) {
             arm.guard.analyze(log, table, function, inLoop);
             arm.guard.assertBoolean("condition", log);
-            arm.block.analyze(log, table, function, inLoop);
+            arm.statement.analyze(log, table, function, inLoop);
         }
         if (elsePart != null) {
             elsePart.analyze(log, table, function, inLoop);
