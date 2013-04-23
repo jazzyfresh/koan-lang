@@ -4,9 +4,9 @@ import edu.lmu.cs.xlg.util.Log;
 
 public class InfiniteLoop extends LoopStatement{
 
-	private Block body;
+	private Statement body;
 	
-	public InfiniteLoop(Block body) {
+	public InfiniteLoop(Statement body) {
 		super("INFINITELOOP");
 		this.body = body;
 	}
