@@ -96,6 +96,8 @@ Statement parseStmt(): {
         s = parseLoopStmt()
     |
         LOOKAHEAD(<ID> "(") s = parseFunCallStmt()
+    |   
+        s = parseBlockStmt()  
     )
     {return s;}
 }
@@ -174,7 +176,7 @@ Statement parsePrintStmt(): {
 Statement parseBreakStmt(): {
 } {
     "!!"
-    {return null;} // for now... we'll have to deal with errors or the table in our loop?
+    {return new BreakStatement();} 
 }
 
 Statement parseIfStmt(): {
@@ -238,10 +240,22 @@ Statement parseForLoop(): {
 }
 
 Statement parseInfiniteLoop(): {
-    Block executeBlock;
+    Statement s;
 } {
-    ("8:" executeBlock = parseBlock())
-    { return new InfiniteLoop(executeBlock); }
+    ("8:" s = parseStmt())
+    { return new InfiniteLoop(s); }
+}
+
+
+
+Statement parseBlockStmt(): {
+   List<Statement> statements = new ArrayList<Statement>();
+   Statement s; 
+} {
+    "{" ( s = parseStmt() {statements.add(s);} )* "}"
+    { return new BlockStatement(statements); }
+     
+   
 }
 
 Block parseBlock(): {
