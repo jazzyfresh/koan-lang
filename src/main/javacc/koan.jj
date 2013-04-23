@@ -83,7 +83,7 @@ Statement parseStmt(): {
     (
         s = parseVarDec()
     |
-        LOOKAHEAD(parseVarDec() ":=") s = parseAssignment()
+        LOOKAHEAD(<ID> ":=") s = parseAssignment()
     |
         s = parseSwap()
     |
@@ -95,7 +95,7 @@ Statement parseStmt(): {
     |
         s = parseLoopStmt()
     |
-        s = parseFunCall()
+        LOOKAHEAD(<ID> "(") s = parseFunCallStmt()
     )
     {return s;}
 }
@@ -366,7 +366,7 @@ Expression parseExp7(): {
     */
       | (
           LOOKAHEAD({getToken(2).image == "("})
-          e = parseFunCall()
+          e = parseFunCallExp()
         )
       | (
           LOOKAHEAD({getToken(2).image == "["})
@@ -440,13 +440,20 @@ ArrayExpression parseArrayExp(): {
     {return new ArrayExpression(list);}
 }
 
-Statement parseFunCall(): {
+Statement parseFunCallStmt(): {
+   FunctionCallExpression f;
+} {
+    f = parseFunCallExp()
+    { return new FunctionCallStatement(f); }
+}
+
+FunctionCallExpression parseFunCallExp(): {
    Token t;
-    List<Variable> args = new ArrayList<Variable>();
+   List<Variable> args = new ArrayList<Variable>();
 } {
     t = <ID>
     "(" args = parseArgs() ")"
-    { return new FunctionCallStatement(t.image, args); }
+    { return new FunctionCallExpression(t.image, args); }
 }
 
 Function parseAnonFun(): {
