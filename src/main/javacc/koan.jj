@@ -85,7 +85,7 @@ Statement parseStmt(): {
     |
         LOOKAHEAD(<ID> ":=") s = parseAssignment()
     |
-        s = parseSwap()
+        LOOKAHEAD(<ID> ":=:") s = parseSwap()
     |
         s = parsePrintStmt()
     |
