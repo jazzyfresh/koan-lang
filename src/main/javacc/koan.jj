@@ -43,7 +43,7 @@ SKIP: {
 
 TOKEN: {
     "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "%" | "**" | "!" | ":=" | ":=:"
-    | "&&" | "||" | "<" | ">" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:" | "??:" 
+    | "&&" | "||" | "<" | ">" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:" | "??:"
     | "8:" | "p:" | "??" |  "->"  | "T" | "F"
 
     | <NUMTYPE: "#">
@@ -61,7 +61,7 @@ TOKEN: {
         "\""
       >
 
-    | <NUMLIT: (["0"-"9"]+ ("." ["0"-"9"]+)?)>
+    | <NUMLIT: (["0"-"9"])+ ("." (["0"-"9"])+)? >
     | <BR: ";" | "\n">
     | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
 }
@@ -83,16 +83,16 @@ Statement parseStmt(): {
     (
         s = parseVarDec()
     |
-        s = parseAssignment()
+        LOOKAHEAD(parseVarDec() ":=") s = parseAssignment()
     |
         s = parseSwap()
-    |    
+    |
         s = parsePrintStmt()
     |
         s = parseBreakStmt()
     |
-        s = parseIfStmt()        
-    |    
+        s = parseIfStmt()
+    |
         s = parseLoopStmt()
     |
         s = parseFunCall()
@@ -146,7 +146,7 @@ Statement parseAssignment(): {
           ":="
           e = parseExp()
           { s = new AssignmentStatement(v, e); }
-      )        
+      )
     {return s;}
 }
 
@@ -172,32 +172,31 @@ Statement parsePrintStmt(): {
 }
 
 Statement parseBreakStmt(): {
+} {
     "!!"
-    return null; // for now... we'll have to deal with errors or the table in our loop?
+    {return null;} // for now... we'll have to deal with errors or the table in our loop?
 }
 
 Statement parseIfStmt(): {
     IfStatement.Arm arm;
     List<IfStatement.Arm> arms = new ArrayList<IfStatement.Arm>();
     Expression e;
-    Block b;
-    Block elseBlock = null;
+    Statement s;
+    Statement elsePart = null;
 } {
     (
-        "??:" e = parseExp() "?" arm = parseStmt()
-        { arms.add(new IfStatement.Arm(e,b)); }
+        "??:" e = parseExp() "?" s = parseStmt()
+        { arms.add(new IfStatement.Arm(e,s)); }
         (
-            LOOKAHEAD({ getToken(3).image == "?" })
-            ":" e = parseExp() "?" elseBlock = parseBlock()
-            { arms.add(new IfStatement.Arm(e, elseBlock)); }
+            LOOKAHEAD (":" parseExp())
+            ":" e = parseExp() "?" s = parseStmt()
+            { arms.add(new IfStatement.Arm(e, s)); }
         )*
         (
-            LOOKAHEAD({ getToken(2).image == ":" })
-            ":" elseBlock = parseBlock()
-            { arms.add(new IfStatement.Arm(null, elseBlock)); }
+            ":" elsePart = parseStmt()
         )?
     )
-    {return new IfStatement(arms, elseBlock);}
+    {return new IfStatement(arms, elsePart);}
 }
 
 Statement parseLoopStmt(): {
@@ -417,7 +416,7 @@ String parseRangeOp():  {
 
 Literal parseLiteral(): {} {
    (LOOKAHEAD(3) parseBool()
-   | <INTLIT>
+   | <NUMLIT>
    | <STRINGLIT>
    )
    {return new Literal("Not done yet");}
@@ -441,18 +440,13 @@ ArrayExpression parseArrayExp(): {
     {return new ArrayExpression(list);}
 }
 
-Entity parseFunCall(): {
+Statement parseFunCall(): {
    Token t;
-    List<Variable> list = new ArrayList<Variable>();
-    Block body = null;
+    List<Variable> args = new ArrayList<Variable>();
 } {
-    (
-        LOOKAHEAD({getToken(5).image == "->"})
-        (t = <ID> "(" list = parseArgs() ")" "->" "{" body = parseBlock()"}" )
-        |( t = <ID>  "(" list = parseArgs() ")")
-        | parseAnonFun()
-    )
-    { return new Function(list, body); }
+    t = <ID>
+    "(" args = parseArgs() ")"
+    { return new FunctionCallStatement(t.image, args); }
 }
 
 Function parseAnonFun(): {
