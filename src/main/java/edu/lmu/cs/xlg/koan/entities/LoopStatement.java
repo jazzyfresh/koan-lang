@@ -1,7 +1,5 @@
 package edu.lmu.cs.xlg.koan.entities;
 
-import edu.lmu.cs.xlg.util.Log;
-
 /**
  * A Koan loop statement.
  */
@@ -9,10 +7,13 @@ public abstract class LoopStatement extends Statement {
 
     private String loopType;
 
-	public LoopStatement(String loopType) {
-		this.loopType = loopType;
-	}
+    public LoopStatement(String loopType) {
+        this.loopType = loopType;
+    }
 
+    public String getLoopType() {
+        return loopType;
+    }
 
 //    @Override
 //    public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {

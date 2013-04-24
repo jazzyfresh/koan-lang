@@ -28,7 +28,7 @@ import edu.lmu.cs.xlg.koan.entities.Script;
 @RunWith(Parameterized.class)
 public class FrontEndTest {
 
-    private static final String TEST_DIRECTORY = "src/test/koan";
+    private static final String TEST_DIRECTORY = "src/test/koan/ready";
     private static final String EXTENSION = ".kn";
 
     private String filename;
