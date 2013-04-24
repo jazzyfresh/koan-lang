@@ -1,7 +1,5 @@
 package edu.lmu.cs.xlg.koan.entities;
 
-import edu.lmu.cs.xlg.util.Log;
-
 /**
  * A Koan assignment statement.
  */
@@ -10,23 +8,14 @@ public class SwapStatement extends AssignmentStatement {
     private VariableReference left;
     private VariableReference right;
 
-    /**
-     * Creates an swap statement.
-     */
     public SwapStatement(VariableReference left, VariableReference right) {
-    	super(left, right);
+        super(left, right);
     }
 
-    /**
-     * Returns the destination of the assignment.
-     */
     public VariableReference getLeft() {
         return left;
     }
 
-    /**
-     * Returns the source of the assignment.
-     */
     public VariableReference getRight() {
         return right;
     }

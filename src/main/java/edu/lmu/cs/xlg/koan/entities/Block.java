@@ -12,7 +12,6 @@ public class Block extends Entity {
 
     private List<Statement> statements;
     private SymbolTable table = null;
-    private List<Type> types;
 
     /**
      * Creates a block.
@@ -27,7 +26,6 @@ public class Block extends Entity {
     public List<Statement> getStatements() {
         return statements;
     }
-
 
     /**
      * Returns the block's symbol table.
