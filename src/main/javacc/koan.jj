@@ -71,7 +71,7 @@ Script parseScript(): {
     Statement s;
 } {
     (<BR>)*
-    (s = parseStmt() {statements.add(s);})+
+    (s = parseStmt() {statements.add(s);} (<BR>)*)+
     (<BR>)*
     <EOF>
     {return new Script(statements);}
@@ -96,8 +96,8 @@ Statement parseStmt(): {
         s = parseLoopStmt()
     |
         LOOKAHEAD(<ID> "(") s = parseFunCallStmt()
-    |   
-        s = parseBlockStmt()  
+    |
+        s = parseBlockStmt()
     )
     {return s;}
 }
@@ -176,7 +176,7 @@ Statement parsePrintStmt(): {
 Statement parseBreakStmt(): {
 } {
     "!!"
-    {return new BreakStatement();} 
+    {return new BreakStatement();}
 }
 
 Statement parseIfStmt(): {
@@ -250,12 +250,12 @@ Statement parseInfiniteLoop(): {
 
 Statement parseBlockStmt(): {
    List<Statement> statements = new ArrayList<Statement>();
-   Statement s; 
+   Statement s;
 } {
     "{" ( s = parseStmt() {statements.add(s);} )* "}"
     { return new BlockStatement(statements); }
-     
-   
+
+
 }
 
 Block parseBlock(): {
