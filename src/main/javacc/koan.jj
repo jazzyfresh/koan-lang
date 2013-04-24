@@ -63,7 +63,7 @@ TOKEN: {
 
     | <NUMLIT: (["0"-"9"])+ ("." (["0"-"9"])+)? >
     | <BR: ";" | "\n">
-    | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])+ >
+    | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])* >
 }
 
 Script parseScript(): {
@@ -262,7 +262,7 @@ Block parseBlock(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
 } {
-    "{" ( s = parseStmt() {statements.add(s);} )* "}"
+    "{" ( s = parseStmt() {statements.add(s);} (<BR>)*)* "}"
     { return new Block(statements); }
 }
 
@@ -319,11 +319,6 @@ Expression parseExp4(): {
 } {
     e1 = parseExp5()
     (
-        LOOKAHEAD({
-            getToken(2).image == "*"
-            | getToken(2).image == "/"
-            | getToken(2).image == "%"
-        })
         op = parseMulOp()
         e2 = parseExp4()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -338,10 +333,6 @@ Expression parseExp5(): {
 } {
     e1 = parseExp6()
     (
-        LOOKAHEAD({
-            getToken(2).image == "+"
-            | getToken(2).image == "-"
-        })
         op = parseAddOp()
         e2 = parseExp5()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -356,10 +347,6 @@ Expression parseExp6(): {
 } {
     e1 = parseExp7()
     (
-        LOOKAHEAD({
-            getToken(2).image == ".."
-            | getToken(2).image == "..."
-        })
         op = parseRangeOp()
         e2 = parseExp6()
         { e1 = new BinaryExpression(e1, op, e2); }
@@ -372,31 +359,36 @@ Expression parseExp7(): {
     Token t;
 } {
     (
-      e = parseLiteral()
-   /*   | (
-          LOOKAHEAD({getToken(2).image == "{"})
-          e = parseObject()
-        )
-    */
-      | (
-          LOOKAHEAD({getToken(2).image == "("})
-          e = parseFunCallExp()
-        )
-      | (
-          LOOKAHEAD({getToken(2).image == "["})
-          e = parseArrayExp()
-        )
-      | e = parseVarRef()
+        e = parseLiteral()
+    |
+        LOOKAHEAD(parseFunCallExp())
+        e = parseFunCallExp()
+    |
+        e = parseVarRef()
+    |
+        e = parseArrayExp()
+    |
+        e = parseHash()
+    |
+        e = parseAnonFun()
     )
     { return (Expression)e; }
 }
 
-
+Expression parseHash(): {
+} {
+    "{"
+        <ID> ":" parseExp()
+        ( "," <ID> ":" parseExp() )*
+    "}"
+    // TODO
+    {return null;}
+}
 
 String parseRelOp():  {
     Token s;
 } {
-    s = "<" | s = "<=" | s = "==" | s = "!=" | s = ">=" | s = ">"
+    (s = "<" | s = "<=" | s = "==" | s = "!=" | s = ">=" | s = ">")
     { return s.image; }
 }
 
@@ -410,21 +402,21 @@ String parseExpnOp(): {
 String parseMulOp():  {
     Token s;
 } {
-    s = "*" | s = "/" | s = "%"
+    (s = "*" | s = "/" | s = "%")
     { return s.image; }
 }
 
 String parseAddOp():  {
     Token s;
 } {
-    s = "+" | s = "-"
+    (s = "+" | s = "-")
     { return s.image; }
 }
 
 String parseRangeOp():  {
     Token s;
 } {
-    s = ".." | s = "..."
+    (s = ".." | s = "...")
     { return s.image; }
 }
 
@@ -477,6 +469,7 @@ Function parseAnonFun(): {
     (
         "f:"
         ("(" parseParams(params) ")" "->")?
+
         body = parseBlock()
     )
     {return new Function(params, body);}
@@ -485,22 +478,20 @@ Function parseAnonFun(): {
 void parseParams(List<Variable> params): {
     Token p;
 } {
+    p = <ID>
+    {params.add(new Variable(p.image, "INFERENCED", null, false));}
     (
-        p = <ID>
+        "," p = <ID>
         {params.add(new Variable(p.image, "INFERENCED", null, false));}
-        (
-            "," p = <ID>
-            {params.add(new Variable(p.image, "INFERENCED", null, false));}
-        )*
-    )
+    )*
 }
 
 List parseArgs(): {
     List<Expression> expressions = new ArrayList<Expression>();
     Expression e = null;
 } {
-    e = parseExp5() { expressions.add(e); }
-    ( "," parseExp5() { expressions.add(e); })*
+    e = parseExp() { expressions.add(e); }
+    ( "," parseExp() { expressions.add(e); })*
     { return expressions; }
 }
 
