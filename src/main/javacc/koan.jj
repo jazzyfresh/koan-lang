@@ -97,7 +97,7 @@ Statement parseStmt(): {
     |
         LOOKAHEAD(<ID> "(") s = parseFunCallStmt()
     |
-        s = parseBlockStmt()
+        s = parseBlock()
     )
     {return s;}
 }
@@ -215,7 +215,7 @@ Statement parseLoopStmt(): {
 Statement parseForLoop(): {
     Expression iterationExpression = null;
     Expression executeFunction = null;
-    Block executeBlock = null;
+    Statement executeStatement = null;
     Token blockParam = null;
 } {
     (
@@ -231,12 +231,12 @@ Statement parseForLoop(): {
             LOOKAHEAD(parseExp())
             executeFunction = parseExp()
             | (
-                blockParam = <ID>
-                executeBlock = parseBlock()
+                (blockParam = <ID>)?
+                executeStatement = parseStmt()
             )
         )
     )
-    { return new ForLoop(iterationExpression, executeFunction, executeBlock, blockParam.image); }
+    { return new ForLoop(iterationExpression, executeFunction, executeStatement, blockParam.image); }
 }
 
 Statement parseInfiniteLoop(): {
@@ -246,17 +246,6 @@ Statement parseInfiniteLoop(): {
     { return new InfiniteLoop(s); }
 }
 
-
-
-Statement parseBlockStmt(): {
-   List<Statement> statements = new ArrayList<Statement>();
-   Statement s;
-} {
-    "{" ( s = parseStmt() {statements.add(s);} )* "}"
-    { return new BlockStatement(statements); }
-
-
-}
 
 Block parseBlock(): {
     List<Statement> statements = new ArrayList<Statement>();
