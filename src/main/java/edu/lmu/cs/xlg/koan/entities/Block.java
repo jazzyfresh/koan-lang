@@ -8,7 +8,7 @@ import edu.lmu.cs.xlg.util.Log;
 /**
  * A Koan block.  A block is a sequence of statements that defines a scope.
  */
-public class Block extends Entity {
+public class Block extends Statement {
 
     private List<Statement> statements;
     private SymbolTable table = null;
