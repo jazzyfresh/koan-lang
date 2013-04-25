@@ -1,0 +1,2 @@
+c: array declaration has parentheses instead of brackets
+a := (1, 2, 3, 4)
