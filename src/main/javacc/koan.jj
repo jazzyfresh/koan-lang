@@ -266,6 +266,23 @@ Block parseBlock(): {
     { return new Block(statements); }
 }
 
+Statement parseFunCallStmt(): {
+   FunctionCallExpression f;
+} {
+    f = parseFunCallExp()
+    { return new FunctionCallStatement(f); }
+}
+
+FunctionCallExpression parseFunCallExp(): {
+   Token t;
+   List<Variable> args = new ArrayList<Variable>();
+} {
+    t = <ID>
+    "(" args = parseArgs() ")"
+    { return new FunctionCallExpression(t.image, args); }
+}
+
+
 Expression parseExp(): {
     Expression e1;
     Expression e2;
@@ -452,22 +469,6 @@ ArrayExpression parseArrayExp(): {
       (LOOKAHEAD(2)","e = parseExp() {list.add(e);} )*
     "]"
     {return new ArrayExpression(list);}
-}
-
-Statement parseFunCallStmt(): {
-   FunctionCallExpression f;
-} {
-    f = parseFunCallExp()
-    { return new FunctionCallStatement(f); }
-}
-
-FunctionCallExpression parseFunCallExp(): {
-   Token t;
-   List<Variable> args = new ArrayList<Variable>();
-} {
-    t = <ID>
-    "(" args = parseArgs() ")"
-    { return new FunctionCallExpression(t.image, args); }
 }
 
 Function parseAnonFun(): {
