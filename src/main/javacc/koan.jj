@@ -275,7 +275,7 @@ Statement parseFunCallStmt(): {
 
 FunctionCallExpression parseFunCallExp(): {
    Token t;
-   List<Variable> args = new ArrayList<Variable>();
+   List<Expression> args = new ArrayList<Expression>();
 } {
     t = <ID>
     "(" args = parseArgs() ")"
