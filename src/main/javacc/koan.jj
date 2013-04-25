@@ -500,8 +500,8 @@ List parseArgs(): {
     List<Expression> expressions = new ArrayList<Expression>();
     Expression e = null;
 } {
-    e = parseExp5() { expressions.add(e); }
-    ( "," parseExp5() { expressions.add(e); })*
+    (e = parseExp5() { expressions.add(e); }
+    ( "," parseExp5() { expressions.add(e); })*)?
     { return expressions; }
 }
 
