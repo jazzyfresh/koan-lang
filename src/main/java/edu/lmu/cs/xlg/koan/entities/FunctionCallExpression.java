@@ -7,9 +7,9 @@ import edu.lmu.cs.xlg.util.Log;
 public class FunctionCallExpression extends Expression {
 
     private String functionName;
-    private List<Variable> args;
+    private List<Expression> args;
 
-    public FunctionCallExpression(String functionName, List<Variable> args) {
+    public FunctionCallExpression(String functionName, List<Expression> args) {
         this.functionName = functionName;
         this.args = args;
     }
@@ -24,7 +24,7 @@ public class FunctionCallExpression extends Expression {
         return functionName;
     }
 
-    public List<Variable> getArgs() {
+    public List<Expression> getArgs() {
         return args;
     }
 }

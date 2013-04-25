@@ -1,0 +1,2 @@
+c: a range expects expression values to be integers
+~rng := 1.."dog"

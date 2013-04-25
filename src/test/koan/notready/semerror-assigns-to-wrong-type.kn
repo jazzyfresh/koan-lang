@@ -1,0 +1,3 @@
+c: attempts to assign a string to a integer
+#a := "dog"
+

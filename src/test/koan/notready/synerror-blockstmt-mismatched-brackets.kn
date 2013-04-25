@@ -1,0 +1,10 @@
+c: bracket mismatch in BLOCKSTMT
+
+{
+	{
+		{
+			{ #numba := 10; }
+			}
+		}
+	}
+}

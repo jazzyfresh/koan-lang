@@ -38,8 +38,8 @@ Macrosyntax
     LOOP          -->  FORLOOP | INFINITELOOP
     FORLOOP       -->  '8:' EXP (ANONFUN | ID STMT)
     INFINITELOOP  -->  '8:' STMT
-    FUNCALLSTMT   -->  FUNCALL
-    FUNCALL       -->  ID '(' PARAMS ')'
+    FUNCALLSTMT   -->  ID '(' PARAMS ')'
+    FUNCALLEXP    -->  ID '(' PARAMS ')'
     PARAMS        -->  (EXP (',' EXP)*)*
     BLOCKSTMT     -->  '{' (STMT BR+)* '}'
         
@@ -50,13 +50,13 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | VAR | FUNCALL | ARRAY | HASH | ANONFUN
+    EXP7          -->  LIT | VAR | FUNCALLEXP | ARRAY | HASH | ANONFUN
     
     LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
     VAR           -->  ID ( '.' ID  | '[' EXP ']')*
     ARRAY         -->  '[' EXP* (',' EXP)* ']'
     HASH          -->  '{' ID ':' EXP (',' ID ':' EXP)* '}'
-    ANONFUN       -->  'f:' (PARAMS '->')? BLOCK
+    ANONFUN       -->  'f:' (PARAMS '->')? STMT
     RANGE         -->  EXP7 ('..' | '...') EXP7
 
     EXPNOP        -->  '**'

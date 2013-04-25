@@ -1,0 +1,5 @@
+c: parameters require commas to separate
+
+f add := f: a, b ->  {a + b;}
+
+add (2 3)
