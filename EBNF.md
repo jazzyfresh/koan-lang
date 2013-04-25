@@ -18,8 +18,8 @@ Macrosyntax
                     |  BREAKSTMT
                     |  IFSTMT
                     |  LOOP
-                    |  FUNCALLSTMT
-                    |  BLOCKSTMT
+                    |  FUNCALL
+                    |  BLOCK
     
     VARDEC        -->  TYPE ID ('!')? ':=' EXP 
     TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
@@ -36,12 +36,11 @@ Macrosyntax
     BREAKSTMT     -->  '!!' 
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' STMT)? '??' 
     LOOP          -->  FORLOOP | INFINITELOOP
-    FORLOOP       -->  '8:' EXP (ANONFUN | ID STMT)
+    FORLOOP       -->  '8:' EXP (ANONFUN | ID? STMT)
     INFINITELOOP  -->  '8:' STMT
-    FUNCALLSTMT   -->  ID '(' PARAMS ')'
-    FUNCALLEXP    -->  ID '(' PARAMS ')'
+    FUNCALL       -->  ID '(' PARAMS ')'
     PARAMS        -->  (EXP (',' EXP)*)*
-    BLOCKSTMT     -->  '{' (STMT BR+)* '}'
+    BLOCK         -->  '{' (STMT BR+)* '}'
         
     EXP           -->  EXP1 ('||' EXP1)*
     EXP1          -->  EXP2 ('&&' EXP2)* 
@@ -50,7 +49,7 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | VAR | FUNCALLEXP | ARRAY | HASH | ANONFUN
+    EXP7          -->  LIT | VAR | FUNCALL | ARRAY | HASH | ANONFUN
     
     LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
     VAR           -->  ID ( '.' ID  | '[' EXP ']')*
