@@ -1,0 +1,5 @@
+c: the for loop accepts an expression as its second token.  
+c: This token MUST evaluate to a boolean OR range
+
+8: (2 + 3) f: {#a := 20;}
+

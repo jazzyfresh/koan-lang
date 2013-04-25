@@ -1,0 +1,5 @@
+c: a function call needs parenthesized parameters
+
+f add := f: a, b ->  {a + b;}
+
+add 2,3
