@@ -217,18 +217,18 @@ Statement parseForLoop(): {
     Expression iterationExpression = null;
     Function executeFunction = null;
     Statement executeStatement = null;
-    Token blockParam = null;
+    Token iteratorVariable = null;
 } {
     "8:"
     iterationExpression = parseExp()
     (
         executeFunction = parseAnonFun()
         | (
-            blockParam = <ID>
+            ( "|" iteratorVariable = <ID> "|")?
             executeStatement = parseStmt()
         )
     )
-    { return new ForLoop(iterationExpression, executeFunction, executeStatement, blockParam.image); }
+    { return new ForLoop(iterationExpression, executeFunction, executeStatement, iteratorVariable.image); }
 }
 
 Statement parseInfiniteLoop(): {
