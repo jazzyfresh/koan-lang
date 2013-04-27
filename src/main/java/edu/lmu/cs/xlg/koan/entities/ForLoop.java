@@ -7,14 +7,14 @@ public class ForLoop extends LoopStatement {
     private Expression iterator;
     private Function function;
     private Statement statement;
-    private String blockParam;
+    private String iteratorVariable;
 
-    public ForLoop(Expression iterator, Function function, Statement statement, String blockParam) {
+    public ForLoop(Expression iterator, Function function, Statement statement, String iteratorVariable) {
         super("FORLOOP");
         this.iterator = iterator;
         this.function = function;
         this.statement = statement;
-        this.blockParam = blockParam;
+        this.iteratorVariable = iteratorVariable;
     }
 
     public Expression getIterator() {
@@ -29,8 +29,8 @@ public class ForLoop extends LoopStatement {
         return statement;
     }
 
-    public String getBlockParam() {
-        return blockParam;
+    public String getIteratorVariable() {
+        return iteratorVariable;
     }
 
     @Override
