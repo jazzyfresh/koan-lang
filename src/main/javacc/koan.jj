@@ -37,8 +37,7 @@ public class Parser {
 PARSER_END(Parser)
 
 SKIP: {
-    < (" " | "\t")+ >
-    | <"c:" (~["\n","\r"])*>
+    < (" " | "\t")+ > | <"c:" (~["\n","\r"])* ("\n"|"\r")>
 }
 
 TOKEN: {
@@ -71,7 +70,7 @@ Script parseScript(): {
     Statement s;
 } {
     (<BR>)*
-    (s = parseStmt() {statements.add(s);} (<BR>)*)+
+    (s = parseStmt() {statements.add(s);} (<BR>)*)*
     <EOF>
     {return new Script(statements);}
 }
