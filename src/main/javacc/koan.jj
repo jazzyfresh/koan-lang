@@ -72,7 +72,6 @@ Script parseScript(): {
 } {
     (<BR>)*
     (s = parseStmt() {statements.add(s);} (<BR>)*)+
-    (<BR>)*
     <EOF>
     {return new Script(statements);}
 }
