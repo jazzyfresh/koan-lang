@@ -194,8 +194,10 @@ Statement parseIfStmt(): {
             { arms.add(new IfStatement.Arm(e, s)); }
         )*
         (
+            LOOKAHEAD (":" parseStmt())
             ":" elsePart = parseStmt()
         )?
+        "??"
     )
     {return new IfStatement(arms, elsePart);}
 }
