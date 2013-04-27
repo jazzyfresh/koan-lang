@@ -215,26 +215,17 @@ Statement parseLoopStmt(): {
 
 Statement parseForLoop(): {
     Expression iterationExpression = null;
-    Expression executeFunction = null;
+    Function executeFunction = null;
     Statement executeStatement = null;
     Token blockParam = null;
 } {
+    "8:"
+    iterationExpression = parseExp()
     (
-        "8:"
-        iterationExpression = parseExp()
-        /*
-        (
-            iterationValues = parseRange()
-            | iterationValues = parseArrayExp()
-            | iterationValues = parseVarRef()
-        )*/
-        (
-            LOOKAHEAD(parseExp())
-            executeFunction = parseExp()
-            | (
-                (blockParam = <ID>)?
-                executeStatement = parseStmt()
-            )
+        executeFunction = parseAnonFun()
+        | (
+            blockParam = <ID>
+            executeStatement = parseStmt()
         )
     )
     { return new ForLoop(iterationExpression, executeFunction, executeStatement, blockParam.image); }

@@ -36,7 +36,7 @@ Macrosyntax
     BREAKSTMT     -->  '!!' 
     IFSTMT        -->  '??:' EXP '?' STMT (':' EXP '?' STMT)* (':' STMT)? '??' 
     LOOP          -->  FORLOOP | INFINITELOOP
-    FORLOOP       -->  '8:' EXP (ANONFUN | ID? STMT)
+    FORLOOP       -->  '8:' EXP (ANONFUN | ID STMT)
     INFINITELOOP  -->  '8:' STMT
     FUNCALL       -->  ID '(' PARAMS ')'
     PARAMS        -->  (EXP (',' EXP)*)*

@@ -5,11 +5,11 @@ import edu.lmu.cs.xlg.util.Log;
 public class ForLoop extends LoopStatement {
 
     private Expression iterator;
-    private Expression function;
+    private Function function;
     private Statement statement;
     private String blockParam;
 
-    public ForLoop(Expression iterator, Expression function, Statement statement, String blockParam) {
+    public ForLoop(Expression iterator, Function function, Statement statement, String blockParam) {
         super("FORLOOP");
         this.iterator = iterator;
         this.function = function;
@@ -21,7 +21,7 @@ public class ForLoop extends LoopStatement {
         return iterator;
     }
 
-    public Expression getFunction() {
+    public Function getFunction() {
         return function;
     }
 
