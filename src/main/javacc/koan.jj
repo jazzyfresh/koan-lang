@@ -111,7 +111,7 @@ Variable parseVarDec(): {
     v = <ID>
     ("!" {constant = true;})?
     ":=" e = parseExp()
-    {return new Variable(v.image, t.toString(), e, constant);}
+    {return new Variable(v.image, t, e, constant);}
 }
 
 VariableReference parseVarRef(): {
@@ -124,7 +124,6 @@ VariableReference parseVarRef(): {
 
 String parseType(): {
     Token i;
-    StringBuilder builder = new StringBuilder();
 } {
     (   i = <NUMTYPE>
         | i = <STRTYPE>
@@ -133,8 +132,7 @@ String parseType(): {
         | i = <REGEXTYPE>
         | i = <NULLTYPE>
     )
-    {builder.append(i.image);}
-  {return builder.toString();}
+  {return i.image;}
 }
 
 
