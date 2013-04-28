@@ -488,12 +488,14 @@ AnonymousFunction parseAnonFun(): {
 void parseParams(List<Variable> params): {
     Token p;
 } {
-    p = <ID>
-    {params.add(new Variable(p.image, "INFERENCED", null, false));}
     (
-        "," p = <ID>
-        {params.add(new Variable(p.image, "INFERENCED", null, false));}
-    )*
+	    p = <ID>
+	    {params.add(new Variable(p.image, "INFERENCED", null, false));}
+	    (
+	        "," p = <ID>
+	        {params.add(new Variable(p.image, "INFERENCED", null, false));}
+	    )*
+    )?
 }
 
 List parseArgs(): {
