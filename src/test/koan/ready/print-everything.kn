@@ -1,5 +1,22 @@
+
+c: TEST -- EXPRESSION LITERALS
+
 p: 1
 p: 3.4563
 p: "Hello"
 p: T
 p: F
+
+
+c: TEST -- VARIABLE REFERENCES
+c: TODO -- array references
+
+p: aVariable
+p: variable_with_underscores
+
+c::
+c: p: variable-with-dashes
+c: p: VARIABLE-WITH-CAPITALS
+c: p: variable000-with-000numbers
+c: p: 1010-variable-starts-with-a-number-wtf
+::c

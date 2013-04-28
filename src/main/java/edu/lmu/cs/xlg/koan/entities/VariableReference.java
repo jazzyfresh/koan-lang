@@ -1,6 +1,9 @@
 package edu.lmu.cs.xlg.koan.entities;
 
 import edu.lmu.cs.xlg.util.Log;
+import java.util.List;
+
+
 
 /**
  * Superclass for all variable expressions.  There are several kinds of variable expressions:
@@ -12,9 +15,11 @@ public  class VariableReference extends Expression {
 
 
     String name;
+    List<Expression> keys;
 
-    public VariableReference(String name) {
+    public VariableReference(String name, List<Expression> keys) {
         this.name = name;
+        this.keys = keys;
     }
 
     /**
@@ -25,7 +30,15 @@ public  class VariableReference extends Expression {
         return false;
     }
 
-    /**
+    public List<Expression> getKeys() {
+		return keys;
+	}
+
+	public void setKeys(List<Expression> keys) {
+		this.keys = keys;
+	}
+
+	/**
      * Logs an error if the variable expression references a read-only variable.
      */
     public void assertWritable(Log log) {

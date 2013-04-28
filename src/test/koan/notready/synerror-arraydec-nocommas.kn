@@ -1,0 +1,2 @@
+c: array declarations must have commas between elements
+a := [1 2 3 4 5]

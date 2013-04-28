@@ -1,0 +1,12 @@
+c:
+c: that was an empty comment. suck it.
+c: this comment has lots of words
+c: notice this comment is not at the end of the file
+c: that's because atm comments are ended with a newline so...
+c: yeah
+
+c:: BLOCK 
+    COMMENTS
+    FYEAH
+    ::c
+   

@@ -1,0 +1,3 @@
+c: script requires break after every statement 
+
+#cool := 80085 $notcool := "you should have put a break before this STMT. not cool." 

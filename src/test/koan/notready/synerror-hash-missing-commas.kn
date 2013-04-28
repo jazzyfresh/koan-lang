@@ -1,0 +1,3 @@
+c: hashes require commas separating elements
+
+{name:"Sparky" breed:"Welsh Corgi", age:"7"}

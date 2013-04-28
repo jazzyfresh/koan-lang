@@ -5,32 +5,32 @@ import edu.lmu.cs.xlg.util.Log;
 public class ForLoop extends LoopStatement {
 
     private Expression iterator;
-    private Expression function;
-    private Block body;
-    private String blockParam;
+    private Function function;
+    private Statement statement;
+    private String iteratorVariable;
 
-    public ForLoop(Expression iterator, Expression function, Block body, String blockParam) {
+    public ForLoop(Expression iterator, Function function, Statement statement, String iteratorVariable) {
         super("FORLOOP");
         this.iterator = iterator;
         this.function = function;
-        this.body = body;
-        this.blockParam = blockParam;
+        this.statement = statement;
+        this.iteratorVariable = iteratorVariable;
     }
 
     public Expression getIterator() {
         return iterator;
     }
 
-    public Expression getFunction() {
+    public Function getFunction() {
         return function;
     }
 
-    public Block getBody() {
-        return body;
+    public Statement getStatement() {
+        return statement;
     }
 
-    public String getBlockParam() {
-        return blockParam;
+    public String getIteratorVariable() {
+        return iteratorVariable;
     }
 
     @Override

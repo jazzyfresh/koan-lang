@@ -1,0 +1,3 @@
+c: array reference is between square brackets
+notCLike c[] :=: 15
+

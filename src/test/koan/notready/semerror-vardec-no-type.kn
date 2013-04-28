@@ -1,0 +1,2 @@
+c: type is required for a variable declaration
+variablethathasnevereverbeendeclaredbefore := "dog"

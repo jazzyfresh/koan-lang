@@ -1,0 +1,4 @@
+c: if EXP2 can only into the RELOP optional statement once. 
+c: this example could be fixed with parentheses
+
+3 > 2 > 1

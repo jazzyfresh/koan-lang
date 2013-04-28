@@ -36,43 +36,60 @@ public class Parser {
 
 PARSER_END(Parser)
 
+// ---------------------------------------------------------------------------
+// LEXICAL ANALYZER
+// ---------------------------------------------------------------------------
+
+// Whitespace and comments
+
 SKIP: {
     < (" " | "\t")+ >
-    | <"c:" (~["\n","\r"])*>
+| <"c:" (~["\n","\r"])* ("\n"|"\r")>
+| <"c::" (~["\u0000"-"\u001f", "\u007f"-"\u009f"]|"\n"|"\r")* "::c">
 }
+
+// Literals and reserved words and symbols
 
 TOKEN: {
     "(" | ")" | "[" | "]" | "{" | "}" | "-" | "+" | "/" | "*" | "%" | "**" | "!" | ":=" | ":=:"
-    | "&&" | "||" | "<" | ">" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:" | "??:"
-    | "8:" | "p:" | "??" |  "->"  | "T" | "F"
+| "&&" | "||" | "<" | ">" | "==" | "<=" | ">=" | "!=" | "," | ".." | "..." | "f:" | "??:"
+| "8:" | "p:" | "??" |  "->"  | "T" | "F"
 
-    | <NUMTYPE: "#">
-    | <STRTYPE: "$">
-    | <BOOLTYPE: "^">
-    | <FUNTYPE: "f">
-    | <REGEXTYPE: "@">
-    | <NULLTYPE: "~">
+| <NUMTYPE: "#">
+| <STRTYPE: "$">
+| <BOOLTYPE: "^">
+| <FUNTYPE: "f">
+| <REGEXTYPE: "@">
+| <NULLTYPE: "~">
 
-    | < STRINGLIT:
+|
+    < STRINGLIT:
         "\""
         (
             ~["\"", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
         )*
         "\""
-      >
-
-    | <NUMLIT: (["0"-"9"])+ ("." (["0"-"9"])+)? >
-    | <BR: ";" | "\n">
-    | <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])* >
+    >
+|
+    <NUMLIT: (["0"-"9"])+ ("." (["0"-"9"])+)? >
+|
+    <BR: ";" | "\n">
+|
+    <ID: ["A"-"Z" , "a"-"z" , "0"-"9"] (["-" , "_" , "A"-"Z" , "a"-"z" , "0"-"9"])* >
 }
+
+
+// ---------------------------------------------------------------------------
+// SYNTAX ANALYZER
+// ---------------------------------------------------------------------------
+
 
 Script parseScript(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
 } {
     (<BR>)*
-    (s = parseStmt() {statements.add(s);} (<BR>)*)+
-    (<BR>)*
+    (s = parseStmt() {statements.add(s);} (<BR>)*)*
     <EOF>
     {return new Script(statements);}
 }
@@ -97,7 +114,7 @@ Statement parseStmt(): {
     |
         LOOKAHEAD(<ID> "(") s = parseFunCallStmt()
     |
-        s = parseBlockStmt()
+        s = parseBlock()
     )
     {return s;}
 }
@@ -112,20 +129,28 @@ Variable parseVarDec(): {
     v = <ID>
     ("!" {constant = true;})?
     ":=" e = parseExp()
-    {return new Variable(v.image, t.toString(), e, constant);}
+    {return new Variable(v.image, t, e, constant);}
 }
 
 VariableReference parseVarRef(): {
     Token t;
-    Token u = null;
+    Expression key;
+    List<Expression> keys = new ArrayList<Expression>();
 } {
     t = <ID>
-    {return new VariableReference(t.image);}
+    //(LOOKAHEAD({getToken(2).image == "["})
+    //    '[' key = parseExp() ']' { keys.add(key); })*
+
+    // TODO: make this goddamn array ref work
+
+    // TODO: atm, this only supports plain variable references
+    // and array variable references. in the future, we should
+    // incorporate object member variable references.
+    {return new VariableReference(t.image, keys);}
 }
 
 String parseType(): {
     Token i;
-    StringBuilder builder = new StringBuilder();
 } {
     (   i = <NUMTYPE>
         | i = <STRTYPE>
@@ -134,8 +159,7 @@ String parseType(): {
         | i = <REGEXTYPE>
         | i = <NULLTYPE>
     )
-    {builder.append(i.image);}
-  {return builder.toString();}
+  {return i.image;}
 }
 
 
@@ -195,8 +219,10 @@ Statement parseIfStmt(): {
             { arms.add(new IfStatement.Arm(e, s)); }
         )*
         (
+            LOOKAHEAD (":" parseStmt())
             ":" elsePart = parseStmt()
         )?
+        "??"
     )
     {return new IfStatement(arms, elsePart);}
 }
@@ -214,29 +240,20 @@ Statement parseLoopStmt(): {
 
 Statement parseForLoop(): {
     Expression iterationExpression = null;
-    Expression executeFunction = null;
-    Block executeBlock = null;
-    Token blockParam = null;
+    Function executeFunction = null;
+    Statement executeStatement = null;
+    Token iteratorVariable = null;
 } {
+    "8:"
+    iterationExpression = parseExp()
     (
-        "8:"
-        iterationExpression = parseExp()
-        /*
-        (
-            iterationValues = parseRange()
-            | iterationValues = parseArrayExp()
-            | iterationValues = parseVarRef()
-        )*/
-        (
-            LOOKAHEAD(parseExp())
-            executeFunction = parseExp()
-            | (
-                blockParam = <ID>
-                executeBlock = parseBlock()
-            )
+        executeFunction = parseAnonFun()
+        | (
+            ( "|" iteratorVariable = <ID> "|")?
+            executeStatement = parseStmt()
         )
     )
-    { return new ForLoop(iterationExpression, executeFunction, executeBlock, blockParam.image); }
+    { return new ForLoop(iterationExpression, executeFunction, executeStatement, iteratorVariable.image); }
 }
 
 Statement parseInfiniteLoop(): {
@@ -247,17 +264,6 @@ Statement parseInfiniteLoop(): {
 }
 
 
-
-Statement parseBlockStmt(): {
-   List<Statement> statements = new ArrayList<Statement>();
-   Statement s;
-} {
-    "{" ( s = parseStmt() {statements.add(s);} )* "}"
-    { return new BlockStatement(statements); }
-
-
-}
-
 Block parseBlock(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
@@ -265,6 +271,23 @@ Block parseBlock(): {
     "{" ( s = parseStmt() {statements.add(s);} (<BR>)*)* "}"
     { return new Block(statements); }
 }
+
+Statement parseFunCallStmt(): {
+   FunctionCallExpression f;
+} {
+    f = parseFunCallExp()
+    { return new FunctionCallStatement(f); }
+}
+
+FunctionCallExpression parseFunCallExp(): {
+   Token t;
+   List<Expression> args = new ArrayList<Expression>();
+} {
+    t = <ID>
+    "(" args = parseArgs() ")"
+    { return new FunctionCallExpression(t.image, args); }
+}
+
 
 Expression parseExp(): {
     Expression e1;
@@ -355,24 +378,23 @@ Expression parseExp6(): {
 }
 
 Expression parseExp7(): {
-    Entity e;
+    Expression e;
     Token t;
 } {
     (
         e = parseLiteral()
     |
-        LOOKAHEAD(parseFunCallExp())
+        LOOKAHEAD({getToken(2).image == "("})
         e = parseFunCallExp()
+    |
+        LOOKAHEAD({getToken(2).image == "["})
+        e = parseArrayExp()
     |
         e = parseVarRef()
     |
-        e = parseArrayExp()
-    |
-        e = parseHash()
-    |
-        e = parseAnonFun()
+        "(" e = parseExp() ")"
     )
-    { return (Expression)e; }
+    { return e; }
 }
 
 Expression parseHash(): {
@@ -435,6 +457,7 @@ BooleanLiteral parseBool(): {
 |
      "F" {return BooleanLiteral.F; }
 }
+
 ArrayExpression parseArrayExp(): {
     Expression e = null;
     List<Expression> list = new ArrayList<Expression>();
@@ -444,22 +467,6 @@ ArrayExpression parseArrayExp(): {
       (LOOKAHEAD(2)","e = parseExp() {list.add(e);} )*
     "]"
     {return new ArrayExpression(list);}
-}
-
-Statement parseFunCallStmt(): {
-   FunctionCallExpression f;
-} {
-    f = parseFunCallExp()
-    { return new FunctionCallStatement(f); }
-}
-
-FunctionCallExpression parseFunCallExp(): {
-   Token t;
-   List<Variable> args = new ArrayList<Variable>();
-} {
-    t = <ID>
-    "(" args = parseArgs() ")"
-    { return new FunctionCallExpression(t.image, args); }
 }
 
 Function parseAnonFun(): {
@@ -490,8 +497,10 @@ List parseArgs(): {
     List<Expression> expressions = new ArrayList<Expression>();
     Expression e = null;
 } {
-    e = parseExp() { expressions.add(e); }
-    ( "," parseExp() { expressions.add(e); })*
+    (
+        e = parseExp() { expressions.add(e); }
+        ( "," parseExp() { expressions.add(e); })*
+    )?
     { return expressions; }
 }
 
