@@ -47,13 +47,13 @@ public class IfStatement extends Statement {
 
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-        for (Arm arm: arms) {
-            arm.guard.analyze(log, table, function, inLoop);
-            arm.guard.assertBoolean("condition", log);
-            arm.statement.analyze(log, table, function, inLoop);
-        }
-        if (elsePart != null) {
-            elsePart.analyze(log, table, function, inLoop);
-        }
+//        for (Arm arm: arms) {
+//            arm.guard.analyze(log, table, function, inLoop);
+//            arm.guard.assertBoolean("condition", log);
+//            arm.statement.analyze(log, table, function, inLoop);
+//        }
+//        if (elsePart != null) {
+//            elsePart.analyze(log, table, function, inLoop);
+//        }
     }
 }

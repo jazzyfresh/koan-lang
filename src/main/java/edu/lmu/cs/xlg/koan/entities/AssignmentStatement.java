@@ -38,10 +38,10 @@ public class AssignmentStatement extends Statement {
      */
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-        left.analyze(log, table, function, inLoop);
-        right.analyze(log, table, function, inLoop);
-        left.assertWritable(log);
-        right.assertAssignableTo(left.type, log, "assignment.type.error");
+//        left.analyze(log, table, function, inLoop);
+//        right.analyze(log, table, function, inLoop);
+//        left.assertWritable(log);
+//        right.assertAssignableTo(left.type, log, "assignment.type.error");
     }
 
     public Expression getVariableReference() {

@@ -19,6 +19,6 @@ public class PrintStatement extends Statement {
 
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-        expression.analyze(log, table, function, inLoop);
+//        expression.analyze(log, table, function, inLoop);
     }
 }

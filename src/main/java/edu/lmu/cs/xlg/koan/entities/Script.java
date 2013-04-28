@@ -19,6 +19,6 @@ public class Script extends Block {
      * it is.
      */
     public void analyze(Log log) {
-        analyze(log, null, null, false);
+//        analyze(log, null, null, false);
     }
 }

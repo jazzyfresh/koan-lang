@@ -17,6 +17,6 @@ public class BooleanLiteral extends Literal {
 
 	@Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-		this.type = Type.BOOL;
+//		this.type = Type.BOOL;
 	}
 }

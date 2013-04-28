@@ -72,16 +72,16 @@ public class ObjectType extends Type {
      */
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-        Set<String> propertyNames = new HashSet<String>();
-        for (Property property: properties) {
-            if (! propertyNames.add(property.getName())) {
-                log.error("duplicate.property", property.getName(), this.getName());
-            }
-        }
-
-        for (Property property: properties) {
-            property.analyze(log, table);
-        }
+//        Set<String> propertyNames = new HashSet<String>();
+//        for (Property property: properties) {
+//            if (! propertyNames.add(property.getName())) {
+//                log.error("duplicate.property", property.getName(), this.getName());
+//            }
+//        }
+//
+//        for (Property property: properties) {
+//            property.analyze(log, table);
+//        }
     }
 
     /**

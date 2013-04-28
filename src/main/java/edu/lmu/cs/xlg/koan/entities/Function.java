@@ -67,10 +67,10 @@ public class Function extends Declaration {
      */
     public void analyze(Log log, SymbolTable table, Function owner, boolean inLoop) {
 
-        // Some functions have no body, but analyze the bodies of those that do.
-        if (body != null) {
-            body.analyze(log, table, this, false);
-        }
+//        // Some functions have no body, but analyze the bodies of those that do.
+//        if (body != null) {
+//            body.analyze(log, table, this, false);
+//        }
     }
 
     /**
