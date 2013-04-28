@@ -1,9 +1,0 @@
-p: f: {}
-
-p: f: { p: thingsInsideBlock; };
-
-p: f: {
-    p: "multiline function";
-    p: "so exciting";
-}
-
