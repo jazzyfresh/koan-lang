@@ -387,7 +387,6 @@ Expression parseExp7(): {
         LOOKAHEAD({getToken(2).image == "("})
         e = parseFunCallExp()
     |
-        LOOKAHEAD({getToken(2).image == "["})
         e = parseArrayExp()
     |
         e = parseVarRef()
@@ -462,9 +461,11 @@ ArrayExpression parseArrayExp(): {
     Expression e = null;
     List<Expression> list = new ArrayList<Expression>();
 } {
-    "["
+    "[" 
+    (
       e = parseExp() {list.add(e);}
-      (LOOKAHEAD(2)","e = parseExp() {list.add(e);} )*
+      ("," e = parseExp() {list.add(e);} )*
+    )?
     "]"
     {return new ArrayExpression(list);}
 }
