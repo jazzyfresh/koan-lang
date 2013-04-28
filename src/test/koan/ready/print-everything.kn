@@ -7,10 +7,14 @@ p: "Hello"
 p: T
 p: F
 
+c: TEST -- ARITHMETIC EXPRESSIONS
+
+p: 1 + 1
 
 
 c: TEST -- VARIABLE REFERENCES
 c: TODO -- array references
+
 c::
 p: aVariable
 p: variable_with_underscores
@@ -18,5 +22,4 @@ c: p: variable-with-dashes
 c: p: VARIABLE-WITH-CAPITALS
 c: p: variable000-with-000numbers
 c: p: 1010-variable-starts-with-a-number-wtf
-
 ::c
