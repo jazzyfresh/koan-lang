@@ -89,7 +89,7 @@ Script parseScript(): {
     Statement s;
 } {
     (<BR>)*
-    (s = parseStmt() {statements.add(s);} (<BR>)*)*
+    (s = parseStmt() {statements.add(s);} (<BR>)+)*
     <EOF>
     {return new Script(statements);}
 }
@@ -268,7 +268,7 @@ Block parseBlock(): {
     List<Statement> statements = new ArrayList<Statement>();
     Statement s;
 } {
-    "{" ( s = parseStmt() {statements.add(s);} (<BR>)*)* "}"
+    "{" (<BR>)* ( s = parseStmt() {statements.add(s);} (<BR>)+)* "}"
     { return new Block(statements); }
 }
 
