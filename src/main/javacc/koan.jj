@@ -478,7 +478,7 @@ AnonymousFunction parseAnonFun(): {
 } {
     (
         "f:"
-        ("(" parseParams(params) ")" "->")?
+        ("("/* parseParams(params)*/ ")" "->")?
 
         body = parseBlock()
     )
