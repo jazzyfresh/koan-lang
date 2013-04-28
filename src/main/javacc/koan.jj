@@ -343,7 +343,7 @@ Expression parseExp4(): {
     e1 = parseExp5()
     (
         op = parseMulOp()
-        e2 = parseExp4()
+        e2 = parseExp5()
         { e1 = new BinaryExpression(e1, op, e2); }
     )*
     { return e1; }
@@ -357,7 +357,7 @@ Expression parseExp5(): {
     e1 = parseExp6()
     (
         op = parseAddOp()
-        e2 = parseExp5()
+        e2 = parseExp6()
         { e1 = new BinaryExpression(e1, op, e2); }
     )*
     { return e1; }
@@ -371,7 +371,7 @@ Expression parseExp6(): {
     e1 = parseExp7()
     (
         op = parseRangeOp()
-        e2 = parseExp6()
+        e2 = parseExp7()
         { e1 = new BinaryExpression(e1, op, e2); }
     )*
     { return e1; }
