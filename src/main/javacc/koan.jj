@@ -388,6 +388,7 @@ Expression parseExp7(): {
           e = parseArrayExp()
         )
       | e = parseVarRef()
+      | "(" e = parseExp() ")"
     )
     { return e; }
 }
