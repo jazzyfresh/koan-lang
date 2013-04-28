@@ -53,7 +53,7 @@ Macrosyntax
     
     LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
     VAR           -->  ID ( '.' ID  | '[' EXP ']')*
-    ARRAY         -->  '[' EXP* (',' EXP)* ']'
+    ARRAY         -->  '[' (EXP (',' EXP)*)? ']'
     HASH          -->  '{' ID ':' EXP (',' ID ':' EXP)* '}'
     ANONFUN       -->  'f:' ('(' PARAMS ')' '->')? BLOCK
     RANGE         -->  EXP7 ('..' | '...') EXP7
