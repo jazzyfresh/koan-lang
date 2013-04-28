@@ -37,7 +37,9 @@ public class Parser {
 PARSER_END(Parser)
 
 SKIP: {
-    < (" " | "\t")+ > | <"c:" (~["\n","\r"])* ("\n"|"\r")>
+    < (" " | "\t")+ > 
+    | <"c:" (~["\n","\r"])* ("\n"|"\r")> 
+    | <"c::" (~["\u0000"-"\u001f", "\u007f"-"\u009f"]|"\n"|"\r")* "::c">
 }
 
 TOKEN: {
@@ -115,10 +117,19 @@ Variable parseVarDec(): {
 
 VariableReference parseVarRef(): {
     Token t;
-    Token u = null;
+    Expression key;
+    List<Expression> keys = new ArrayList<Expression>();
 } {
-    t = <ID>
-    {return new VariableReference(t.image);}
+    t = <ID> 
+    //(LOOKAHEAD({getToken(2).image == "["})
+    //    '[' key = parseExp() ']' { keys.add(key); })*
+    
+    // TODO: make this goddamn array ref work
+    
+    // TODO: atm, this only supports plain variable references
+    // and array variable references. in the future, we should
+    // incorporate object member variable references.
+    {return new VariableReference(t.image, keys);}
 }
 
 String parseType(): {
@@ -363,16 +374,11 @@ Expression parseExp6(): {
 }
 
 Expression parseExp7(): {
-    Entity e;
+    Expression e;
     Token t;
 } {
     (
       e = parseLiteral()
-   /*   | (
-          LOOKAHEAD({getToken(2).image == "{"})
-          e = parseObject()
-        )
-    */
       | (
           LOOKAHEAD({getToken(2).image == "("})
           e = parseFunCallExp()
@@ -383,7 +389,7 @@ Expression parseExp7(): {
         )
       | e = parseVarRef()
     )
-    { return (Expression)e; }
+    { return e; }
 }
 
 
@@ -438,6 +444,7 @@ BooleanLiteral parseBool(): {
 |
      "F" {return BooleanLiteral.F; }
 }
+
 ArrayExpression parseArrayExp(): {
     Expression e = null;
     List<Expression> list = new ArrayList<Expression>();
