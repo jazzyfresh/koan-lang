@@ -240,7 +240,7 @@ Statement parseLoopStmt(): {
 
 Statement parseForLoop(): {
     Expression iterationExpression = null;
-    Function executeFunction = null;
+    AnonymousFunction executeFunction = null;
     Statement executeStatement = null;
     Token iteratorVariable = null;
 } {
@@ -391,6 +391,8 @@ Expression parseExp7(): {
     |
         e = parseVarRef()
     |
+        e = parseAnonFun()
+    |
         "(" e = parseExp() ")"
     )
     { return e; }
@@ -470,7 +472,7 @@ ArrayExpression parseArrayExp(): {
     {return new ArrayExpression(list);}
 }
 
-Function parseAnonFun(): {
+AnonymousFunction parseAnonFun(): {
     List<Variable> params = new ArrayList<Variable>();
     Block body = null;
 } {
@@ -480,7 +482,7 @@ Function parseAnonFun(): {
 
         body = parseBlock()
     )
-    {return new Function(params, body);}
+    {return new AnonymousFunction(params, body);}
 }
 
 void parseParams(List<Variable> params): {
