@@ -5,7 +5,7 @@ import edu.lmu.cs.xlg.util.Log;
 /**
  * A Koan expression.
  */
-public abstract class Expression extends Statement {
+public abstract class Expression extends Entity {
 
     // As Koan is statically typed, we can compute and store the type at compile time.
     Type type;

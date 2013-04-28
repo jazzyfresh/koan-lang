@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.lmu.cs.xlg.util.Log;
 
-public class FunctionCallExpression extends Expression {
+public class FunctionCallExpression extends VariableReference {
 
     private String functionName;
     private List<Expression> args;

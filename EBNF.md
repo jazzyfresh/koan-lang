@@ -22,7 +22,7 @@ Macrosyntax
                     |  BLOCK
     
     VARDEC        -->  TYPE ID ('!')? ':=' EXP 
-    TYPE          -->  NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE | NULLTYPE
+    TYPE          -->  ((NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE) ('[' ']')*) | NULLTYPE
     NUMTYPE       --> '#'
     STRTYPE       --> '$'
     BOOLTYPE      --> '^'

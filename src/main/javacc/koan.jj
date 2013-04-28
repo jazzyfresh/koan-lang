@@ -133,33 +133,46 @@ Variable parseVarDec(): {
 }
 
 VariableReference parseVarRef(): {
-    Token t;
-    Expression key;
-    List<Expression> keys = new ArrayList<Expression>();
-} {
-    t = <ID>
-    //(LOOKAHEAD({getToken(2).image == "["})
-    //    '[' key = parseExp() ']' { keys.add(key); })*
-
-    // TODO: make this goddamn array ref work
-
-    // TODO: atm, this only supports plain variable references
-    // and array variable references. in the future, we should
-    // incorporate object member variable references.
-    {return new VariableReference(t.image, keys);}
+    VariableReference v;
+    Expression e =  null;
+    Token i;
+}{
+    (
+        LOOKAHEAD(2) v = parseFunCallExp()
+    |
+        i = <ID>
+        {v = new SimpleVariableReference(i.image);}
+    )
+    (
+        "[" e = parseExp() "]"
+        {v = new SubscriptedVariable(v, e);}
+    )*
+    {return v;}
 }
 
 String parseType(): {
     Token i;
+    StringBuilder builder = new StringBuilder();
 } {
-    (   i = <NUMTYPE>
-        | i = <STRTYPE>
-        | i = <BOOLTYPE>
-        | i = <FUNTYPE>
-        | i = <REGEXTYPE>
-        | i = <NULLTYPE>
+    (
+        (   
+            i = <NUMTYPE>
+        | 
+            i = <STRTYPE>
+        |
+            i = <BOOLTYPE>
+        |
+            i = <FUNTYPE>
+        )
+        {builder.append(i.image);}
+        (
+            LOOKAHEAD(2) "[" "]" {builder.append("[]");}
+        )*
+    |   
+        i = <NULLTYPE>
+        {builder.append(i.image);}
     )
-  {return i.image;}
+  {return builder.toString();}
 }
 
 
@@ -384,9 +397,6 @@ Expression parseExp7(): {
     (
         e = parseLiteral()
     |
-        LOOKAHEAD({getToken(2).image == "("})
-        e = parseFunCallExp()
-    |
         e = parseArrayExp()
     |
         e = parseVarRef()
@@ -396,16 +406,6 @@ Expression parseExp7(): {
         "(" e = parseExp() ")"
     )
     { return e; }
-}
-
-Expression parseHash(): {
-} {
-    "{"
-        <ID> ":" parseExp()
-        ( "," <ID> ":" parseExp() )*
-    "}"
-    // TODO
-    {return null;}
 }
 
 String parseRelOp():  {
