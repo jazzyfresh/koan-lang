@@ -1,0 +1,9 @@
+c: swapping subscripted var
+c: doesn't work for leading non-simple
+
+x :=: y
+
+x :=: y[1]
+
+[g] :=: y;
+
