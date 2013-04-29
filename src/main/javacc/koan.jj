@@ -137,14 +137,11 @@ VariableReference parseVarRef(): {
     Expression e =  null;
     Token i;
 }{
-    (
-
         i = <ID>
-        {v = new SimpleVariableReference(i.image);}
-    )
+        {v = new SimpleVariableReference(i.image);} 
     (
-        "[" e = parseExp() "]"
-        {v = new SubscriptedVariable(v, e);}
+        "[" e = parseExp() "]"    
+        ({v = new SubscriptedVariable(v, e);})
     )*
     {return v;}
 }
