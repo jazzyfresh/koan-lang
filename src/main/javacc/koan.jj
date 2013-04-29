@@ -473,13 +473,19 @@ ArrayExpression parseArrayExp(): {
 }
 
 AnonymousFunction parseAnonFun(): {
+    Token p;
+    String t;
     List<Variable> params = new ArrayList<Variable>();
     Block body = null;
+    
 } {
     (
         "f:"
-        ("(" params = parseParams(params) ")" "->")?
-
+        (
+   //     "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")" 
+         "(" ({ params = parseParams(params);})  ")" 
+        "->"
+        )?
         body = parseBlock()
     )
     {return new AnonymousFunction(params, body);}
@@ -498,6 +504,7 @@ List<Variable> parseParams(List<Variable> params): {
     )?
     { return params; }
 }
+
 
 List parseArgs(): {
     List<Expression> expressions = new ArrayList<Expression>();
