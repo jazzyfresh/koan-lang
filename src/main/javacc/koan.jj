@@ -479,30 +479,16 @@ AnonymousFunction parseAnonFun(): {
     Block body = null;
     
 } {
+    "f:"
     (
-        "f:"
+        "(" 
         (
-   //     "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")" 
-         "(" ({ params = parseParams(params);})  ")" 
-        "->"
-        )?
-        body = parseBlock()
-    )
-    {return new AnonymousFunction(params, body);}
-}
-
-List<Variable> parseParams(List<Variable> params): {
-    Token p;
-} {
-    (
-	    p = <ID>
-	    {params.add(new Variable(p.image, "INFERENCED", null, false));}
-	    (
-	        "," p = <ID>
-	        {params.add(new Variable(p.image, "INFERENCED", null, false));}
-	    )*
+//            // TODO: enforce type checking in function parameters//           "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")" 
+			p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));}			("," p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));})*		)? 
+		")" "->"
     )?
-    { return params; }
+    body = parseBlock()
+    {return new AnonymousFunction(params, body);}
 }
 
 
