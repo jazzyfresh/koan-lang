@@ -1,18 +1,18 @@
 
 c: TEST -- EXPRESSION LITERALS
 
-p: 1
-p: 3.4563
-p: "Hello"
-p: T
-p: F
+p: 1;
+p: 3.4563;
+p: "Hello";
+p: T;
+p: F;
 
 
 c: TEST -- VARIABLE REFERENCES
 c: TODO -- array references
 
-p: aVariable
-p: variable_with_underscores
+p: aVariable;
+p: variable_with_underscores;
 
 c::
 c: p: variable-with-dashes
