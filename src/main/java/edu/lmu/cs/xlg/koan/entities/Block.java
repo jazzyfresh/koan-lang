@@ -1,6 +1,6 @@
 package edu.lmu.cs.xlg.koan.entities;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
 import edu.lmu.cs.xlg.util.Log;
@@ -38,38 +38,38 @@ public class Block extends Statement {
      * Returns the list of all the types declared immediately within this block, in the order they
      * are declared.
      */
-    public List<Type> getTypes() {
-        List<Type> result = new ArrayList<Type>();
-        for (Statement s : statements) {
-            if (s instanceof Type) {
-                result.add((Type)s);
-            }
-        }
-        return result;
-    }
+//    public List<Type> getTypes() {
+//        List<Type> result = new ArrayList<Type>();
+//        for (Statement s : statements) {
+//            if (s instanceof Type) {
+//                result.add((Type)s);
+//            }
+//        }
+//        return result;
+//    }
 
     /**
      * Returns the list of all the functions declared immediately within this block, in the order
      * they are declared.
      */
-    public List<Function> getFunctions() {
-        List<Function> result = new ArrayList<Function>();
-        for (Statement s: statements) {
-            if (s instanceof Function) {
-                result.add((Function)s);
-            }
-        }
-        return result;
-    }
+//    public List<Function> getFunctions() {
+//        List<Function> result = new ArrayList<Function>();
+//        for (Statement s: statements) {
+//            if (s instanceof Function) {
+//                result.add((Function)s);
+//            }
+//        }
+//        return result;
+//    }
 
     /**
      * Creates the symbol table for this block, only if it has not already been created.
      */
-    public void createTable(SymbolTable parent) {
-        if (table == null) {
-            table = new SymbolTable(parent);
-        }
-    }
+//    public void createTable(SymbolTable parent) {
+//        if (table == null) {
+//            table = new SymbolTable(parent);
+//        }
+//    }
 
     /**
      * Performs semantic analysis on this block.
@@ -134,8 +134,8 @@ public class Block extends Statement {
 //        }
     }
     //Added for ToCGenerator
-    public Object getDeclarations() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+//    public Object getDeclarations() {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
 }

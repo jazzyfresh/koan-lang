@@ -5,14 +5,14 @@ import edu.lmu.cs.xlg.util.Log;
 public class ForLoop extends LoopStatement {
 
     private Expression iterator;
-    private AnonymousFunction anonymousFunction;
+    private Function function;
     private Statement statement;
     private String iteratorVariable;
 
-    public ForLoop(Expression iterator, AnonymousFunction anonymousFunction, Statement statement, String iteratorVariable) {
+    public ForLoop(Expression iterator, Function function, Statement statement, String iteratorVariable) {
         super("FORLOOP");
         this.iterator = iterator;
-        this.anonymousFunction = anonymousFunction;
+        this.function = function;
         this.statement = statement;
         this.iteratorVariable = iteratorVariable;
     }
@@ -21,8 +21,8 @@ public class ForLoop extends LoopStatement {
         return iterator;
     }
 
-    public AnonymousFunction getAnonymousFunction() {
-        return anonymousFunction;
+    public Function getFunction() {
+        return function;
     }
 
     public Statement getStatement() {

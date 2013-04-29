@@ -249,7 +249,7 @@ Statement parseLoopStmt(): {
 
 Statement parseForLoop(): {
     Expression iterationExpression = null;
-    AnonymousFunction executeFunction = null;
+    Function executeFunction = null;
     Statement executeStatement = null;
     Token iteratorVariable = null;
 } {
@@ -468,7 +468,7 @@ ArrayExpression parseArrayExp(): {
     {return new ArrayExpression(list);}
 }
 
-AnonymousFunction parseAnonFun(): {
+Function parseAnonFun(): {
     Token p;
     String t;
     List<Variable> params = new ArrayList<Variable>();
@@ -484,7 +484,7 @@ AnonymousFunction parseAnonFun(): {
 		")" "->"
     )?
     body = parseBlock()
-    {return new AnonymousFunction(params, body);}
+    {return new Function(params, body);}
 }
 
 
