@@ -1,3 +1,3 @@
-c: atm only parses stringlits  as PARAM(s), though an arbitrary amount of those. 
-p: f: (thisworks) -> {};
+c: parses arbitrary number of PARAMS 
+p: f: (x,y,z) -> {};
 
