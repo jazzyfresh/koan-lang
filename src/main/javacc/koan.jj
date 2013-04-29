@@ -478,14 +478,14 @@ AnonymousFunction parseAnonFun(): {
 } {
     (
         "f:"
-        ("("/* parseParams(params)*/ ")" "->")?
+        ("(" params = parseParams(params) ")" "->")?
 
         body = parseBlock()
     )
     {return new AnonymousFunction(params, body);}
 }
 
-void parseParams(List<Variable> params): {
+List<Variable> parseParams(List<Variable> params): {
     Token p;
 } {
     (
@@ -496,6 +496,7 @@ void parseParams(List<Variable> params): {
 	        {params.add(new Variable(p.image, "INFERENCED", null, false));}
 	    )*
     )?
+    { return params; }
 }
 
 List parseArgs(): {
