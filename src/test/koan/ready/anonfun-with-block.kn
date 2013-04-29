@@ -1,3 +1,0 @@
-c: parses arbitrary number of PARAMS 
-p: f: (x,y,z) -> {p: 1;};
- 

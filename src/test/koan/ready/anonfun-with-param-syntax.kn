@@ -1,7 +1,7 @@
 p: f: () -> {}
 p: f: (x) -> {}
 p: f: (x,y) -> {}
-p: f: (x,y,z) -> {}
-p: f: (x,y,z,a,b,c) -> { thingsInDaBlock; soCool; inlineStatementsFYeah; }
+p: f: (x,y,z) -> { p: 1; }
+p: f: (x,y,z,a,b,c) -> { p: "some things to print"; }
 
 

@@ -1,6 +1,6 @@
 p: f: {}
 
-p: f: { p: thingsInsideBlock; };
+p: f: { p: "a print statement inside a block. whoa."; };
 
 p: f: {
     p: "multiline function";
