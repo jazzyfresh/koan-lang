@@ -49,12 +49,11 @@ Macrosyntax
     EXP4          -->  EXP5 (MULOP EXP5)*
     EXP5          -->  EXP6 (ADDOP EXP6)*
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
-    EXP7          -->  LIT | VAR | FUNCALL | ARRAY | HASH | ANONFUN
+    EXP7          -->  LIT | VAR | ARRAY | ANONFUN
     
     LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
-    VAR           -->  ID ( '.' ID  | '[' EXP ']')*
+    VAR           -->  FUNCALL | ID ('[' EXP ']')*
     ARRAY         -->  '[' (EXP (',' EXP)*)? ']'
-    HASH          -->  '{' ID ':' EXP (',' ID ':' EXP)* '}'
     ANONFUN       -->  'f:' ('(' (PARAMS)? ')' '->')? BLOCK
     RANGE         -->  EXP7 ('..' | '...') EXP7
 
