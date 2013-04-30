@@ -7,3 +7,7 @@ p: f: {
     p: "so exciting";
 };
 
+C:: p: f: {
+      8: 0...10 |i| p: i;
+   }
+::C
