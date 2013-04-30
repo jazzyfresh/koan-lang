@@ -1,0 +1,5 @@
+c: swap types must match for a successful swap
+
+# num := 13;
+$ str := "thirteen";
+num :=: str;

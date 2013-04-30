@@ -1,0 +1,6 @@
+c: the EXP '||' must compare boolean types
+
+^ veritas := F;
+# nummer := 52;
+
+veritas || nummer;

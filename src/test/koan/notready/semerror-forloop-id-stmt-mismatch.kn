@@ -1,0 +1,6 @@
+c: the id specified by the for loop must be used within the following statement
+c: I'm not exactly sure if this is the way in which we will implement this 
+c: so this test may or may not be pertinent
+
+# a := 2
+8:1..7 |x| {a + 3}

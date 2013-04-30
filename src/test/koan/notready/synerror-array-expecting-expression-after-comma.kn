@@ -1,0 +1,4 @@
+c: If there is a comma within an array it expects to be followed by an expression
+c: id est, the last element in the array is not followed by a comma
+
+# aayraay := [1, 2, 3, 4, 5,]

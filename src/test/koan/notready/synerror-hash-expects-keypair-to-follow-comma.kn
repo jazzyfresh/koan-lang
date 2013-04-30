@@ -1,0 +1,4 @@
+c: If there is a comma within a hash it expects to be followed by an key/value pair
+c: id est, the last element in the hash is not followed by a comma
+
+~ hssh := {type:"Dog", IDnumber:"27501", breed:"German Shepherd", age:"6",}
