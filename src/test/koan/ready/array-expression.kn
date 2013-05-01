@@ -2,5 +2,7 @@ p: [];
 p: [1];
 p: [1,2,3,4];
 p: [1,1,1];
-c: p: ["dog", "rat", "horse", "rooster", "snake" "ox", "boar", "ram", "dragon", "tiger", "rabbit", "monkey"];
-c: p: [T, F, T, T];
+
+
+p: ["dog", "rat", "horse", "rooster", "snake", "ox", "boar", "ram", "dragon", "tiger", "rabbit", "monkey"];
+p: [T, F, T, T];
