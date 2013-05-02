@@ -7,9 +7,8 @@ import edu.lmu.cs.xlg.util.Log;
  */
 public class Type extends Declaration {
 
-    public static final Type INTEGER = new Type("#");
-    public static final Type BOOL = new Type("^");
-    public static final Type OBJECT = new Type("o");
+    public static final Type NUMBER = new Type("#");
+    public static final Type BOOLEAN = new Type("^");
     public static final Type STRING = new Type("$");
     public static final Type ANONFUN = new Type("f");
 
@@ -50,7 +49,7 @@ public class Type extends Declaration {
      * Returns whether this type is an arithmetic type.
      */
     public boolean isArithmetic() {
-        return this == INTEGER;
+        return this == NUMBER;
     }
 
     /**
