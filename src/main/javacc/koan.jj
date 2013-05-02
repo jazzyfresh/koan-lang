@@ -267,7 +267,10 @@ Statement parseForLoop(): {
             executeStatement = parseStmt()
         )
     )
-    { return new ForLoop(iterationExpression, executeFunction, executeStatement, iteratorVariable.image); }
+    
+    { return (iteratorVariable == null) ? 
+         new ForLoop(iterationExpression, executeFunction, executeStatement, null) 
+         : new ForLoop(iterationExpression, executeFunction, executeStatement, iteratorVariable.image); }
 }
 
 Statement parseInfiniteLoop(): {
