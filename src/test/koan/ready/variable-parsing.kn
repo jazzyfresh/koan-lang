@@ -1,0 +1,9 @@
+c:printing Our types of varrefs or funcall from varref
+
+p: x();
+
+p: x;
+
+
+p: x[40..96];
+p: x[4][5][9];

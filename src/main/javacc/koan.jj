@@ -131,16 +131,22 @@ Variable parseVarDec(): {
     {return new Variable(v.image, t, e, constant);}
 }
 
+
 VariableReference parseVarRef(): {
     VariableReference v;
     Expression e =  null;
     Token i;
 }{
-        i = <ID>
-        {v = new SimpleVariableReference(i.image);} 
     (
-        "[" e = parseExp() "]"    
-        ({v = new SubscriptedVariable(v, e);})
+        LOOKAHEAD(2) 
+        v = parseFunCallExp()
+    |
+        i = <ID>
+        {v = new SimpleVariableReference(i.image);}
+    )
+    (
+        "[" e = parseExp() "]"
+        {v = new SubscriptedVariable(v, e);}
     )*
     {return v;}
 }
