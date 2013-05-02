@@ -1,0 +1,5 @@
+c:: EXP6's ..|... requires both expressions be integer values
+    note: this test may or may not be redundant... as it is 
+    the same check for the range ::c
+$ limit := "349,005"
+1..limit;

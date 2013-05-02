@@ -1,0 +1,2 @@
+c:EXP5's ADDOP requires that all expression tokens be number values
+# anotherNumber := 7 + 27.4395 + T;

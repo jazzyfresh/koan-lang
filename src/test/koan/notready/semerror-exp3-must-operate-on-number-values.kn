@@ -1,0 +1,2 @@
+c:EXP3's EXPNOP requires that all expression tokens be number values
+# exponentialz := 2**3**"five"; 

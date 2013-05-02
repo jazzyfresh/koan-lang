@@ -1,0 +1,6 @@
+c: the EXP2 '&&' must compare boolean types
+
+^ veritas := F;
+# nummer := 52;
+
+veritas && nummer;
