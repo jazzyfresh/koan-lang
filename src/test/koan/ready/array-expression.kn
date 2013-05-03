@@ -6,3 +6,4 @@ p: [1,1,1];
 
 p: ["dog", "rat", "horse", "rooster", "snake", "ox", "boar", "ram", "dragon", "tiger", "rabbit", "monkey"];
 p: [T, F, T, T];
+p: [3.33, 4.50, 6.66];
