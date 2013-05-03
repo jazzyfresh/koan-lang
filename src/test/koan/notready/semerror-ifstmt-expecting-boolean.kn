@@ -1,0 +1,5 @@
+c:The expression required by the IFSTMT should evaluate to a boolean
+
+# a := 24
+
+??: "true" ? a := a + a : a := a * a?? 

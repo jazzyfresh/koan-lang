@@ -45,14 +45,11 @@ public class SymbolTable extends Entity {
 
         if ("STRING".equals(name)) {
             return Type.STRING;
-        } else if ("INTEGER".equals(name)) {
-            return Type.INTEGER;
-      //  } else if ("NUMBR".equals(name)) {
-      //      return Type.NUMBR;
-        } else if ("OBJECT".equals(name)) {
-            return Type.OBJECT;
-        } else if ("BOOL".equals(name)) {
-            return Type.BOOL;
+        } else if ("NUMBER".equals(name)) {
+            return Type.NUMBER;
+
+        } else if ("BOOLEAN".equals(name)) {
+            return Type.BOOLEAN;
         }
 
         if (name.endsWith(" LIST")) {

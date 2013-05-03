@@ -1,0 +1,2 @@
+c:EXP4's MULOP requires that all expression tokens be number values
+# someNumber := 44 / 2 % 11 * "one million";

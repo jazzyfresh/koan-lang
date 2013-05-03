@@ -1,0 +1,2 @@
+c: the EXP2 RELOP only compares two number values
+^ isGT 15 > "sixteen"; 

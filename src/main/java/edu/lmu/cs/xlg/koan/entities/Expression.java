@@ -29,7 +29,7 @@ public abstract class Expression extends Entity {
     //note that these search || are way sexier than if statements
     public boolean isCompatibleWith(Type testType) {
         return this.type == testType
-            || this.type == Type.INTEGER //&& testType == Type.NUMBER
+            || this.type == Type.NUMBER
             || this.type == Type.NULL_TYPE && testType.isReference()
             || this.type == Type.ARBITRARY
             || testType == Type.ARBITRARY;
@@ -45,25 +45,25 @@ public abstract class Expression extends Entity {
     }
 
     void assertArithmetic(String context, Log log) {
-        if (!(type == Type.INTEGER /*|| type == Type.NUMBR*/)) {
+        if (!(type == Type.NUMBER)) {
             log.error("non.arithmetic", context);
         }
     }
 
     void assertArithmeticOrChar(String context, Log log) {
-        if (!(type == Type.INTEGER /* || type == Type.NUMBR */ )) {
+        if (!(type == Type.NUMBER)) {
             log.error("non.arithmetic.or.char", context);
         }
     }
 
     void assertInteger(String context, Log log) {
-        if (!(type == Type.INTEGER)) {
+        if (!(type == Type.NUMBER)) {
             log.error("non.integer", context);
         }
     }
 
     void assertBoolean(String context, Log log) {
-        if (!(type == Type.BOOL)) {
+        if (!(type == Type.BOOLEAN)) {
             log.error("non.boolean", context, type);
         }
     }

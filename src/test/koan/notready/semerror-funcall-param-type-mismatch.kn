@@ -1,0 +1,20 @@
+c:: A parameter's type (from within a function call) must match the type
+    defined in the function declaration.  ::c
+
+    
+f multiplication-surprise := f: (# x, # y, $ toPrint) -> {
+	# times := x * y;
+	# incrementer := 0;
+	^ isEven := (times % 2) == 0;
+	8:(0..times) {
+	        $ printedString = (
+	            ??: (isEven): 
+	            	??: (incrementer % 2 == 0): "\n__ʕ •ᴥ•ʔ__\n" : toPrint ?? 
+	            	: ??: (incrementer % 2 == 0): toPrint : "\n__(⊙ω⊙)__\n" ??
+	            ??
+	            }
+	        p: printedString;
+	        incrementer := incrementer + 1;
+}
+
+multiplication-surprise(hello, 5, 6);
