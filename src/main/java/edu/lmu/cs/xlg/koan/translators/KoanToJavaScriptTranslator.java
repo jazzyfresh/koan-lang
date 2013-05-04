@@ -8,17 +8,15 @@
 //import com.google.common.base.Joiner;
 //import com.google.common.collect.ImmutableMap;
 //
-//import edu.lmu.cs.xlg.koan.entities.ArrayAggregate;
+//import edu.lmu.cs.xlg.koan.entities.ArrayExpression;
 //import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
 //import edu.lmu.cs.xlg.koan.entities.Block;
 //import edu.lmu.cs.xlg.koan.entities.BooleanLiteral;
 //import edu.lmu.cs.xlg.koan.entities.BreakStatement;
 //import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
-//import edu.lmu.cs.xlg.koan.entities.CallStatement;
-//import edu.lmu.cs.xlg.koan.entities.Case;
-//import edu.lmu.cs.xlg.koan.entities.ClassicForStatement;
+//import edu.lmu.cs.xlg.koan.entities.FunctionCallStatement;
+//import edu.lmu.cs.xlg.koan.entities.ForLoop;
 //import edu.lmu.cs.xlg.koan.entities.Declaration;
-//import edu.lmu.cs.xlg.koan.entities.EmptyArray;
 //import edu.lmu.cs.xlg.koan.entities.Entity;
 //import edu.lmu.cs.xlg.koan.entities.Expression;
 //import edu.lmu.cs.xlg.koan.entities.Function;
@@ -29,7 +27,6 @@
 //import edu.lmu.cs.xlg.koan.entities.PrefixExpression;
 //import edu.lmu.cs.xlg.koan.entities.PrintStatement;
 //import edu.lmu.cs.xlg.koan.entities.Script;
-//import edu.lmu.cs.xlg.koan.entities.ReturnStatement;
 //import edu.lmu.cs.xlg.koan.entities.SimpleVariableReference;
 //import edu.lmu.cs.xlg.koan.entities.Statement;
 //import edu.lmu.cs.xlg.koan.entities.StringLiteral;
@@ -234,10 +231,6 @@
 //            return translateStringLiteral(StringLiteral.class.cast(e));
 //        } else if (e instanceof ArrayAggregate) {
 //            return translateArrayAggregate(ArrayAggregate.class.cast(e));
-//        } else if (e instanceof StructAggregate) {
-//            return translateStructAggregate(StructAggregate.class.cast(e));
-//        } else if (e instanceof EmptyArray) {
-//            return translateEmptyArray(EmptyArray.class.cast(e));
 //        } else if (e instanceof PrefixExpression) {
 //            return translatePrefixExpression(PrefixExpression.class.cast(e));
 //        } else if (e instanceof PostfixExpression) {
