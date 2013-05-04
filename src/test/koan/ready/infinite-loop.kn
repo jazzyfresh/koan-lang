@@ -1,1 +1,4 @@
 8: p: "printing forever";
+8: {
+    p: "printing in a block forever";
+};
