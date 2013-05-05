@@ -178,16 +178,11 @@ String parseType(): {
 
 
 Statement parseAssignment(): {
-    Statement s = null;
     VariableReference v = null;
     Expression e = null;
 } {
-      (    v = parseVarRef()
-          ":="
-          e = parseExp()
-          { s = new AssignmentStatement(v, e); }
-      )
-    {return s;}
+    v = parseVarRef() ":=" e = parseExp()
+    {return new AssignmentStatement(v, e);}
 }
 
 
@@ -195,11 +190,9 @@ Statement parseSwap(): {
     VariableReference v1 = null;
     VariableReference v2 = null;
 } {
-    (
-        v1 = parseVarRef()
-        ":=:"
-        v2 = parseVarRef()
-    )
+    v1 = parseVarRef()
+    ":=:"
+    v2 = parseVarRef()
     {return new SwapStatement(v1, v2);}
 }
 
