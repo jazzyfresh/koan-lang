@@ -1,9 +1,9 @@
 c: swapping subscripted var
 c: doesn't work for leading non-simple
 
-x :=: y
+x :=: y;
 
-x :=: y[1][3][0]
+x :=: y[1][3][0];
 
-x[2] :=: y[2]
+c: x[2] :=: y[2];
 

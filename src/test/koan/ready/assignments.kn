@@ -3,8 +3,9 @@ b := two;
 c := three();
 d := four[1];
 e := five[1][2];
+
 fff := 3 + 3;
 c: a single 'f' cannot be a variable name because 'f' is a keyword in koan
-c: also, comments can't go at the end of files for those of you who forgot
+c: also, single-line comments can't go at the end of files for those of you who forgot
 
-
+c: g[2] := 1;
