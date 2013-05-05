@@ -1,0 +1,7 @@
+??: (one < 3) ? p: "be happy!"
+  : (two < 4) ? {
+    p: "oh man, we've got blocks";
+    p: "whuuudduupppp???";
+    p: "hell yes";
+  }
+  : p: "or else!" ??;

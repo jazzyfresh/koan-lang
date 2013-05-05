@@ -1,0 +1,2 @@
+??: (one > 3) ? p: "be happy!"
+    : p: "or else!" ??;
