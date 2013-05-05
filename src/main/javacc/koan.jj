@@ -99,9 +99,9 @@ Statement parseStmt(): {
     (
         s = parseVarDec()
     |
-        LOOKAHEAD(<ID> ":=") s = parseAssignment()
+        LOOKAHEAD(parseVarRef() ":=") s = parseAssignment()
     |
-        LOOKAHEAD(<ID> ":=:") s = parseSwap()
+        LOOKAHEAD(parseVarRef() ":=:") s = parseSwap()
     |
         s = parsePrintStmt()
     |
@@ -138,7 +138,7 @@ VariableReference parseVarRef(): {
     Token i;
 }{
     (
-        LOOKAHEAD(2) 
+        LOOKAHEAD(2)
         v = parseFunCallExp()
     |
         i = <ID>
@@ -156,9 +156,9 @@ String parseType(): {
     StringBuilder builder = new StringBuilder();
 } {
     (
-        (   
+        (
             i = <NUMTYPE>
-        | 
+        |
             i = <STRTYPE>
         |
             i = <BOOLTYPE>
@@ -169,7 +169,7 @@ String parseType(): {
         (
             LOOKAHEAD(2) "[" "]" {builder.append("[]");}
         )*
-    |   
+    |
         i = <NULLTYPE>
         {builder.append(i.image);}
     )
@@ -260,9 +260,9 @@ Statement parseForLoop(): {
             executeStatement = parseStmt()
         )
     )
-    
-    { return (iteratorVariable == null) ? 
-         new ForLoop(iterationExpression, executeFunction, executeStatement, null) 
+
+    { return (iteratorVariable == null) ?
+         new ForLoop(iterationExpression, executeFunction, executeStatement, null)
          : new ForLoop(iterationExpression, executeFunction, executeStatement, iteratorVariable.image); }
 }
 
@@ -440,9 +440,11 @@ String parseRangeOp():  {
     { return s.image; }
 }
 
-Literal parseLiteral(): {} {
+Literal parseLiteral(): {
+   Token t;
+} {
    (LOOKAHEAD(3) parseBool()
-   | <NUMLIT>
+   | t = <NUMLIT> {return new NumericLiteral(t.image);}
    | <STRINGLIT>
    )
    {return new Literal("Not done yet");}
@@ -460,7 +462,7 @@ ArrayExpression parseArrayExp(): {
     Expression e = null;
     List<Expression> list = new ArrayList<Expression>();
 } {
-    "[" 
+    "["
     (
       e = parseExp() {list.add(e);}
       ("," e = parseExp() {list.add(e);} )*
@@ -474,15 +476,15 @@ Function parseAnonFun(): {
     String t;
     List<Variable> params = new ArrayList<Variable>();
     Block body = null;
-    
+
 } {
     "f:"
     (
-        "(" 
+        "("
         (
-//            // TODO: enforce type checking in function parameters//           "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")" 
-			p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));}			("," p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));})*		)? 
-		")" "->"
+//            // TODO: enforce type checking in function parameters//           "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")"
+      p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));}      ("," p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));})*    )?
+    ")" "->"
     )?
     body = parseBlock()
     {return new Function(params, body);}
