@@ -1,3 +1,4 @@
 # one := 1;
 $ string := "here is a string";
 f function := f: (x) -> { p: "print me"; };
+^ b := true;
