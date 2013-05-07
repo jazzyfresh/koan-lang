@@ -1,4 +1,5 @@
 # one := 1;
 $ string := "here is a string";
 f function := f: (x) -> { p: "print me"; };
-^ b := true;
+^ b := T;
+^ b := F; c:: our boolean keywords are T and F, not true and false. ::c
