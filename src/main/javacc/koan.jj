@@ -443,9 +443,13 @@ String parseRangeOp():  {
 Literal parseLiteral(): {
    Token t;
 } {
-   (LOOKAHEAD(3) parseBool()
-   | t = <NUMLIT> {return new NumericLiteral(t.image);}
-   | <STRINGLIT>
+   ( 
+       parseBool()
+   | 
+       t = <NUMLIT> {return new NumericLiteral(t.image);}
+   | 
+       <STRINGLIT>
+       // TODO: Finish coding literal syntax!!!
    )
    {return new Literal("Not done yet");}
 }
