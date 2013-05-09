@@ -43,9 +43,9 @@ PARSER_END(Parser)
 // Whitespace and comments
 
 SKIP: {
-    < (" " | "\t" | "\n")+ >
-| <"c:" (~["\n","\r"])* ("\n"|"\r")>
-| <"c::" (~["\u0000"-"\u001f", "\u007f"-"\u009f"]|"\n"|"\r")* "::c">
+    < " " | "\t" | "\n" >
+| < "c:" (~["\n","\r"])* ("\n"|"\r") >
+| < "c::" (~["\u0000"-"\u001f", "\u007f"-"\u009f"]|"\n"|"\r")* "::c" >
 }
 
 // Literals and reserved words and symbols
