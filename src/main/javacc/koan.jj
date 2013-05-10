@@ -59,11 +59,9 @@ TOKEN: {
 | <STRTYPE: "$">
 | <BOOLTYPE: "^">
 | <FUNTYPE: "f">
-| <REGEXTYPE: "@">
-| <NULLTYPE: "~">
 
 |
-    < STRINGLIT:
+    <STRINGLIT:
         "\""
         (
             ~["\"", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
@@ -71,7 +69,9 @@ TOKEN: {
         "\""
     >
 |
-    <NUMLIT: (["0"-"9"])+ ("." (["0"-"9"])+)? >
+    <NUMLIT: (["0"-"9"])+ ("." (["0"-"9"])+)?>
+|
+    <NULLLIT: "~">
 |
     <BR: ";">
 |
@@ -156,24 +156,19 @@ String parseType(): {
     StringBuilder builder = new StringBuilder();
 } {
     (
-        (
-            i = <NUMTYPE>
-        |
-            i = <STRTYPE>
-        |
-            i = <BOOLTYPE>
-        |
-            i = <FUNTYPE>
-        )
-        {builder.append(i.image);}
-        (
-            LOOKAHEAD(2) "[" "]" {builder.append("[]");}
-        )*
+        i = <NUMTYPE>
     |
-        i = <NULLTYPE>
-        {builder.append(i.image);}
+        i = <STRTYPE>
+    |
+        i = <BOOLTYPE>
+    |
+        i = <FUNTYPE>
     )
-  {return builder.toString();}
+    {builder.append(i.image);}
+    (
+        LOOKAHEAD(2) "[" "]" {builder.append("[]");}
+    )*
+    {return builder.toString();}
 }
 
 
@@ -442,21 +437,16 @@ String parseRangeOp():  {
 
 Literal parseLiteral(): {
    Token t;
-   Literal l;
 } {
-       l = parseBool() {return l;}
-   | 
-       t = <NUMLIT> {return new NumericLiteral(t.image);}
-   | 
-       t = <STRINGLIT> {return new StringLiteral(t.image);}
-}
-
-BooleanLiteral parseBool(): {
-    BooleanLiteral b;
-    }{
-     "T" {return BooleanLiteral.T;}
+    "T" {return BooleanLiteral.T;}
 |
-     "F" {return BooleanLiteral.F; }
+    "F" {return BooleanLiteral.F;}
+| 
+    t = <NUMLIT> {return new NumericLiteral(t.image);}
+| 
+    t = <STRINGLIT> {return new StringLiteral(t.image);}
+|
+    <NULLLIT> {return Literal.NULL;}
 }
 
 ArrayExpression parseArrayExp(): {
