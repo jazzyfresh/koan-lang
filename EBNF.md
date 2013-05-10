@@ -22,13 +22,11 @@ Macrosyntax
                     |  BLOCK
     
     VARDEC        -->  TYPE ID ('!')? ':=' EXP 
-    TYPE          -->  ((NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE) ('[' ']')*) | NULLTYPE
+    TYPE          -->  (NUMTYPE | STRTYPE | BOOLTYPE | FUNTYPE) ('[' ']')*
     NUMTYPE       --> '#'
     STRTYPE       --> '$'
     BOOLTYPE      --> '^'
     FUNTYPE       --> 'f'
-    REGEXTYPE     --> '@'
-    NULLTYPE      --> '~'
     
     ASSIGNMENT    -->  VAR ':=' EXP
     SWAP          -->  VAR ':=:' VAR
@@ -51,7 +49,7 @@ Macrosyntax
     EXP6          -->  EXP7 (('..'|'...') EXP7)?
     EXP7          -->  LIT | VAR | ARRAY | ANONFUN
     
-    LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT
+    LIT           -->  'T' | 'F' | NUMLIT | STRINGLIT | '~'
     VAR           -->  FUNCALL | ID ('[' EXP ']')*
     ARRAY         -->  '[' (EXP (',' EXP)*)? ']'
     ANONFUN       -->  'f:' ('(' (PARAMS)? ')' '->')? BLOCK
