@@ -23,11 +23,11 @@ public class NumericLiteral extends Literal {
 
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-        type = Type.NUMBER;
-        try {
-            value = Double.parseDouble(getLexeme());
-        } catch (NumberFormatException e) {
-            log.error("bad_number", getLexeme());
-        }
+//        type = Type.NUMBER;
+//        try {
+//            value = Double.parseDouble(getLexeme());
+//        } catch (NumberFormatException e) {
+//            log.error("bad_number", getLexeme());
+//        }
     }
 }
