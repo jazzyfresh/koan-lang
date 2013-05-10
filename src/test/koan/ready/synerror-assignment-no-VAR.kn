@@ -1,0 +1,4 @@
+c: no var on rhs
+:= 1; 
+
+

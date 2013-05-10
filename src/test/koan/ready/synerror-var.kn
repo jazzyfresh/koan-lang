@@ -1,0 +1,2 @@
+_noUNDERscores = 2+2;
+c: lexical error ID cannot begin with '_'
