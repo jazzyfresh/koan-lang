@@ -2,8 +2,11 @@ c: gcd.kn
 c:
 c: For demonstrating an implementation of the greatest common divisor in koan.
 
-f gcd := f: (x,y) -> { (a % b == 0) ? a : gcd(b, a % b); };
 
+c: f gcd := f: (x,y) -> { ??: (a % b == 0) ? a : gcd(b, a % b)??; };
+c:: 
+    TODO - resolve return statement/ expression statement conflict
+::c
 gcd(54, 24);     c: == 6
 gcd(25, 3);      c: == 1
 gcd(14375, 15);  c: == 5
