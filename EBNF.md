@@ -53,7 +53,6 @@ Macrosyntax
     VAR           -->  FUNCALL | ID ('[' EXP ']')*
     ARRAY         -->  '[' (EXP (',' EXP)*)? ']'
     ANONFUN       -->  'f:' ('(' (PARAMS)? ')' '->')? BLOCK
-    RANGE         -->  EXP7 ('..' | '...') EXP7
 
     EXPNOP        -->  '**'
     MULOP         -->  '*' | '/' | '%' 
