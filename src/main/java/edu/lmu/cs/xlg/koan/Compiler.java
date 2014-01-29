@@ -6,11 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 
 import edu.lmu.cs.xlg.koan.entities.Script;
 import edu.lmu.cs.xlg.koan.syntax.Parser;
 import edu.lmu.cs.xlg.util.Log;
+
+import edu.lmu.cs.xlg.koan.translators.KoanToJavaScriptTranslator;
 
 /**
  * A Koan compiler. This class contains a static main method allowing you to run the compiler
@@ -41,6 +44,7 @@ public class Compiler {
         Script script = compiler.checkSyntax(reader);
         script.printSyntaxTree("", "", new PrintWriter(System.out, true));
         script.analyze(compiler.log);
+        compiler.generateJavaScript(reader, new PrintWriter(new OutputStreamWriter(System.out)));
 
         // TODO: Obviously, this is a stub.
     }
@@ -93,6 +97,18 @@ public class Compiler {
             return null;
         }
         return checkSemantics(script);
+    }
+
+    /**
+     * Compiles a Koan program from a reader and writes the JavaScript to a writer.
+     */
+    public void generateJavaScript(Reader reader, PrintWriter writer) throws IOException {
+        Script script = checkSemantics(reader);
+        if (log.getErrorCount() > 0) {
+            return;
+        }
+        new KoanToJavaScriptTranslator().translateScript(script, writer);
+        writer.close();
     }
 
     /**
