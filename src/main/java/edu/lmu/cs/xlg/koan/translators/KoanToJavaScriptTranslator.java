@@ -180,27 +180,27 @@ public class KoanToJavaScriptTranslator {
        emit("}");
    }
 
-//    private void translateClassicForStatement(ClassicForStatement s) {
-//        String init = "", test = "", each = "";
-//        if (s.getInit() != null) {
-//            init = String.format("var %s = %s", variable(s.getIndexVariable()), s.getInit());
-//        }
-//        if (s.getTest() != null) {
-//            test = translateExpression(s.getTest());
-//        }
-//        if (s.getEach() instanceof AssignmentStatement) {
-//            AssignmentStatement e = AssignmentStatement.class.cast(s.getEach());
-//            String left = translateExpression(e.getLeft());
-//            String right = translateExpression(e.getRight());
-//            each = String.format("%s = %s", left, right);
-//        } else if (s.getEach() instanceof IncrementStatement) {
-//            IncrementStatement e = IncrementStatement.class.cast(s.getEach());
-//            each = String.format("%s%s", variable(e.getTarget()), e.getOp());
-//        }
-//        emit("for (%s; %s; %s) {", init, test, each);
-//        translateBlock(s.getBody());
-//        emit("}");
-//    }
+    private void translateClassicForStatement(ClassicForStatement s) {
+        String init = "", test = "", each = "";
+        if (s.getInit() != null) {
+            init = String.format("var %s = %s", variable(s.getIndexVariable()), s.getInit());
+        }
+        if (s.getTest() != null) {
+            test = translateExpression(s.getTest());
+        }
+        if (s.getEach() instanceof AssignmentStatement) {
+            AssignmentStatement e = AssignmentStatement.class.cast(s.getEach());
+            String left = translateExpression(e.getLeft());
+            String right = translateExpression(e.getRight());
+            each = String.format("%s = %s", left, right);
+        } else if (s.getEach() instanceof IncrementStatement) {
+            IncrementStatement e = IncrementStatement.class.cast(s.getEach());
+            each = String.format("%s%s", variable(e.getTarget()), e.getOp());
+        }
+        emit("for (%s; %s; %s) {", init, test, each);
+        translateBlock(s.getBody());
+        emit("}");
+    }
 
    private String translateExpression(Expression e) {
        // if (e instanceof Number) {
