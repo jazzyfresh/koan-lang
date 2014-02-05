@@ -8,6 +8,15 @@ public class NumericLiteral extends Literal {
 
     public NumericLiteral(String lexeme) {
         super(lexeme);
+
+        // HEY HEY: THIS BELONGS IN ANALYZE BUT JASMINE AND DANNY ARE TOO BUSY
+        // WHEN THE ANALYZER IS DONE PUT THIS BACK WHERE IT BELONGS WHICH IS NOT HERE.
+        type = Type.NUMBER;
+        try {
+            value = Double.parseDouble(getLexeme());
+        } catch (NumberFormatException e) {
+            System.out.println("bad_number: " + getLexeme());
+        }
     }
 
     public Double getValue() {

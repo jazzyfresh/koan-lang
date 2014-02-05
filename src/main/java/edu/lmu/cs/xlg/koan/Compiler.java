@@ -41,12 +41,7 @@ public class Compiler {
         Compiler compiler = new Compiler();
         Reader reader = (args.length == 0) ? new BufferedReader(new InputStreamReader(System.in))
                 : new FileReader(args[0]);
-        Script script = compiler.checkSyntax(reader);
-        script.printSyntaxTree("", "", new PrintWriter(System.out, true));
-        script.analyze(compiler.log);
         compiler.generateJavaScript(reader, new PrintWriter(new OutputStreamWriter(System.out)));
-
-        // TODO: Obviously, this is a stub.
     }
 
     /**
@@ -107,6 +102,7 @@ public class Compiler {
         if (log.getErrorCount() > 0) {
             return;
         }
+        script.printSyntaxTree("", "", new PrintWriter(System.out, true));
         new KoanToJavaScriptTranslator().translateScript(script, writer);
         writer.close();
     }

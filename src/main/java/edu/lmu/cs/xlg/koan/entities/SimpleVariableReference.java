@@ -28,10 +28,10 @@ public class SimpleVariableReference extends VariableReference {
 		}
 
 	    /**
-//	     * Returns true, because simple variables are always writable in Carlos.
-//	     */
-//	    public boolean isWritable() {
-//	       return true;
-//	    }
+	     * Returns true, because simple variables are always writable in Carlos.
+	     */
+	    public boolean isWritable() {
+	       return true;
+	    }
 	}
 

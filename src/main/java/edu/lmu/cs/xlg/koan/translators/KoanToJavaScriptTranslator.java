@@ -11,19 +11,20 @@ import com.google.common.collect.ImmutableMap;
 // import edu.lmu.cs.xlg.koan.entities.ArrayExpression;
 import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
 import edu.lmu.cs.xlg.koan.entities.Block;
-// import edu.lmu.cs.xlg.koan.entities.BooleanLiteral;
-// import edu.lmu.cs.xlg.koan.entities.BreakStatement;
+import edu.lmu.cs.xlg.koan.entities.BooleanLiteral;
+import edu.lmu.cs.xlg.koan.entities.BreakStatement;
 // import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
 import edu.lmu.cs.xlg.koan.entities.FunctionCallStatement;
-// import edu.lmu.cs.xlg.koan.entities.ForLoop;
- import edu.lmu.cs.xlg.koan.entities.Declaration;
+import edu.lmu.cs.xlg.koan.entities.ForLoop;
+import edu.lmu.cs.xlg.koan.entities.Declaration;
 import edu.lmu.cs.xlg.koan.entities.Entity;
 import edu.lmu.cs.xlg.koan.entities.Expression;
 import edu.lmu.cs.xlg.koan.entities.Function;
 import edu.lmu.cs.xlg.koan.entities.IfStatement;
 import edu.lmu.cs.xlg.koan.entities.InfiniteLoop;
 // import edu.lmu.cs.xlg.koan.entities.InfixExpression;
-// import edu.lmu.cs.xlg.koan.entities.Number;
+import edu.lmu.cs.xlg.koan.entities.NullLiteral;
+import edu.lmu.cs.xlg.koan.entities.NumericLiteral;
 // import edu.lmu.cs.xlg.koan.entities.PostfixExpression;
 // import edu.lmu.cs.xlg.koan.entities.PrefixExpression;
 import edu.lmu.cs.xlg.koan.entities.PrintStatement;
@@ -88,27 +89,27 @@ public class KoanToJavaScriptTranslator {
        // } else if (s instanceof CallStatement) {
        //     translateCallStatement(CallStatement.class.cast(s));
 
-       // } else if (s instanceof BreakStatement) {
-       //     emit("break;");
+       if (s instanceof BreakStatement) {
+           emit("break;");
 
        // } else if (s instanceof ReturnStatement) {
        //     translateReturnStatement(ReturnStatement.class.cast(s));
 
-       // } else if (s instanceof PrintStatement) {
-       //     translatePrintStatement(PrintStatement.class.cast(s));
+       } else if (s instanceof PrintStatement) {
+           translatePrintStatement(PrintStatement.class.cast(s));
 
        // } else if (s instanceof IfStatement) {
        //     translateIfStatement(IfStatement.class.cast(s));
 
-       // } else if (s instanceof InfiniteLoop) {
-       //     translateInfiniteLoop(InfiniteLoop.class.cast(s));
+       } else if (s instanceof InfiniteLoop) {
+           translateInfiniteLoop(InfiniteLoop.class.cast(s));
 
-       // } else if (s instanceof ClassicForStatement) {
-       //     translateClassicForStatement(ClassicForStatement.class.cast(s));
+       //} else if (s instanceof ForLoop) {
+       //    translateForLoop(ForLoop.class.cast(s));
 
-       // } else {
-       //     throw new RuntimeException("Unknown statement class: " + s.getClass().getName());
-       // }
+       //} else {
+       //    throw new RuntimeException("Unknown statement class: " + s.getClass().getName());
+       }
    }
 
    /**private void translateDeclaration(Declaration s) {
@@ -180,37 +181,37 @@ public class KoanToJavaScriptTranslator {
        emit("}");
    }
 
-    private void translateClassicForStatement(ClassicForStatement s) {
-        String init = "", test = "", each = "";
-        if (s.getInit() != null) {
-            init = String.format("var %s = %s", variable(s.getIndexVariable()), s.getInit());
-        }
-        if (s.getTest() != null) {
-            test = translateExpression(s.getTest());
-        }
-        if (s.getEach() instanceof AssignmentStatement) {
-            AssignmentStatement e = AssignmentStatement.class.cast(s.getEach());
-            String left = translateExpression(e.getLeft());
-            String right = translateExpression(e.getRight());
-            each = String.format("%s = %s", left, right);
-        } else if (s.getEach() instanceof IncrementStatement) {
-            IncrementStatement e = IncrementStatement.class.cast(s.getEach());
-            each = String.format("%s%s", variable(e.getTarget()), e.getOp());
-        }
-        emit("for (%s; %s; %s) {", init, test, each);
-        translateBlock(s.getBody());
-        emit("}");
-    }
+    // private void translateClassicForLoop(ForLoop s) {
+    //     String init = "", test = "", each = "";
+    //     if (s.getInit() != null) {
+    //         init = String.format("var %s = %s", variable(s.getIndexVariable()), s.getInit());
+    //     }
+    //     if (s.getTest() != null) {
+    //         test = translateExpression(s.getTest());
+    //     }
+    //     if (s.getEach() instanceof AssignmentStatement) {
+    //         AssignmentStatement e = AssignmentStatement.class.cast(s.getEach());
+    //         String left = translateExpression(e.getLeft());
+    //         String right = translateExpression(e.getRight());
+    //         each = String.format("%s = %s", left, right);
+    //     } else if (s.getEach() instanceof IncrementStatement) {
+    //         IncrementStatement e = IncrementStatement.class.cast(s.getEach());
+    //         each = String.format("%s%s", variable(e.getTarget()), e.getOp());
+    //     }
+    //     emit("for (%s; %s; %s) {", init, test, each);
+    //     translateBlock(s.getBody());
+    //     emit("}");
+    // }
 
    private String translateExpression(Expression e) {
-       // if (e instanceof Number) {
-       //     return Number.class.cast(e).getValue().toString();
-       // } else if (e instanceof NullLiteral) {
-       //     return "null";
-       // } else if (e == BooleanLiteral.TRUE) {
-       //     return "true";
-       // } else if (e == BooleanLiteral.FALSE) {
-       //     return "false";
+       if (e instanceof NumericLiteral) {
+           return NumericLiteral.class.cast(e).getValue().toString();
+       } else if (e instanceof NullLiteral) {
+           return "null";
+       } else if (e == BooleanLiteral.T) {
+           return "true";
+       } else if (e == BooleanLiteral.F) {
+           return "false";
        // } else if (e instanceof StringLiteral) {
        //     return translateStringLiteral(StringLiteral.class.cast(e));
        // } else if (e instanceof ArrayAggregate) {
@@ -223,9 +224,9 @@ public class KoanToJavaScriptTranslator {
        //     return translateInfixExpression(InfixExpression.class.cast(e));
        // } else if (e instanceof VariableReference) {
        //     return translateVariableReference(VariableReference.class.cast(e));
-       // } else {
+       } else {
            throw new RuntimeException("Unknown entity class: " + e.getClass().getName());
-       // }
+       }
    }
 
    private String translateStringLiteral(StringLiteral s) {
@@ -277,26 +278,12 @@ public class KoanToJavaScriptTranslator {
 //        return String.format("(%s %s %s)", left, e.getOp(), right);
 //    }
 
-//    private String translateEmptyArray(EmptyArray e) {
-//        return String.format("Array()", translateExpression(e.getBound()));
-//    }
-
 //    private String translateArrayAggregate(ArrayAggregate e) {
 //        List<String> expressions = new ArrayList<String>();
 //        for (Expression arg : e.getArgs()) {
 //            expressions.add(translateExpression(arg));
 //        }
 //        return "[" + Joiner.on(", ").join(expressions) + "]";
-//    }
-
-//    private String translateStructAggregate(StructAggregate e) {
-//        Iterator<StructField> fields = StructType.class.cast(e.getType()).getFields().iterator();
-//        Iterator<Expression> values = e.getArgs().iterator();
-//        List<String> pairs = new ArrayList<String>();
-//        while (fields.hasNext() && values.hasNext()) {
-//            pairs.add(property(fields.next().getName()) + ": " + translateExpression(values.next()));
-//        }
-//        return "{" + Joiner.on(", ").join(pairs) + "}";
 //    }
 
 //    private String translateVariableReference(VariableReference v) {
@@ -339,12 +326,11 @@ public class KoanToJavaScriptTranslator {
 //    }
 
    private String translateExpressionList(List<Expression> list) {
-       // List<String> expressions = new ArrayList<String>();
-       // for (Expression e : list) {
-       //     expressions.add(translateExpression(e));
-       // }
-       // return Joiner.on(", ").join(expressions);
-       return null; // FIX ME!!!!!
+       List<String> expressions = new ArrayList<String>();
+       for (Expression e : list) {
+           expressions.add(translateExpression(e));
+       }
+       return Joiner.on(", ").join(expressions);
    }
 
    private String translateParameters(List<Variable> list) {

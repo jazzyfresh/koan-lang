@@ -6,9 +6,14 @@ import edu.lmu.cs.xlg.util.Log;
  * A Koan numeric literal expression.
  */
 public class Number extends Literal {
-
+    private double value;
+    
     public Number(String lexeme) {
         super(lexeme);
+    }
+
+    public double getValue() {
+        return value;
     }
 
     @Override
