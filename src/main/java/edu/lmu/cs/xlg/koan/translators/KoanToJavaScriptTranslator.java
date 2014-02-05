@@ -16,7 +16,7 @@ import edu.lmu.cs.xlg.koan.entities.Block;
 // import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
 import edu.lmu.cs.xlg.koan.entities.FunctionCallStatement;
 // import edu.lmu.cs.xlg.koan.entities.ForLoop;
-// import edu.lmu.cs.xlg.koan.entities.Declaration;
+ import edu.lmu.cs.xlg.koan.entities.Declaration;
 import edu.lmu.cs.xlg.koan.entities.Entity;
 import edu.lmu.cs.xlg.koan.entities.Expression;
 import edu.lmu.cs.xlg.koan.entities.Function;
@@ -111,17 +111,17 @@ public class KoanToJavaScriptTranslator {
        // }
    }
 
-//    private void translateDeclaration(Declaration s) {
-//        if (s.getDeclarable() instanceof Variable) {
-//            translateVariableDeclaration(Variable.class.cast(s.getDeclarable()));
-//        } else if (s.getDeclarable() instanceof Function) {
-//            translateFunctionDeclaration(Function.class.cast(s.getDeclarable()));
-//        } else if (s.getDeclarable() instanceof Type) {
-//            // Intentionally empty; type declarations do not get translated in JavaScript
-//        } else {
-//            throw new RuntimeException("Unknown declaration: " + s.getClass().getName());
-//        }
-//    }
+   /**private void translateDeclaration(Declaration s) {
+       if (s.getName() instanceof String) {
+           translateVariableDeclaration(Variable.class.cast(s));
+       } else if (s.getType() instanceof Function) {
+            translateFunctionDeclaration(Function.class.cast(s));
+       } else if (s instanceof Type) {
+            // Intentionally empty; type declarations do not get translated in JavaScript
+       } else {
+            throw new RuntimeException("Unknown declaration: " + s.getClass().getName());
+       }
+    }*/
 
    private void translateVariableDeclaration(Variable v) {
        String initializer;

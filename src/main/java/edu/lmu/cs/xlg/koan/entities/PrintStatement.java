@@ -13,7 +13,7 @@ public class PrintStatement extends Statement {
         this.expression = expression;
     }
 
-    public Expression getExpressions() {
+    public Expression getExpression() {
         return expression;
     }
 
