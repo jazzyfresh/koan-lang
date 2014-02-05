@@ -155,25 +155,23 @@ public class KoanToJavaScriptTranslator {
    }
 
    private void translateIfStatement(IfStatement s) {
-       // String lead = "if";
-       // for (Case c: s.getCases()) {
-       //     emit("%s (%s) {", lead, translateExpression(c.getCondition()));
-       //     translateBlock(c.getBody());
-       //     lead = "} else if";
-       // }
-       // if (s.getElsePart() != null) {
-       //     if (s.getCases().isEmpty()) {
-       //         // If and else-ifs were all optimized away!  Just do the else and get out.
-       //         for (Statement statement: s.getElsePart().getStatements()) {
-       //             translateStatement(statement);
-       //         }
-       //         return;
-       //     } else {
-       //         emit("} else {");
-       //         translateBlock(s.getElsePart());
-       //     }
-       // }
-       // emit("}");
+       String lead = "if";
+       for (IfStatement.Arm a: s.getArms()) {
+           emit("%s (%s) {", lead, translateExpression(a.getGuard()));
+           translateStatement(a.getStatement());
+           lead = "} else if";
+       }
+       if (s.getElsePart() != null) {
+           if (s.getArms().isEmpty()) {
+               // If and else-ifs were all optimized away!  Just do the else and get out.
+               translateStatement(s.getElsePart());
+               return;
+           } else {
+               emit("} else {");
+               translateStatement(s.getElsePart());
+           }
+       }
+       emit("}");
    }
 
    private void translateInfiniteLoop(InfiniteLoop s) {
