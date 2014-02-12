@@ -112,17 +112,15 @@ public class KoanToJavaScriptTranslator {
        }
    }
 
-   /**private void translateDeclaration(Declaration s) {
-       if (s.getName() instanceof String) {
+   private void translateDeclaration(Declaration s) {
+       if (s instanceof Variable) {
            translateVariableDeclaration(Variable.class.cast(s));
-       } else if (s.getType() instanceof Function) {
-            translateFunctionDeclaration(Function.class.cast(s));
        } else if (s instanceof Type) {
             // Intentionally empty; type declarations do not get translated in JavaScript
        } else {
             throw new RuntimeException("Unknown declaration: " + s.getClass().getName());
        }
-    }*/
+   }
 
    private void translateVariableDeclaration(Variable v) {
        String initializer;
@@ -181,7 +179,7 @@ public class KoanToJavaScriptTranslator {
        emit("}");
    }
 
-    // private void translateClassicForLoop(ForLoop s) {
+    // private void translateForLoop(ForLoop s) {
     //     String init = "", test = "", each = "";
     //     if (s.getInit() != null) {
     //         init = String.format("var %s = %s", variable(s.getIndexVariable()), s.getInit());
@@ -306,16 +304,6 @@ public class KoanToJavaScriptTranslator {
 
 //    private String translateFunctionCallExpression(FunctionCallExpression e) {
 
-//        if (Function.PI.equals(e.getFunction())) {
-//            return "Math.PI";
-//        } else if (Function.SUBSTRING.equals(e.getFunction())) {
-//            return String.format("(%s).substring(%s, %s)",
-//                translateExpression(e.getArgs().get(0)),
-//                translateExpression(e.getArgs().get(1)),
-//                translateExpression(e.getArgs().get(2)));
-//        } else if (Function.GET_STRING.equals(e.getFunction())) {
-//            return "fs.readFileSync('/dev/stdin')";
-//        }
 
 //        String function = variable(e.getFunction());
 //        String args = translateExpressionList(e.getArgs());
