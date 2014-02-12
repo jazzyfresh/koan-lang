@@ -12,6 +12,7 @@ public class BooleanLiteral extends Literal {
 	
 	private BooleanLiteral(String lexeme) {
 		super(lexeme);
+		this.type = Type.BOOLEAN;
 	}
 	
 
