@@ -8,34 +8,36 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 
-// import edu.lmu.cs.xlg.koan.entities.ArrayExpression;
+import edu.lmu.cs.xlg.koan.entities.ArrayExpression;
 import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
+import edu.lmu.cs.xlg.koan.entities.BinaryExpression;
 import edu.lmu.cs.xlg.koan.entities.Block;
 import edu.lmu.cs.xlg.koan.entities.BooleanLiteral;
 import edu.lmu.cs.xlg.koan.entities.BreakStatement;
-import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
-import edu.lmu.cs.xlg.koan.entities.FunctionCallStatement;
-import edu.lmu.cs.xlg.koan.entities.ForLoop;
 import edu.lmu.cs.xlg.koan.entities.Declaration;
 import edu.lmu.cs.xlg.koan.entities.Entity;
 import edu.lmu.cs.xlg.koan.entities.Expression;
 import edu.lmu.cs.xlg.koan.entities.Function;
+import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
+import edu.lmu.cs.xlg.koan.entities.FunctionCallStatement;
+import edu.lmu.cs.xlg.koan.entities.ForLoop;
 import edu.lmu.cs.xlg.koan.entities.IfStatement;
 import edu.lmu.cs.xlg.koan.entities.InfiniteLoop;
-// import edu.lmu.cs.xlg.koan.entities.InfixExpression;
+import edu.lmu.cs.xlg.koan.entities.Literal;
+import edu.lmu.cs.xlg.koan.entities.LoopStatement;
 import edu.lmu.cs.xlg.koan.entities.NullLiteral;
 import edu.lmu.cs.xlg.koan.entities.NumericLiteral;
-// import edu.lmu.cs.xlg.koan.entities.PostfixExpression;
-// import edu.lmu.cs.xlg.koan.entities.PrefixExpression;
 import edu.lmu.cs.xlg.koan.entities.PrintStatement;
 import edu.lmu.cs.xlg.koan.entities.Script;
-// import edu.lmu.cs.xlg.koan.entities.SimpleVariableReference;
+import edu.lmu.cs.xlg.koan.entities.SimpleVariableReference;
 import edu.lmu.cs.xlg.koan.entities.Statement;
 import edu.lmu.cs.xlg.koan.entities.StringLiteral;
-// import edu.lmu.cs.xlg.koan.entities.SubscriptedVariable;
+import edu.lmu.cs.xlg.koan.entities.SubscriptedVariable;
+import edu.lmu.cs.xlg.koan.entities.SwapStatement;
+import edu.lmu.cs.xlg.koan.entities.SymbolTable;
 import edu.lmu.cs.xlg.koan.entities.Type;
 import edu.lmu.cs.xlg.koan.entities.Variable;
-// import edu.lmu.cs.xlg.koan.entities.VariableReference;
+import edu.lmu.cs.xlg.koan.entities.VariableReference;
 
 /**
 * A translator from koan semantic graphs to JavaScript.
@@ -45,14 +47,6 @@ public class KoanToJavaScriptTranslator {
    private PrintWriter writer;
    private int indentPadding = 4;
    private int indentLevel = 0;
-
-   // private ImmutableMap<Function, String> builtIns = ImmutableMap.<Function, String>builder()
-   //     .put(Function.ATAN, "Math.atan2")
-   //     .put(Function.COS, "Math.cos")
-   //     .put(Function.LN, "Math.log")
-   //     .put(Function.SIN, "Math.sin")
-   //     .put(Function.SQRT, "Math.sqrt")
-   //     .build();
 
    private ImmutableMap<Type, String> initialValues = ImmutableMap.<Type, String>builder()
        .put(Type.BOOLEAN, "false")
@@ -77,8 +71,8 @@ public class KoanToJavaScriptTranslator {
 
    private void translateStatement(Statement s) {
 
-       // if (s instanceof Declaration) {
-       //     translateDeclaration(Declaration.class.cast(s));
+       if (s instanceof Variable) {
+           translateVariableDeclaration(Variable.class.cast(s));
 
        // } else if (s instanceof AssignmentStatement) {
        //     translateAssignmentStatement(AssignmentStatement.class.cast(s));
@@ -86,14 +80,11 @@ public class KoanToJavaScriptTranslator {
        // } else if (s instanceof IncrementStatement) {
        //     translateIncrementStatement(IncrementStatement.class.cast(s));
 
-       // } else if (s instanceof CallStatement) {
-       //     translateCallStatement(CallStatement.class.cast(s));
+       } else if (s instanceof FunctionCallStatement) {
+           translateCallStatement(FunctionCallStatement.class.cast(s));
 
-       if (s instanceof BreakStatement) {
+       } else if (s instanceof BreakStatement) {
            emit("break;");
-
-       // } else if (s instanceof ReturnStatement) {
-       //     translateReturnStatement(ReturnStatement.class.cast(s));
 
        } else if (s instanceof PrintStatement) {
            translatePrintStatement(PrintStatement.class.cast(s));
@@ -109,16 +100,6 @@ public class KoanToJavaScriptTranslator {
 
        //} else {
        //    throw new RuntimeException("Unknown statement class: " + s.getClass().getName());
-       }
-   }
-
-   private void translateDeclaration(Declaration s) {
-       if (s instanceof Variable) {
-           translateVariableDeclaration(Variable.class.cast(s));
-       } else if (s instanceof Type) {
-            // Intentionally empty; type declarations do not get translated in JavaScript
-       } else {
-            throw new RuntimeException("Unknown declaration: " + s.getClass().getName());
        }
    }
 
@@ -146,7 +127,7 @@ public class KoanToJavaScriptTranslator {
    }
 
    private void translateCallStatement(FunctionCallStatement s) {
-       // emit("%s(%s);", variable(s.getFunction()), translateExpressionList(s.getArgs()));
+       emit("%s();", variable(s.getF()));
    }
 
    private void translatePrintStatement(PrintStatement s) {
@@ -212,14 +193,10 @@ public class KoanToJavaScriptTranslator {
            return "false";
        // } else if (e instanceof StringLiteral) {
        //     return translateStringLiteral(StringLiteral.class.cast(e));
-       // } else if (e instanceof ArrayAggregate) {
-       //     return translateArrayAggregate(ArrayAggregate.class.cast(e));
-       // } else if (e instanceof PrefixExpression) {
-       //     return translatePrefixExpression(PrefixExpression.class.cast(e));
-       // } else if (e instanceof PostfixExpression) {
-       //     return translatePostfixExpression(PostfixExpression.class.cast(e));
-       // } else if (e instanceof InfixExpression) {
-       //     return translateInfixExpression(InfixExpression.class.cast(e));
+       } else if (e instanceof ArrayExpression) {
+           return translateArrayExpression(ArrayExpression.class.cast(e));
+       } else if (e instanceof BinaryExpression) {
+           return translateBinaryExpression(BinaryExpression.class.cast(e));
        // } else if (e instanceof VariableReference) {
        //     return translateVariableReference(VariableReference.class.cast(e));
        } else {
@@ -227,7 +204,7 @@ public class KoanToJavaScriptTranslator {
        }
    }
 
-   private String translateStringLiteral(StringLiteral s) {
+    private String translateStringLiteral(StringLiteral s) {
 //        StringBuilder result = new StringBuilder("\"");
 //        for (int codepoint: s.getValues()) {
 //            if (isDisplayable(codepoint)) {
@@ -240,49 +217,24 @@ public class KoanToJavaScriptTranslator {
 //        }
 //        result.append("\"");
 //        return result.toString();
-    return null; // FIXME
-   }
+        return null; // FIXME
+    }
 
-//    private String translatePrefixExpression(PrefixExpression e) {
-//        String op = e.getOp();
-//        String operand = translateExpression(e.getOperand());
-//        if ("!~-".indexOf(op) >= 0 || "++".equals(op) || "--".equals(op)) {
-//            return String.format("%s%s", op, operand);
-//        } else if ("string".equals(e.getOp())) {
-//            return String.format("JSON.stringify(%s)", operand);
-//        } else if ("length".equals(op)) {
-//            return String.format("(%s).length", operand);
-//        } else if ("int".equals(op) || "char".equals(op)) {
-//            return operand;
-//        } else {
-//            throw new RuntimeException("Unknown prefix operator: " + e.getOp());
-//        }
-//    }
 
-//    private String translatePostfixExpression(PostfixExpression e) {
-//        String op = e.getOp();
-//        String operand = translateExpression(e.getOperand());
-//        if ("++".equals(op) || "--".equals(op)) {
-//            return String.format("%s%s", operand, op);
-//        } else {
-//            throw new RuntimeException("Unknown postfix operator: " + e.getOp());
-//        }
-//    }
+    private String translateBinaryExpression(BinaryExpression e) {
+        // All koan binary operators look exactly the same as their JavaScript counterparts!
+        String left = translateExpression(e.getLeft());
+        String right = translateExpression(e.getRight());
+        return String.format("(%s %s %s)", left, e.getOp(), right);
+    }
 
-//    private String translateInfixExpression(InfixExpression e) {
-//        // All koan binary operators look exactly the same as their JavaScript counterparts!
-//        String left = translateExpression(e.getLeft());
-//        String right = translateExpression(e.getRight());
-//        return String.format("(%s %s %s)", left, e.getOp(), right);
-//    }
-
-//    private String translateArrayAggregate(ArrayAggregate e) {
-//        List<String> expressions = new ArrayList<String>();
-//        for (Expression arg : e.getArgs()) {
-//            expressions.add(translateExpression(arg));
-//        }
-//        return "[" + Joiner.on(", ").join(expressions) + "]";
-//    }
+    private String translateArrayExpression(ArrayExpression e) {
+        List<String> expressions = new ArrayList<String>();
+        for (Expression arg : e.getExpressions()) {
+            expressions.add(translateExpression(arg));
+        }
+        return "[" + Joiner.on(", ").join(expressions) + "]";
+    }
 
 //    private String translateVariableReference(VariableReference v) {
 //        if (v instanceof SimpleVariableReference) {
@@ -303,13 +255,8 @@ public class KoanToJavaScriptTranslator {
 //    }
 
    private String translateFunctionCallExpression(FunctionCallExpression e) {
-
-
        String function = e.getFunctionName();
        String args = translateExpressionList(e.getArgs());
-       /**if (builtIns.containsKey(e.getFunctionName())) {
-           function = builtIns.get(e.getFunctionName());
-       }*/
        return String.format("%s(%s)", function, args);
    }
 

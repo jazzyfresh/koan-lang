@@ -18,6 +18,10 @@ public class FunctionCallStatement extends Statement {
         this.f = f;
     }
 
+    //
+    // TODO: WHERE ARE THE ARGUMENTS??????????????????
+    // 
+    
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
         // TODO Auto-generated method stub
