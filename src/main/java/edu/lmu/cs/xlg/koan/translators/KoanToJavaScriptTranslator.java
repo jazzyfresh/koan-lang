@@ -13,7 +13,7 @@ import edu.lmu.cs.xlg.koan.entities.AssignmentStatement;
 import edu.lmu.cs.xlg.koan.entities.Block;
 import edu.lmu.cs.xlg.koan.entities.BooleanLiteral;
 import edu.lmu.cs.xlg.koan.entities.BreakStatement;
-// import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
+import edu.lmu.cs.xlg.koan.entities.FunctionCallExpression;
 import edu.lmu.cs.xlg.koan.entities.FunctionCallStatement;
 import edu.lmu.cs.xlg.koan.entities.ForLoop;
 import edu.lmu.cs.xlg.koan.entities.Declaration;
@@ -181,8 +181,8 @@ public class KoanToJavaScriptTranslator {
 
     // private void translateForLoop(ForLoop s) {
     //     String init = "", test = "", each = "";
-    //     if (s.getInit() != null) {
-    //         init = String.format("var %s = %s", variable(s.getIndexVariable()), s.getInit());
+    //     if (s.getIterator() != null) {
+    //         init = String.format("var %s = %s", variable(s.getIteratorVariable()), s.getIterator());
     //     }
     //     if (s.getTest() != null) {
     //         test = translateExpression(s.getTest());
@@ -302,16 +302,16 @@ public class KoanToJavaScriptTranslator {
 //        return String.format("%s[%s]", sequence, index);
 //    }
 
-//    private String translateFunctionCallExpression(FunctionCallExpression e) {
+   private String translateFunctionCallExpression(FunctionCallExpression e) {
 
 
-//        String function = variable(e.getFunction());
-//        String args = translateExpressionList(e.getArgs());
-//        if (builtIns.containsKey(e.getFunction())) {
-//            function = builtIns.get(e.getFunction());
-//        }
-//        return String.format("%s(%s)", function, args);
-//    }
+       String function = e.getFunctionName();
+       String args = translateExpressionList(e.getArgs());
+       /**if (builtIns.containsKey(e.getFunctionName())) {
+           function = builtIns.get(e.getFunctionName());
+       }*/
+       return String.format("%s(%s)", function, args);
+   }
 
    private String translateExpressionList(List<Expression> list) {
        List<String> expressions = new ArrayList<String>();
