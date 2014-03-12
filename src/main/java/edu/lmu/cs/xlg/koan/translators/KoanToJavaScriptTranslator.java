@@ -74,14 +74,14 @@ public class KoanToJavaScriptTranslator {
        if (s instanceof Variable) {
            translateVariableDeclaration(Variable.class.cast(s));
 
-       // } else if (s instanceof AssignmentStatement) {
-       //     translateAssignmentStatement(AssignmentStatement.class.cast(s));
+       } else if (s instanceof AssignmentStatement) {
+            translateAssignmentStatement(AssignmentStatement.class.cast(s));
 
        // } else if (s instanceof IncrementStatement) {
        //     translateIncrementStatement(IncrementStatement.class.cast(s));
 
        } else if (s instanceof FunctionCallStatement) {
-           translateCallStatement(FunctionCallStatement.class.cast(s));
+           translateFunctionCallStatement(FunctionCallStatement.class.cast(s));
 
        } else if (s instanceof BreakStatement) {
            emit("break;");
@@ -89,14 +89,14 @@ public class KoanToJavaScriptTranslator {
        } else if (s instanceof PrintStatement) {
            translatePrintStatement(PrintStatement.class.cast(s));
 
-       // } else if (s instanceof IfStatement) {
-       //     translateIfStatement(IfStatement.class.cast(s));
+        } else if (s instanceof IfStatement) {
+            translateIfStatement(IfStatement.class.cast(s));
 
        } else if (s instanceof InfiniteLoop) {
            translateInfiniteLoop(InfiniteLoop.class.cast(s));
 
-       //} else if (s instanceof ForLoop) {
-       //    translateForLoop(ForLoop.class.cast(s));
+       } else if (s instanceof ForLoop) {
+           translateForLoop(ForLoop.class.cast(s));
 
        //} else {
        //    throw new RuntimeException("Unknown statement class: " + s.getClass().getName());
@@ -126,7 +126,7 @@ public class KoanToJavaScriptTranslator {
        emit("%s = %s;", translateExpression(s.getLeft()), translateExpression(s.getRight()));
    }
 
-   private void translateCallStatement(FunctionCallStatement s) {
+   private void translateFunctionCallStatement(FunctionCallStatement s) {
        emit("%s();", variable(s.getF()));
    }
 
@@ -160,27 +160,27 @@ public class KoanToJavaScriptTranslator {
        emit("}");
    }
 
-    // private void translateForLoop(ForLoop s) {
-    //     String init = "", test = "", each = "";
-    //     if (s.getIterator() != null) {
-    //         init = String.format("var %s = %s", variable(s.getIteratorVariable()), s.getIterator());
-    //     }
-    //     if (s.getTest() != null) {
-    //         test = translateExpression(s.getTest());
-    //     }
-    //     if (s.getEach() instanceof AssignmentStatement) {
-    //         AssignmentStatement e = AssignmentStatement.class.cast(s.getEach());
-    //         String left = translateExpression(e.getLeft());
-    //         String right = translateExpression(e.getRight());
-    //         each = String.format("%s = %s", left, right);
+     private void translateForLoop(ForLoop s) {
+         String init = "", test = "", each = "";
+         if (s.getIterator() != null) {
+             init = String.format("var %s = %s", variable(s.getIterator()));
+         }
+         if (s.getFunction() != null) {
+             test = translateExpression(s.getFunction());
+         }
+         if (s.getStatement() instanceof AssignmentStatement) {
+             AssignmentStatement e = AssignmentStatement.class.cast(s.getStatement());
+             String left = translateExpression(e.getLeft());
+             String right = translateExpression(e.getRight());
+             each = String.format("%s = %s", left, right);
     //     } else if (s.getEach() instanceof IncrementStatement) {
     //         IncrementStatement e = IncrementStatement.class.cast(s.getEach());
     //         each = String.format("%s%s", variable(e.getTarget()), e.getOp());
-    //     }
-    //     emit("for (%s; %s; %s) {", init, test, each);
-    //     translateBlock(s.getBody());
-    //     emit("}");
-    // }
+         }
+         emit("for (%s; %s; %s) {", init, test, each);
+         //translateBlock(s.getStatements());
+         emit("}");
+     }
 
    private String translateExpression(Expression e) {
        if (e instanceof NumericLiteral) {
@@ -197,8 +197,8 @@ public class KoanToJavaScriptTranslator {
            return translateArrayExpression(ArrayExpression.class.cast(e));
        } else if (e instanceof BinaryExpression) {
            return translateBinaryExpression(BinaryExpression.class.cast(e));
-       // } else if (e instanceof VariableReference) {
-       //     return translateVariableReference(VariableReference.class.cast(e));
+        } else if (e instanceof VariableReference) {
+            return translateVariableReference(VariableReference.class.cast(e));
        } else {
            throw new RuntimeException("Unknown entity class: " + e.getClass().getName());
        }
@@ -236,23 +236,23 @@ public class KoanToJavaScriptTranslator {
         return "[" + Joiner.on(", ").join(expressions) + "]";
     }
 
-//    private String translateVariableReference(VariableReference v) {
-//        if (v instanceof SimpleVariableReference) {
-//            return variable(SimpleVariableReference.class.cast(v).getReferent());
-//        } else if (v instanceof SubscriptedVariable) {
-//            return translateSubscriptedVariable(SubscriptedVariable.class.cast(v));
-//        } else if (v instanceof FunctionCallExpression) {
-//            return translateFunctionCallExpression(FunctionCallExpression.class.cast(v));
-//        } else {
-//            throw new RuntimeException("Unknown variable expression class: " + v.getClass().getName());
-//        }
-//    }
+    private String translateVariableReference(VariableReference v) {
+        if (v instanceof SimpleVariableReference) {
+            return variable(SimpleVariableReference.class.cast(v).getReferent());
+        } else if (v instanceof SubscriptedVariable) {
+            return translateSubscriptedVariable(SubscriptedVariable.class.cast(v));
+        } else if (v instanceof FunctionCallExpression) {
+            return translateFunctionCallExpression(FunctionCallExpression.class.cast(v));
+        } else {
+            throw new RuntimeException("Unknown variable expression class: " + v.getClass().getName());
+        }
+    }
 
-//    private String translateSubscriptedVariable(SubscriptedVariable v) {
-//        String sequence = translateVariableReference(v.getSequence());
-//        String index = translateExpression(v.getIndex());
-//        return String.format("%s[%s]", sequence, index);
-//    }
+    private String translateSubscriptedVariable(SubscriptedVariable v) {
+        String sequence = translateVariableReference(v.getSequence());
+        String index = translateExpression(v.getIndex());
+        return String.format("%s[%s]", sequence, index);
+    }
 
    private String translateFunctionCallExpression(FunctionCallExpression e) {
        String function = e.getFunctionName();

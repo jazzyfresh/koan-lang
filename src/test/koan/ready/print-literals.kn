@@ -3,4 +3,5 @@ p: 3.4563;
 c: p: "Hello";
 p: T;
 p: F;
-c: p: ~;
+c: ls
+p: ~;
