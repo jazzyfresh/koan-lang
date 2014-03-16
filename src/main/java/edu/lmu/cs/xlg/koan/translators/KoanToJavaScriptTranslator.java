@@ -161,24 +161,7 @@ public class KoanToJavaScriptTranslator {
    }
 
      private void translateForLoop(ForLoop s) {
-         String init = "", test = "", each = "";
-         if (s.getIterator() != null) {
-             init = String.format("var %s = %s", variable(s.getIterator()));
-         }
-         if (s.getFunction() != null) {
-             test = translateExpression(s.getFunction());
-         }
-         if (s.getStatement() instanceof AssignmentStatement) {
-             AssignmentStatement e = AssignmentStatement.class.cast(s.getStatement());
-             String left = translateExpression(e.getLeft());
-             String right = translateExpression(e.getRight());
-             each = String.format("%s = %s", left, right);
-    //     } else if (s.getEach() instanceof IncrementStatement) {
-    //         IncrementStatement e = IncrementStatement.class.cast(s.getEach());
-    //         each = String.format("%s%s", variable(e.getTarget()), e.getOp());
-         }
-         emit("for (%s; %s; %s) {", init, test, each);
-         //translateBlock(s.getStatements());
+         emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
          emit("}");
      }
 
