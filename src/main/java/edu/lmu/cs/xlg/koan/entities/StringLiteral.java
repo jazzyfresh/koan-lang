@@ -17,7 +17,10 @@ public class StringLiteral extends Literal {
     
     @Override
     public void analyze(Log log, SymbolTable table, Function function, boolean inLoop) {
-        // TODO Auto-generated method stub
+        
+        for (int i = 0; i < values.size(); i++) {
+            values.add(i, (int)getLexeme().charAt(i));
+        }
 
     }
 

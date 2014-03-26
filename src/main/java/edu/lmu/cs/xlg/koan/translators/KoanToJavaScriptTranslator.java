@@ -161,8 +161,25 @@ public class KoanToJavaScriptTranslator {
    }
 
      private void translateForLoop(ForLoop s) {
-         emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
-         emit("}");
+         if (s.getIterator() instanceof ArrayExpression) {
+             if (s.getFunction() == null) {
+                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
+                 emit("}");
+             } else {
+                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
+                 emit("}");
+             }
+
+         } else {
+             if (s.getFunction() == null) {
+                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
+                 emit("}");
+             } else {
+                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
+                 emit("}");
+             }
+
+         }
      }
 
    private String translateExpression(Expression e) {
@@ -174,8 +191,8 @@ public class KoanToJavaScriptTranslator {
            return "true";
        } else if (e == BooleanLiteral.F) {
            return "false";
-       // } else if (e instanceof StringLiteral) {
-       //     return translateStringLiteral(StringLiteral.class.cast(e));
+       } else if (e instanceof StringLiteral) {
+            return translateStringLiteral(StringLiteral.class.cast(e));
        } else if (e instanceof ArrayExpression) {
            return translateArrayExpression(ArrayExpression.class.cast(e));
        } else if (e instanceof BinaryExpression) {
@@ -188,19 +205,8 @@ public class KoanToJavaScriptTranslator {
    }
 
     private String translateStringLiteral(StringLiteral s) {
-//        StringBuilder result = new StringBuilder("\"");
-//        for (int codepoint: s.getValues()) {
-//            if (isDisplayable(codepoint)) {
-//                result.append((char)codepoint);
-//            } else {
-//                for (char c: Character.toChars(codepoint)) {
-//                    result.append(String.format("\\u%04x", (int)c));
-//                }
-//            }
-//        }
-//        result.append("\"");
-//        return result.toString();
-        return null; // FIXME
+        return("\" + s.getValues()+\"");
+        //return null; // FIXME
     }
 
 
