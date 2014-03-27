@@ -161,21 +161,24 @@ public class KoanToJavaScriptTranslator {
    }
 
      private void translateForLoop(ForLoop s) {
-         if (s.getIterator() instanceof ArrayExpression) {
+         if (s.getArrayIterator() != null) {
              if (s.getFunction() == null) {
-                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
+                 emit("("+s.getArrayIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
                  emit("}");
              } else {
-                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
+                 emit("("+s.getArrayIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
                  emit("}");
              }
 
          } else {
+             Expression left = s.getBinaryIterator().getLeft();
+             Expression right = s.getBinaryIterator().getOp() == ".." ? s.getBinaryIterator().getRight()+1 : s.getBinaryIterator().getRight();
+             
              if (s.getFunction() == null) {
-                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
+                 emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+"<"+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getStatement()+"\n)};");
                  emit("}");
              } else {
-                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
+                 emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+"<"+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getFunction()+"\n)};");
                  emit("}");
              }
 
