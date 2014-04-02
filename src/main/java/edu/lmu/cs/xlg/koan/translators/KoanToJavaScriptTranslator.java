@@ -161,18 +161,18 @@ public class KoanToJavaScriptTranslator {
    }
 
      private void translateForLoop(ForLoop s) {
-         if (s.getArrayIterator() != null) {
+         if (s.getIterator() instanceof ArrayExpression) {
              if (s.getFunction() == null) {
-                 emit("("+s.getArrayIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
+                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getStatement()+"\n)};");
                  emit("}");
              } else {
-                 emit("("+s.getArrayIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
+                 emit("("+s.getIterator()+"."+"forEach( function("+s.getIteratorVariable()+") { \n" + s.getFunction()+"\n)};");
                  emit("}");
              }
 
          } else {
-             Expression left = s.getBinaryIterator().getLeft();
-             Expression right = s.getBinaryIterator().getOp() == ".." ? s.getBinaryIterator().getRight()+1 : s.getBinaryIterator().getRight();
+             Expression left = s.getIterator().getStart();
+             Expression right = s.getIterator().getMid() == ".." ? s.getIterator().getEnd()+1 : s.getIterator().getEnd();
              
              if (s.getFunction() == null) {
                  emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+"<"+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getStatement()+"\n)};");

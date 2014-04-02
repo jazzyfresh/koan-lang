@@ -4,27 +4,27 @@ import edu.lmu.cs.xlg.util.Log;
 
 public class ForLoop extends LoopStatement {
 
-    private Expression arrayIterator;
-    private BinaryExpression binaryIterator;
+    private Expression iterator;
+    //private BinaryExpression binaryIterator;
     private Function function;
     private Statement statement;
     private String iteratorVariable;
 
-    public ForLoop(Expression arrayIterator, BinaryExpression binaryIterator, Function function, Statement statement, String iteratorVariable) {
+    public ForLoop(Expression iterator, Function function, Statement statement, String iteratorVariable) {
         super("FORLOOP");
-        this.arrayIterator = arrayIterator;
-        this.binaryIterator = binaryIterator;
+        this.iterator = iterator;
+        //this.binaryIterator = binaryIterator;
         this.function = function;
         this.statement = statement;
         this.iteratorVariable = iteratorVariable;
     }
 
-    public BinaryExpression getBinaryIterator() {
+    /**public BinaryExpression getBinaryIterator() {
         return binaryIterator;
-    }
+    }*/
 
-    public Expression getArrayIterator() {
-        return arrayIterator;
+    public Expression getIterator() {
+        return iterator;
     }
 
     public Function getFunction() {
