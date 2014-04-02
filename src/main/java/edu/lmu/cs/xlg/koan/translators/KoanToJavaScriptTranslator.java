@@ -170,16 +170,29 @@ public class KoanToJavaScriptTranslator {
                  emit("}");
              }
 
-         } else {
-             Expression left = s.getIterator().getStart();
-             Expression right = s.getIterator().getMid() == ".." ? s.getIterator().getEnd()+1 : s.getIterator().getEnd();
-             
-             if (s.getFunction() == null) {
-                 emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+"<"+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getStatement()+"\n)};");
-                 emit("}");
+         } else if (s.getIterator() instanceof BinaryExpression) {
+             BinaryExpression range = BinaryExpression.class.cast(s.getIterator());
+
+             if (!range.getOp().equals("..") && !range.getOp().equals("...")) {
+                 throw new RuntimeException("Not a Range Expression "+range);
              } else {
-                 emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+"<"+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getFunction()+"\n)};");
-                 emit("}");
+
+                 Expression left = range.getLeft();
+                 Expression right = range.getRight();
+                 String op = range.getOp() == ".." ? "<=" : "<"; // ???????????????
+ 
+                 if (left.getType() != Type.NUMBER || right.getType() != Type.NUMBER) {
+                     throw new RuntimeException("A Range Requires Two Numbers, left.getType() = "+left.getType()+" right.getType() = "+right.getType());
+                 } else {
+             
+                     if (s.getFunction() == null) {
+                         emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+op+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getStatement()+"\n)};");
+                         emit("}");
+                     } else {
+                         emit("for ("+s.getIteratorVariable()+" = "+left+"; "+ s.getIteratorVariable()+op+right+"; "+s.getIteratorVariable()+"++) { \n" + s.getFunction()+"\n)};");
+                         emit("}");
+                     }
+                 }    
              }
 
          }

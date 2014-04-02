@@ -473,8 +473,11 @@ Function parseAnonFun(): {
     (
         "("
         (
-//            // TODO: enforce type checking in function parameters//           "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")"
-      p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));}      ("," p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));})*    )?
+//            // TODO: enforce type checking in function parameters
+//           "(" (t = parseType() p =<ID> {params.add(new Variable(p.image, t, null, false)); } )* ")"
+      p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));}
+      ("," p = <ID> {params.add(new Variable(p.image, "INFERENCED", null, false));})*
+    )?
     ")" "->"
     )?
     body = parseBlock()
@@ -493,15 +496,16 @@ List parseArgs(): {
     { return expressions; }
 }
 
-/*
-Range parseRange(): {
+
+/*Range parseRange(): {
     Expression lowerBound = null;
     Expression upperBound = null;
+    String mid;
+    Token t;
 } {
-      ( "..." | ".." ) upperBound = parseExp()
+      ( t="..." | t=".." ) { mid = t.image; } upperBound = parseExp()
     | lowerBound = parseExp() ( "..." | ".." )
       (LOOKAHEAD({getToken(3).kind == Expression}) upperBound = parseExp())?
-    { return new Range(lowerBound, upperBound); }
-}
-*/
+    { return new Range(lowerBound, mid, upperBound); }
+}*/
 
